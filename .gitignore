@@ -1,0 +1,12 @@
+# mpcontainer gitignore
+#
+dev-vm/.vagrant/
+music/db/*
+kubernetes/pv.yaml
+#
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Trashes
