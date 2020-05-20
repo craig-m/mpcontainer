@@ -1,6 +1,6 @@
 # MPContainer
 
-Music Player Container - A streaming Jukebox setup 
+Music Player Container - A streaming Jukebox setup
 
 Moving the programs I like, and refuse to give up, into the modern world of browsers and containers.
 
