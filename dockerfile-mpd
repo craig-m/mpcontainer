@@ -1,0 +1,21 @@
+#
+# MPD server container
+# https://www.musicpd.org/
+#
+
+FROM debian:buster-slim
+
+EXPOSE 6600 3123
+
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && \
+  apt-get -y install \
+  bash less dos2unix net-tools iproute2 gpg mpd mpc && \
+  apt-get clean
+
+COPY mpd.conf /etc/mpd.conf
+
+USER mpd
+WORKDIR /var/lib/mpd/
+
+CMD ["mpd", "--no-daemon", "--stdout", "/etc/mpd.conf"]

@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+
+  # frontend public proxy
+  # https://hub.docker.com/_/haproxy
+  frontend:
+    image: "haproxy:2.1-alpine"
+    restart: always
+    volumes:
+        - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    ports:
+      - "3000:3001"
+    networks:
+      - webfrontnet
+      - webfrontmpd
+    depends_on:
+      - backendweb
+    labels:
+      kompose.service.type: LoadBalancer
+
+  # static web docs
+  # https://hub.docker.com/_/nginx
+  backendweb:
+    image: nginx:1.18-alpine
+    restart: always
+    ports:
+      - "8880"
+    volumes:
+        - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+        - "./webfiles:/usr/share/nginx/html:ro"
+    networks:
+      - webfrontnet
+
+  # MPD server
+  # https://hub.docker.com/_/debian
+  backendmpd:
+    restart: always
+    tty: 
+      true
+    build:
+      context: .
+      dockerfile: dockerfile-mpd
+    container_name: backendmpd
+    volumes:
+        - "./music/db:/var/lib/mpd/music:ro"
+    ports:
+      - "6600"
+      - "3123"
+    networks:
+      - webfrontmpd
+      - mpdadmin
+
+  # admin Web shell
+  # https://hub.docker.com/r/tsl0922/ttyd
+  adminmmpd:
+    restart: always
+    build:
+      context: .
+      dockerfile: dockerfile-shell
+    container_name: adminmmpd
+    ports:
+      - "7681"
+    networks:
+      - webfrontnet
+      - mpdadmin
+
+networks:
+  webfrontnet:
+    driver: bridge
+  webfrontmpd:
+    driver: bridge
+  mpdadmin:
+    driver: bridge

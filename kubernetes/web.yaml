@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    mp.service: backendweb
+  name: backendweb
+  namespace: musicplayer
+spec:
+  ports:
+  - name: "8880"
+    port: 8880
+    targetPort: 8880
+  selector:
+    mp.service: backendweb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    mp.service: backendweb
+  name: backendweb
+  namespace: musicplayer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      mp.service: backendweb
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        mp.network/webfrontnet: "true"
+        mp.service: backendweb
+    spec:
+      containers:
+      - image: ectoplasm/mpcontainer-web:latest
+        imagePullPolicy: "Always"
+        name: backendweb
+        ports:
+        - containerPort: 8880
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""

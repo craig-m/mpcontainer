@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    mp.service: adminmmpd
+  name: adminmmpd
+  namespace: musicplayer
+spec:
+  ports:
+  - name: "7681"
+    port: 7681
+    targetPort: 7681
+  selector:
+    mp.service: adminmmpd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    mp.service: adminmmpd
+  name: adminmmpd
+  namespace: musicplayer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      mp.service: adminmmpd
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        mp.network/mpdadmin: "true"
+        mp.network/webfrontnet: "true"
+        mp.service: adminmmpd
+    spec:
+      containers:
+      - image: ectoplasm/mpcontainer-shell:latest
+        imagePullPolicy: "Always"
+        name: adminmmpd
+        ports:
+        - containerPort: 7681
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null

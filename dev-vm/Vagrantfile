@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: ft=ruby :
+
+$inlinescript_post = <<-SCRIPT
+echo '-----------------------';
+uname -a;
+myip=$(ifconfig eth0 | grep inet | tr -s " ")
+echo "My IP: ${myip}";
+myip=$(ifconfig eth0 | grep inet | grep -v inet6 | tr -s " ")
+echo '-----------------------';
+SCRIPT
+
+Vagrant.configure("2") do |config|
+    # centos8 ubuntu1804
+    config.vm.box = "generic/ubuntu1804"
+    config.vm.box_version = "3.0.2"
+    config.vm.box_check_update = false
+    config.vm.synced_folder "../", "/vagrant", type: "rsync"
+
+    config.vm.provision "ansible_local" do |ansible|
+        ansible.playbook = "dev-vm/playbook.yml"
+    end
+
+    config.vm.network :forwarded_port, guest: 9090, host: 9090
+    config.vm.network :forwarded_port, guest: 3000, host: 3030
+
+    config.trigger.after [:up, :provision, :resume, :reload] do |t|
+        t.info = "running inlinescript_post"
+        t.run_remote = {inline: $inlinescript_post, :privileged => false}
+    end
+end

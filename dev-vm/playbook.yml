@@ -1,0 +1,357 @@
+---
+
+- name: VM Playbook
+  hosts: all
+  gather_facts: yes
+  vars:
+    package_install: [
+      { add_item: 'curl' },
+      { add_item: 'wget' },
+      { add_item: 'man-db' },
+      { add_item: 'man' },
+      { add_item: 'dos2unix' },
+      { add_item: 'lsof' },
+      { add_item: 'tmux' },
+      { add_item: 'vim' },
+      { add_item: 'git' },
+      { add_item: 'make' },
+      { add_item: 'nmap' },
+      { add_item: 'tcpdump' },
+      { add_item: 'socat' },
+      { add_item: 'expect' },
+      { add_item: 'jq' },
+      { add_item: 'net-tools' }
+    ]
+    package_remove: [
+      { del_item: 'telnet' }
+    ]
+    create_folders: [
+      { dir: '/etc/ansible/facts.d/', mode: '0755', owner: 'root', group: 'root' },
+      { dir: '/opt/mpcontainer/', mode: '0775', owner: 'root', group: 'vagrant' },
+      { dir: '/root/tmp/', mode: '0700', owner: 'root', group: 'root' },
+      { dir: '/mnt/sshfs/', mode: '0775', owner: 'root', group: 'root' }
+    ]
+  tasks:
+
+    #
+    # Common setup tasks
+    #
+    - name: increase limits
+      pam_limits:
+        domain: vagrant
+        limit_type: soft
+        limit_item: nofile
+        value: "128000"
+      become: true
+    - name: file limits
+      copy:
+        dest: "/etc/security/limits.conf"
+        mode: 0644
+        owner:  "root"
+        group:  "root"
+        content: |
+          *         hard    nofile      999999
+          *         soft    nofile      999999
+          root      hard    nofile      999999
+          root      soft    nofile      999999
+      become: true
+    - name: run ansible script
+      copy:
+        dest: /home/vagrant/run-playbook.sh
+        mode: 0755
+        content: |
+          ansible-playbook --connection=local -i "127.0.0.1," /vagrant/dev-vm/playbook.yml
+    - name: packages
+      block:
+        - name: install packages
+          package:
+            name: "{{ item.add_item }}"
+            state: present
+          retries: 3
+          with_items: "{{ package_install }}"
+        - name: remove packages
+          package:
+            name: "{{ item.del_item }}"
+            state: absent
+          with_items: "{{ package_remove }}"
+      become: true
+    - name: Create common folders
+      file:
+        path: "{{ item.dir }}"
+        state: directory
+        mode: "{{ item.mode }}"
+        owner: "{{ item.owner }}"
+        group: "{{ item.group }}"
+      become: true
+      with_items: "{{ create_folders }}"
+    - name: custom ansible facts
+      block:
+        - name: create script
+          copy:
+            dest: "/etc/ansible/facts.d/mpconline.fact"
+            mode: 0755
+            owner: root
+            group: root
+            content: |
+              #!/usr/bin/env bash
+              # check if mpcontainer port is open. 1 yes, 0 no.
+              mpcup=$(curl localhost:3000 --head --silent --connect-timeout .5 | grep "x-clacks-overhead: GNU Terry Pratchett" | wc -l)
+              echo "{\"mpc_online\" : \"${mpcup}\"}"
+          become: true
+        - name: refresh ansible facts
+          setup: ~
+        - name: check fact was set
+          assert:
+            that:
+              - ansible_local.mpconline.mpc_online is defined
+
+
+    #----------------------------------
+    # Stack: CentOS + Podman
+    #----------------------------------
+    - name: CentOS system
+      block:
+        - name: CentOS
+          debug:
+            msg: "Set up on Cent OS linux"
+        - name: install pip3
+          dnf:
+            name: nfs-utils
+            state: present
+          become: true
+        - name: Podman container runtime
+          block:
+            - name: install pip3
+              dnf:
+                name: ['python3-virtualenv', 'python3-pip']
+                state: present
+            - name: install podman tools
+              dnf:
+                name: ['podman', 'podman-docker', 'podman-manpages']
+                state: present
+            - name: install buildah
+              dnf:
+                name: buildah
+                state: present
+            - name: turn on io.podman.service
+              service:
+                name: io.podman.service
+                state: started
+                enabled: yes
+            - name: turn on io.podman.socket
+              service:
+                name: io.podman.socket
+                state: started
+                enabled: yes
+            - name: remove nondocker warning
+              copy:
+                dest: "/etc/containers/nodocker"
+                mode: 0644
+                owner:  "root"
+                group:  "root"
+                content: |
+                      # no docker here.
+          become: true
+        - name: Podman tools
+          block:
+            - name: requirements file
+              copy:
+                dest: "/home/vagrant/requirements.txt"
+                mode: 0644
+                owner: vagrant
+                group: vagrant
+                content: |
+                  docker
+                  podman-compose
+                  pytest
+                  dnspython
+            - name: install requirements
+              pip:
+                requirements: "/home/vagrant/requirements.txt"
+                virtualenv: "/home/vagrant/venv/"
+              become: true
+              become_user: vagrant
+            - name: start script
+              copy:
+                dest: "/home/vagrant/start-mpc-podman-compose.sh"
+                mode: 0755
+                content: |
+                  #!/usr/bin/env bash
+                  echo "starting mpcontainer with Podman Compose";
+                  source ~/venv/bin/activate
+                  # Set SELinux context
+                  chcon -R -t svirt_sandbox_file_t /vagrant/music
+                  chcon -R -t svirt_sandbox_file_t /vagrant/haproxy.cfg
+                  chcon -R -t svirt_sandbox_file_t /vagrant/*.conf
+                  cd /vagrant/
+                  podman-compose up
+        - name: done
+          debug:
+            msg: "CentOS setup done"
+      when: ansible_distribution == 'CentOS'
+
+
+    #----------------------------------
+    # Stack: Ubuntu + Docker
+    #----------------------------------
+    - name: Ubuntu system
+      block:
+        - name: Ubuntu
+          debug:
+            msg: "Set up on Ubuntu linux"
+        - name: install tools
+          apt:
+            name: ['apt-transport-https', 'software-properties-common', 'gnupg2', 'ca-certificates', 'nfs-common']
+            state: present
+          become: true
+        - name: Docker container runtime
+          block:
+            - name: google gpg key
+              apt_key:
+                url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+                state: present
+            - name: docker gpg key
+              apt_key:
+                url: https://download.docker.com/linux/ubuntu/gpg
+                state: present
+            - name: apt repo docker
+              copy:
+                dest: /etc/apt/sources.list.d/docker.list
+                mode: 0644
+                content: |
+                  deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+            - name: apt repo kubernetes
+              copy:
+                dest: /etc/apt/sources.list.d/kubernetes.list
+                mode: 0644
+                content: |
+                  deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main
+            - name: install k8
+              apt:
+                name: ['kubelet', 'kubeadm', 'kubectl', 'containerd.io', 'docker-ce', 'docker-ce-cli']
+                update_cache: yes
+                state: present
+            - name: 'adding ansible user to docker group'
+              user:
+                name: '{{ ansible_user_id }}'
+                groups: docker
+                append: true
+          become: true
+        - name: setup MicroK8
+          block:
+            - name: install snap
+              snap:
+                name: microk8s
+                channel: 1.18/stable
+                classic: yes
+            - name: 'adding ansible user to docker group'
+              user:
+                name: '{{ ansible_user_id }}'
+                groups: microk8s
+                append: true
+            - name: start script
+              copy:
+                dest: "/home/vagrant/start-mpc-microk8s.sh"
+                mode: 0755
+                content: |
+                  #!/usr/bin/env bash
+                  echo "starting mpcontainer with MicroK8s";
+                  microk8s status --wait-ready
+                  cd /vagrant
+                  microk8s kubectl apply -f ./kubernetes/namespace.yaml
+                  microk8s kubectl apply -f ./kubernetes/
+                  microk8s kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/baremetal/deploy.yaml
+                  microk8s kubectl -n ingress-nginx get svc
+                  microk8s kubectl -n musicplayer get deployments,pods,svc,ep
+          become: true
+        - name: compose
+          stat:
+            path: /usr/local/bin/docker-compose
+          register: compinst
+        - name: get compose
+          get_url:
+            url: https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64
+            dest: /usr/local/bin/docker-compose
+            mode: 0755
+          become: true
+          when: compinst.stat.exists == false
+        - name: start script
+          copy:
+            dest: "/home/vagrant/start-mpc-docker-compose.sh"
+            mode: 0755
+            content: |
+              #!/bin/bash
+              echo "starting mpcontainer with Docker Compose";
+              cd /vagrant/
+              /usr/local/bin/docker-compose up
+        - name: done
+          debug:
+            msg: "Ubutu setup done"
+      when: ansible_distribution == 'Ubuntu'
+
+
+    #
+    # Cockpit ( https://cockpit-project.org/ )
+    #
+    - name: Cockpit Web UI setup
+      block:
+        - name: install
+          package:
+            name: cockpit
+            state: present
+        - name: stack specific addons for CockPit
+          block:
+            # CentOS:
+            - name: podman cockpit addon
+              package:
+                name: ['cockpit-podman']
+                state: present
+              when: ansible_distribution == 'CentOS'
+            # Debian:
+            - name: podman docker addon
+              package:
+                name: ['cockpit-docker']
+                state: present
+              when: ansible_distribution == 'Ubuntu'
+        - name: turn on socket
+          service:
+            name: cockpit.socket
+            state: started
+            enabled: yes
+        - name: Pause until web ui is up
+          uri:
+            url: "http://localhost:9090/"
+            follow_redirects: none
+            method: GET
+          register: _result
+          until: _result.status == 200
+          retries: 30
+          delay: 5 # seconds
+      become: true
+
+
+    #
+    # Finish up and test
+    #
+    - name: test
+      command: "docker --version"
+      register: dockerver
+      changed_when: false
+    - name: check docker works
+      assert:
+        that:
+          - "dockerver.rc == 0"
+    - name: readme
+      copy:
+        dest: "/home/vagrant/readme.txt"
+        mode: 0644
+        content: |
+          #
+          # MPContainer Dev-VM
+          #
+          #
+          # Distro: {{ ansible_distribution }}
+          #
+    - name: playbook.yml finished
+      debug:
+        msg: "playbook.yml finished"

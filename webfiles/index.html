@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>--[ MPC Jukebox ]--</title>
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
+  <script src="mpcontainer.js"></script>
+  <!-- do not cache -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+</head>
+<body>
+  <main class="container">
+  <!-- Main body -->
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">MPContainer</a>
+      </div>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/haproxy/"">HA-stats</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/shell" target="new">Admin-console</a>
+        </li>
+      </ul>
+    </nav>
+
+    <article>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h2 class="display-5">Music Player Container</h2>
+        <p> </p>
+        <p class="lead">
+          <audio controls id="mpcstream">
+            <source src="/mpd/stream.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+          </audio>
+        </p>
+      </div>
+    </div>
+  </article>
+
+  <!--/Main body -->
+  </main>
+</body>
+</html>
