@@ -1,11 +1,12 @@
-# MPContainer
+MPContainer
+-----------
 
 Music Player Container - A streaming Jukebox setup
 
 Moving the programs I like, and refuse to give up, into the modern world of browsers and containers.
 
 
-## Stack
+# Stack
 
 mpcontainer is made from:
 
@@ -54,7 +55,11 @@ make build
 ```
 
 
-# Kubernetes
+Kubernetes
+----------
+
+_K8 is a work In Progress. Thanks to [0x646e78](https://github.com/0x646e78) for most of the commits here_
+
 
 This currently supports mounting a music directory from an NFS share. Your cluster will probably need 'nfs-common' (deb) or 'nfs-utils' (rh) installed.
 

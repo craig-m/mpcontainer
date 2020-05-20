@@ -1,11 +1,11 @@
 # dev-vm
 
-Development environments, powered by [Vagrant](https://www.vagrantup.com/), to play with different container runtimes and tooling. 
+Development environments, powered by [Vagrant](https://www.vagrantup.com/), to play with different container runtimes and tooling.
 
 Thanks to [Roboxes](https://roboxes.org/) for the Virtual Machine images.
 
 
-### Environments
+## environments
 
 Single container host:
 
@@ -22,7 +22,7 @@ Cluster:
 * Docker + [Kubernetes](https://kubernetes.io/)
 
 
-# use
+### use
 
 Edit the Vagrantfile to the desired OS/Stack. So far the Ansible `playbook.yml` can handle these:
 

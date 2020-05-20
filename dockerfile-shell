@@ -36,10 +36,10 @@ RUN touch /etc/profile.d/10-alias.sh && \
     echo "alias mpc='mpc -h backendmpd'" >> /etc/profile.d/10-alias.sh
 
 COPY shell-entrypoint.sh /shell-entrypoint.sh
+RUN chmod 0755 /shell-entrypoint.sh
 
 USER dj
 WORKDIR /home/dj
-COPY shell-entrypoint.sh ./
 
 # start tini first ( https://github.com/krallin/tini )
 ENTRYPOINT ["/sbin/tini", "--"]
