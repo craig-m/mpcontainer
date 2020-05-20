@@ -35,8 +35,8 @@ RUN mkdir -pv /home/dj/.ncmpcpp && \
 RUN touch /etc/profile.d/10-alias.sh && \
     echo "alias mpc='mpc -h backendmpd'" >> /etc/profile.d/10-alias.sh
 
-COPY shell-entrypoint.sh /shell-entrypoint.sh
-RUN chmod 0755 /shell-entrypoint.sh
+COPY shell-entrypoint.sh /home/dj/.shell-entrypoint.sh
+RUN chmod 0755 /home/dj/.shell-entrypoint.sh
 
 USER dj
 WORKDIR /home/dj
@@ -44,4 +44,4 @@ WORKDIR /home/dj
 # start tini first ( https://github.com/krallin/tini )
 ENTRYPOINT ["/sbin/tini", "--"]
 
-CMD ["/shell-entrypoint.sh"]
+CMD ["./.shell-entrypoint.sh"]
