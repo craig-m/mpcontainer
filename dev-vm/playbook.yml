@@ -75,7 +75,7 @@
             state: absent
           with_items: "{{ package_remove }}"
       become: true
-    - name: Create common folders
+    - name: create common folders
       file:
         path: "{{ item.dir }}"
         state: directory
@@ -114,7 +114,7 @@
         - name: CentOS
           debug:
             msg: "Set up on Cent OS linux"
-        - name: install pip3
+        - name: install nfs utils
           dnf:
             name: nfs-utils
             state: present
@@ -152,7 +152,7 @@
                 content: |
                       # no docker here.
           become: true
-        - name: Podman tools
+        - name: Podman python tools
           block:
             - name: requirements file
               copy:
@@ -226,7 +226,7 @@
                 mode: 0644
                 content: |
                   deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main
-            - name: install k8
+            - name: install Docker and K8
               apt:
                 name: ['kubelet', 'kubeadm', 'kubectl', 'containerd.io', 'docker-ce', 'docker-ce-cli']
                 update_cache: yes
@@ -237,34 +237,7 @@
                 groups: docker
                 append: true
           become: true
-        - name: setup MicroK8
-          block:
-            - name: install snap
-              snap:
-                name: microk8s
-                channel: 1.18/stable
-                classic: yes
-            - name: 'adding ansible user to docker group'
-              user:
-                name: '{{ ansible_user_id }}'
-                groups: microk8s
-                append: true
-            - name: start script
-              copy:
-                dest: "/home/vagrant/start-mpc-microk8s.sh"
-                mode: 0755
-                content: |
-                  #!/usr/bin/env bash
-                  echo "starting mpcontainer with MicroK8s";
-                  microk8s status --wait-ready
-                  cd /vagrant
-                  microk8s kubectl apply -f ./kubernetes/namespace.yaml
-                  microk8s kubectl apply -f ./kubernetes/
-                  microk8s kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/baremetal/deploy.yaml
-                  microk8s kubectl -n ingress-nginx get svc
-                  microk8s kubectl -n musicplayer get deployments,pods,svc,ep
-          become: true
-        - name: compose
+        - name: check docker compose
           stat:
             path: /usr/local/bin/docker-compose
           register: compinst
@@ -275,7 +248,7 @@
             mode: 0755
           become: true
           when: compinst.stat.exists == false
-        - name: start script
+        - name: copy start-mpc-docker-compose script
           copy:
             dest: "/home/vagrant/start-mpc-docker-compose.sh"
             mode: 0755
@@ -283,7 +256,7 @@
               #!/bin/bash
               echo "starting mpcontainer with Docker Compose";
               cd /vagrant/
-              /usr/local/bin/docker-compose up
+              /usr/local/bin/docker-compose -f "docker-compose.yml" up --build
         - name: done
           debug:
             msg: "Ubutu setup done"
@@ -341,6 +314,23 @@
       assert:
         that:
           - "dockerver.rc == 0"
+    - name: copy docker-bench-security script
+      copy: 
+        dest: "/home/vagrant/docker-bench-security.sh"
+        mode: 0755
+        content: |
+          #!/bin/bash
+          # https://github.com/docker/docker-bench-security
+          docker run -it --net host --pid host --userns host --cap-add audit_control \
+            -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST \
+            -v /etc:/etc:ro \
+            -v /usr/bin/containerd:/usr/bin/containerd:ro \
+            -v /usr/bin/runc:/usr/bin/runc:ro \
+            -v /usr/lib/systemd:/usr/lib/systemd:ro \
+            -v /var/lib:/var/lib:ro \
+            -v /var/run/docker.sock:/var/run/docker.sock:ro \
+            --label docker_bench_security \
+            docker/docker-bench-security
     - name: readme
       copy:
         dest: "/home/vagrant/readme.txt"

@@ -21,8 +21,8 @@ Vagrant.configure("2") do |config|
         ansible.playbook = "dev-vm/playbook.yml"
     end
 
-    config.vm.network :forwarded_port, guest: 9090, host: 9090
-    config.vm.network :forwarded_port, guest: 3000, host: 3030
+    config.vm.network :forwarded_port, guest: 9090, host_ip: '127.0.0.1', host: 33339, protocol: "tcp"
+    config.vm.network :forwarded_port, guest: 3000, host_ip: '127.0.0.1', host: 33333, protocol: "tcp"
 
     config.trigger.after [:up, :provision, :resume, :reload] do |t|
         t.info = "running inlinescript_post"

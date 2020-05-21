@@ -1,7 +1,7 @@
 MPContainer
 -----------
 
-Music Player Container - A streaming Jukebox setup
+Music Player Container - A streaming Jukebox setup.
 
 Moving the programs I like, and refuse to give up, into the modern world of browsers and containers.
 
@@ -22,18 +22,18 @@ mpcontainer is made from:
 An ASCII art diagram of the 4 container compose setup:
 
 ```
-           ┌──────[ Browser ]                                      
-           V                                                       
-     +-------------+       +-------------+                         
-     |  HA Proxy   |──────>|  NGINX web  |==(vol)==[ ./webfiles ]  
-     +-------------+       +-------------+                         
-           │   │                                                   
-           │   │                                                   
-           │   └───( audio )──────┐                                
-           V                      V                                
-     +-------------+       +-------------+                         
-     | Admin shell |──────>| MPD server  |==(vol)==[ ./music/db ]  
-     +-------------+       +-------------+                         
+           ┌───────[ Browser ]                                        
+           V                                                          
+     +-------------+        +-------------+                           
+     |  HA Proxy   |───────>|  NGINX web  |===( vol )===[ ./webfiles ]
+     +-------------+ (http) +-------------+                           
+           │   │                                                      
+    (http) │   │                                                      
+           │   └────( audio )──────┐                                  
+           V                       V                                  
+     +-------------+        +-------------+                           
+     | Admin shell |───────>| MPD server  |===( vol )===[ ./music/db ]
+     +-------------+ (mpc)  +-------------+                           
 ```
 
 

@@ -4,6 +4,8 @@ Development environments, powered by [Vagrant](https://www.vagrantup.com/), to p
 
 Thanks to [Roboxes](https://roboxes.org/) for the Virtual Machine images.
 
+A work in progess as I learn and experiment.
+
 
 ## environments
 
@@ -11,10 +13,6 @@ Single container host:
 
 * Podman + [podman-compose](https://github.com/containers/podman-compose)
 * Docker + [Compose](https://docs.docker.com/compose/)
-
-Cluser Dev (single node):
-
-* [MicroK8s](https://github.com/ubuntu/microk8s)
 
 Cluster:
 

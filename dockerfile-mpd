@@ -1,10 +1,7 @@
-#
 # MPD server container
 # https://www.musicpd.org/
-#
 
 FROM debian:buster-slim
-
 EXPOSE 6600 3123
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -14,6 +11,12 @@ RUN apt-get update && \
   apt-get clean
 
 COPY mpd.conf /etc/mpd.conf
+
+RUN chown root:root /etc/mpd.conf && \
+  chmod 644 /etc/mpd.conf && \
+  touch /var/lib/mpd/state && \
+  chmod 644 /var/lib/mpd/state && \
+  chown mpd:audio /var/lib/mpd/state
 
 USER mpd
 WORKDIR /var/lib/mpd/

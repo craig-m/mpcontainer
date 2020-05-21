@@ -1,10 +1,7 @@
-#
 # ttyd - Share your terminal over the web
 # https://github.com/tsl0922/ttyd
-#
 
 FROM tsl0922/ttyd
-
 EXPOSE 7681
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -39,5 +36,5 @@ USER dj
 WORKDIR /home/dj
 
 # start tini first ( https://github.com/krallin/tini )
-
-CMD ["/sbin/tini", "--", "ttyd", "--port", "7681", "--max-clients", "10", "--base-path", "/admin/shell", "/usr/bin/tmux", "new", "-A", "-s", "djconsole", "ncmpcpp"]
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["ttyd", "--port", "7681", "--max-clients", "10", "--base-path", "/admin/shell", "/usr/bin/tmux", "new", "-A", "-s", "djconsole", "ncmpcpp"]

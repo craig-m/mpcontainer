@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
 
@@ -6,7 +6,13 @@ services:
   # https://hub.docker.com/_/haproxy
   frontend:
     image: "haproxy:2.1-alpine"
-    restart: always
+    restart: on-failure:5
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 120s
     volumes:
         - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     ports:
@@ -23,7 +29,13 @@ services:
   # https://hub.docker.com/_/nginx
   backendweb:
     image: nginx:1.18-alpine
-    restart: always
+    restart: on-failure:5
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 120s
     ports:
       - "8880"
     volumes:
@@ -35,9 +47,13 @@ services:
   # MPD server
   # https://hub.docker.com/_/debian
   backendmpd:
-    restart: always
-    tty: 
-      true
+    restart: on-failure:5
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 120s
     build:
       context: .
       dockerfile: dockerfile-mpd
@@ -54,7 +70,13 @@ services:
   # admin Web shell
   # https://hub.docker.com/r/tsl0922/ttyd
   adminmmpd:
-    restart: always
+    restart: on-failure:5
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 120s
     build:
       context: .
       dockerfile: dockerfile-shell
