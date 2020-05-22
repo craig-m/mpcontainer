@@ -3,7 +3,7 @@ MPContainer
 
 Music Player Container - A streaming Jukebox setup.
 
-Moving the programs I like, and refuse to give up, into the modern world of browsers and containers.
+Moving the programs I like, and refuse to give up, into the modern world of browsers and containers. For learning and fun, not profit.
 
 
 # Stack
