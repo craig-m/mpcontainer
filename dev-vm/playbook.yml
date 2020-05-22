@@ -181,6 +181,7 @@
                   source ~/venv/bin/activate
                   # Set SELinux context
                   chcon -R -t svirt_sandbox_file_t /vagrant/music
+                  chcon -R -t svirt_sandbox_file_t /vagrant/webfiles/*
                   chcon -R -t svirt_sandbox_file_t /vagrant/haproxy.cfg
                   chcon -R -t svirt_sandbox_file_t /vagrant/*.conf
                   cd /vagrant/

@@ -13,6 +13,13 @@ services:
         delay: 5s
         max_attempts: 5
         window: 120s
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 20M
+        reservations:
+          cpus: '0.04'
+          memory: 15M
     volumes:
         - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     ports:
@@ -36,6 +43,13 @@ services:
         delay: 5s
         max_attempts: 5
         window: 120s
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 20M
+        reservations:
+          cpus: '0.04'
+          memory: 15M
     ports:
       - "8880"
     volumes:
