@@ -6,6 +6,7 @@ services:
   # https://hub.docker.com/_/haproxy
   frontend:
     image: "haproxy:2.1-alpine"
+    container_name: frontend
     restart: on-failure:5
     deploy:
       restart_policy:
@@ -36,6 +37,7 @@ services:
   # https://hub.docker.com/_/nginx
   backendweb:
     image: nginx:1.18-alpine
+    container_name: backendweb  
     restart: on-failure:5
     deploy:
       restart_policy:
@@ -61,6 +63,10 @@ services:
   # MPD server
   # https://hub.docker.com/_/debian
   backendmpd:
+    build:
+      context: .
+      dockerfile: dockerfile-mpd
+    container_name: backendmpd
     restart: on-failure:5
     deploy:
       restart_policy:
@@ -68,10 +74,6 @@ services:
         delay: 5s
         max_attempts: 5
         window: 120s
-    build:
-      context: .
-      dockerfile: dockerfile-mpd
-    container_name: backendmpd
     volumes:
         - "./music/db:/var/lib/mpd/music:ro"
     ports:
@@ -84,6 +86,10 @@ services:
   # admin Web shell
   # https://hub.docker.com/r/tsl0922/ttyd
   adminmmpd:
+    build:
+      context: .
+      dockerfile: dockerfile-shell
+    container_name: adminmmpd
     restart: on-failure:5
     deploy:
       restart_policy:
@@ -91,10 +97,6 @@ services:
         delay: 5s
         max_attempts: 5
         window: 120s
-    build:
-      context: .
-      dockerfile: dockerfile-shell
-    container_name: adminmmpd
     ports:
       - "7681"
     networks:

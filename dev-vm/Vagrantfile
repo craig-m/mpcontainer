@@ -12,13 +12,13 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
     # centos8 ubuntu1804
-    config.vm.box = "generic/centos8"
+    config.vm.box = "generic/ubuntu1804"
     config.vm.box_version = "3.0.2"
     config.vm.box_check_update = false
     config.vm.synced_folder "../", "/vagrant", type: "rsync"
 
     config.vm.provision "ansible_local" do |ansible|
-        ansible.playbook = "dev-vm/playbook.yml"
+        ansible.playbook = "dev-vm/ansible-playbook.yml"
     end
 
     config.vm.network :forwarded_port, guest: 9090, host_ip: '127.0.0.1', host: 33339, protocol: "tcp"

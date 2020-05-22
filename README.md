@@ -22,18 +22,18 @@ mpcontainer is made from:
 An ASCII art diagram of the 4 container compose setup:
 
 ```
-           ┌───────[ Browser ]                                        
-           V                                                          
-     +-------------+        +-------------+                           
-     |  HA Proxy   |───────>|  NGINX web  |===( vol )===[ ./webfiles ]
-     +-------------+ (http) +-------------+                           
-           │   │                                                      
-    (http) │   │                                                      
-           │   └────( audio )──────┐                                  
-           V                       V                                  
-     +-------------+        +-------------+                           
-     | Admin shell |───────>| MPD server  |===( vol )===[ ./music/db ]
-     +-------------+ (mpc)  +-------------+                           
+           ┌───────[ Browser ]                                         
+           V                                                           
+     +-------------+        +-------------+                            
+     |  HA Proxy   |───────>|  NGINX web  |===(volume)===[ ./webfiles ]
+     +-------------+ (http) +-------------+                            
+           │   │                                                       
+    (http) │   │                                                       
+           │   └────(audio)────────┐                                   
+           V                       V                                   
+     +-------------+        +-------------+                            
+     | Admin shell |───────>| MPD server  |===(volume)===[ ./music/db ]
+     +-------------+ (mpc)  +-------------+                            
 ```
 
 
