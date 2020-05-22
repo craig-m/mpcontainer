@@ -4,10 +4,10 @@ Development environments, powered by [Vagrant](https://www.vagrantup.com/), to p
 
 Thanks to [Roboxes](https://roboxes.org/) for the Virtual Machine images.
 
-A work in progess as I learn and experiment.
-
 
 ## environments
+
+A work in progess as I learn and experiment with different stacks.
 
 Single container host:
 
@@ -22,18 +22,20 @@ Cluster:
 
 ### use
 
-Edit the Vagrantfile to the desired OS/Stack. So far the Ansible `playbook.yml` can handle these:
+1) Edit the Vagrantfile to the desired OS/Stack. 
+
+So far the Ansible `playbook.yml` can handle these:
 
 * `generic/centos8`
 * `generic/ubuntu1804`
 
-And then start the system:
+2) start the system:
 
 ```
 vagrant up
 vagrant ssh
 ```
 
-Then run one of the start-mpc-*.sh scripts.
+3) Run one of the /home/vagrant/start-mpc-*.sh scripts in.
 
-In a shell on your host system `vagrant rsync-auto` is useful.
+3) In a shell on your host system `vagrant rsync-auto` is useful.
