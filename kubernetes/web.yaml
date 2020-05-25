@@ -33,7 +33,7 @@ spec:
         mp.service: backendweb
     spec:
       containers:
-      - image: ectoplasm/mpcontainer-web:latest
+      - image: cmunsw/mpcontainer-web:latest
         imagePullPolicy: "Always"
         name: backendweb
         ports:

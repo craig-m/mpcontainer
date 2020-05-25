@@ -37,7 +37,7 @@ spec:
         mp.service: backendmpd
     spec:
       containers:
-      - image: ectoplasm/mpcontainer-mpd:latest
+      - image: cmunsw/mpcontainer-mpd:latest
         imagePullPolicy: "Always"
         name: backendmpd
         ports:

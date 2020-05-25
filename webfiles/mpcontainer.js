@@ -3,5 +3,3 @@
   * MPContainer JS
   *
   */
-
-

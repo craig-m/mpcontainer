@@ -28,7 +28,7 @@ An ASCII art diagram of the 4 container compose setup:
      |  HA Proxy   |───────>|  NGINX web  |===(volume)===[ ./webfiles ]
      +-------------+ (http) +-------------+                            
            │   │                                                       
-    (http) │   │                                                       
+     (http)│   │                                                       
            │   └────(audio)────────┐                                   
            V                       V                                   
      +-------------+        +-------------+                            
@@ -51,6 +51,8 @@ docker-compose -f "docker-compose.yml" up -d --build
 Build Images:
 
 ```
+docker login
+export mpc_dock_repo="< my docker repo name >"
 make build
 ```
 

@@ -51,6 +51,7 @@
         owner:  "root"
         group:  "root"
         content: |
+          # {{ ansible_managed }}
           *         hard    nofile      999999
           *         soft    nofile      999999
           root      hard    nofile      999999
@@ -61,7 +62,7 @@
         dest: /home/vagrant/run-playbook.sh
         mode: 0755
         content: |
-          ansible-playbook --connection=local -i "127.0.0.1," /vagrant/dev-vm/ansible-playbook.yml
+          ansible-playbook --connection=local -i "127.0.0.1," -- /vagrant/dev-vm/ansible-playbook.yml;
     - name: packages
       block:
         - name: install packages
@@ -95,6 +96,7 @@
             group: root
             content: |
               #!/usr/bin/env bash
+              # {{ ansible_managed }}
               # check if mpcontainer port is open. 1 yes, 0 no.
               mpcup=$(curl localhost:3000 --head --silent --connect-timeout .5 | grep "x-clacks-overhead: GNU Terry Pratchett" | wc -l)
               echo "{\"mpc_online\" : \"${mpcup}\"}"
@@ -162,6 +164,7 @@
                 owner: vagrant
                 group: vagrant
                 content: |
+                  # {{ ansible_managed }}
                   docker
                   podman-compose
                   pytest
@@ -172,6 +175,8 @@
                 virtualenv: "/home/vagrant/venv/"
               become: true
               become_user: vagrant
+        - name: scripts
+          block:
             - name: start script
               copy:
                 dest: "/home/vagrant/start-mpc-podman-compose.sh"
@@ -206,86 +211,99 @@
             name: ['apt-transport-https', 'software-properties-common', 'gnupg2', 'ca-certificates', 'nfs-common']
             state: present
           become: true
+        - name: Docker engine setup
+          block:
+            - name: Docker
+              block:
+                - name: docker gpg key
+                  apt_key:
+                    url: https://download.docker.com/linux/ubuntu/gpg
+                    state: present
+                - name: apt repo docker
+                  copy:
+                    dest: /etc/apt/sources.list.d/docker.list
+                    mode: 0644
+                    content: |
+                      deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+                - name: install docker
+                  apt:
+                    name: [containerd.io', 'docker-ce', 'docker-ce-cli']
+                    update_cache: yes
+                    state: present
+                - name: 'add ansible user to docker group'
+                  user:
+                    name: '{{ ansible_user_id }}'
+                    groups: docker
+                    append: true
+              - name: K8
+                block:
+                  - name: google gpg key
+                    apt_key:
+                      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+                      state: present
+                  - name: apt repo kubernetes
+                    copy:
+                      dest: /etc/apt/sources.list.d/kubernetes.list
+                      mode: 0644
+                      content: |
+                        deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main
+                  - name: install Docker and K8
+                    apt:
+                      name: ['kubelet', 'kubeadm', 'kubectl']
+                      update_cache: yes
+                      state: present
+          become: true
         - name: Docker container runtime
           block:
-            - name: google gpg key
-              apt_key:
-                url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-                state: present
-            - name: docker gpg key
-              apt_key:
-                url: https://download.docker.com/linux/ubuntu/gpg
-                state: present
-            - name: apt repo docker
+            - name: check docker compose
+              stat:
+                path: /usr/local/bin/docker-compose
+              register: compinst
+            - name: get compose
+              get_url:
+                url: https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64
+                dest: /usr/local/bin/docker-compose
+                mode: 0755
+              become: true
+              when: compinst.stat.exists == false
+        - name: scripts
+          block:
+            - name: copy start-mpc-docker-compose script
               copy:
-                dest: /etc/apt/sources.list.d/docker.list
-                mode: 0644
+                dest: "/home/vagrant/start-mpc-docker-compose.sh"
+                mode: 0755
                 content: |
-                  deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
-            - name: apt repo kubernetes
-              copy:
-                dest: /etc/apt/sources.list.d/kubernetes.list
-                mode: 0644
+                  #!/usr/bin/env bash
+                  echo "starting mpcontainer with Docker Compose";
+                  cd /vagrant/
+                  /usr/local/bin/docker-compose -f "docker-compose.yml" up --build
+            - name: copy limit-containers.sh
+              copy: 
+                dest: "/home/vagrant/limit-containers.sh"
+                mode: 0755
                 content: |
-                  deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main
-            - name: install Docker and K8
-              apt:
-                name: ['kubelet', 'kubeadm', 'kubectl', 'containerd.io', 'docker-ce', 'docker-ce-cli']
-                update_cache: yes
-                state: present
-            - name: 'adding ansible user to docker group'
-              user:
-                name: '{{ ansible_user_id }}'
-                groups: docker
-                append: true
-          become: true
-        - name: check docker compose
-          stat:
-            path: /usr/local/bin/docker-compose
-          register: compinst
-        - name: get compose
-          get_url:
-            url: https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64
-            dest: /usr/local/bin/docker-compose
-            mode: 0755
-          become: true
-          when: compinst.stat.exists == false
-        - name: copy start-mpc-docker-compose script
-          copy:
-            dest: "/home/vagrant/start-mpc-docker-compose.sh"
-            mode: 0755
-            content: |
-              #!/bin/bash
-              echo "starting mpcontainer with Docker Compose";
-              cd /vagrant/
-              /usr/local/bin/docker-compose -f "docker-compose.yml" up --build
-        - name: copy limit-containers.sh
-          copy: 
-            dest: "/home/vagrant/limit-containers.sh"
-            mode: 0755
-            content: |
-              #!/bin/bash
-              docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 frontend;
-              docker container update --pids-limit=200 --memory-reservation="10m" --memory="25m" --memory-swap="25m" --cpus=2 --restart=on-failure:3 backendweb;
-              docker container update --pids-limit=200 --memory-reservation="10m" --memory="25m" --memory-swap="25m" --cpus=2 --restart=on-failure:3 backendmpd;
-              docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 adminmmpd;
-        - name: copy docker-bench-security script
-          copy: 
-            dest: "/home/vagrant/docker-bench-security.sh"
-            mode: 0755
-            content: |
-              #!/bin/bash
-              # https://github.com/docker/docker-bench-security
-              docker run -it --net host --pid host --userns host --cap-add audit_control \
-                -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST \
-                -v /etc:/etc:ro \
-                -v /usr/bin/containerd:/usr/bin/containerd:ro \
-                -v /usr/bin/runc:/usr/bin/runc:ro \
-                -v /usr/lib/systemd:/usr/lib/systemd:ro \
-                -v /var/lib:/var/lib:ro \
-                -v /var/run/docker.sock:/var/run/docker.sock:ro \
-                --label docker_bench_security \
-                docker/docker-bench-security
+                  #!/usr/bin/env bash
+                  docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 frontend;
+                  docker container update --pids-limit=200 --memory-reservation="10m" --memory="25m" --memory-swap="25m" --cpus=2 --restart=on-failure:3 backendweb;
+                  docker container update --pids-limit=200 --memory-reservation="10m" --memory="25m" --memory-swap="25m" --cpus=2 --restart=on-failure:3 backendmpd;
+                  docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 adminmmpd;
+            - name: copy docker-bench-security script
+              copy: 
+                dest: "/home/vagrant/docker-bench-security.sh"
+                mode: 0755
+                content: |
+                  #!/usr/bin/env bash
+                  # https://github.com/docker/docker-bench-security
+                  docker run -it --net host --pid host --userns host --cap-add audit_control \
+                    -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST \
+                    -v /etc:/etc:ro \
+                    -v /usr/bin/containerd:/usr/bin/containerd:ro \
+                    -v /usr/bin/runc:/usr/bin/runc:ro \
+                    -v /usr/lib/systemd:/usr/lib/systemd:ro \
+                    -v /var/lib:/var/lib:ro \
+                    -v /var/run/docker.sock:/var/run/docker.sock:ro \
+                    --label docker_bench_security \
+                    docker/docker-bench-security
         - name: done
           debug:
             msg: "Ubutu setup done"
