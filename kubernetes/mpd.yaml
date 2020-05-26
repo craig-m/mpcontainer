@@ -37,7 +37,7 @@ spec:
         mp.service: backendmpd
     spec:
       containers:
-      - image: cmunsw/mpcontainer-mpd:latest
+      - image: crgm/mpcontainer-mpd:latest
         imagePullPolicy: "Always"
         name: backendmpd
         ports:

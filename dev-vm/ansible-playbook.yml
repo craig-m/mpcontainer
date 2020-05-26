@@ -51,7 +51,7 @@
         owner:  "root"
         group:  "root"
         content: |
-          # {{ ansible_managed }}
+          # -- ansible manged file --
           *         hard    nofile      999999
           *         soft    nofile      999999
           root      hard    nofile      999999
@@ -96,7 +96,7 @@
             group: root
             content: |
               #!/usr/bin/env bash
-              # {{ ansible_managed }}
+              # -- ansible manged file --
               # check if mpcontainer port is open. 1 yes, 0 no.
               mpcup=$(curl localhost:3000 --head --silent --connect-timeout .5 | grep "x-clacks-overhead: GNU Terry Pratchett" | wc -l)
               echo "{\"mpc_online\" : \"${mpcup}\"}"
@@ -154,6 +154,7 @@
                 group:  "root"
                 content: |
                       # no docker here.
+                      # -- ansible manged file --
           become: true
         - name: Podman python tools
           block:
@@ -164,7 +165,7 @@
                 owner: vagrant
                 group: vagrant
                 content: |
-                  # {{ ansible_managed }}
+                  # -- ansible manged file --
                   docker
                   podman-compose
                   pytest
@@ -183,6 +184,7 @@
                 mode: 0755
                 content: |
                   #!/usr/bin/env bash
+                  # -- ansible manged file --
                   echo "starting mpcontainer with Podman Compose";
                   source ~/venv/bin/activate
                   # Set SELinux context
@@ -227,7 +229,7 @@
                       deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
                 - name: install docker
                   apt:
-                    name: [containerd.io', 'docker-ce', 'docker-ce-cli']
+                    name: ['containerd.io', 'docker-ce', 'docker-ce-cli']
                     update_cache: yes
                     state: present
                 - name: 'add ansible user to docker group'
@@ -235,25 +237,25 @@
                     name: '{{ ansible_user_id }}'
                     groups: docker
                     append: true
-              - name: K8
-                block:
-                  - name: google gpg key
-                    apt_key:
-                      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-                      state: present
-                  - name: apt repo kubernetes
-                    copy:
-                      dest: /etc/apt/sources.list.d/kubernetes.list
-                      mode: 0644
-                      content: |
-                        deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main
-                  - name: install Docker and K8
-                    apt:
-                      name: ['kubelet', 'kubeadm', 'kubectl']
-                      update_cache: yes
-                      state: present
+            - name: K8
+              block:
+                - name: google gpg key
+                  apt_key:
+                    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+                    state: present
+                - name: apt repo kubernetes
+                  copy:
+                    dest: /etc/apt/sources.list.d/kubernetes.list
+                    mode: 0644
+                    content: |
+                      deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main
+                - name: install Docker and K8
+                  apt:
+                    name: ['kubelet', 'kubeadm', 'kubectl']
+                    update_cache: yes
+                    state: present
           become: true
-        - name: Docker container runtime
+        - name: Docker compose
           block:
             - name: check docker compose
               stat:
@@ -278,7 +280,7 @@
                   cd /vagrant/
                   /usr/local/bin/docker-compose -f "docker-compose.yml" up --build
             - name: copy limit-containers.sh
-              copy: 
+              copy:
                 dest: "/home/vagrant/limit-containers.sh"
                 mode: 0755
                 content: |
@@ -288,7 +290,7 @@
                   docker container update --pids-limit=200 --memory-reservation="10m" --memory="25m" --memory-swap="25m" --cpus=2 --restart=on-failure:3 backendmpd;
                   docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 adminmmpd;
             - name: copy docker-bench-security script
-              copy: 
+              copy:
                 dest: "/home/vagrant/docker-bench-security.sh"
                 mode: 0755
                 content: |
@@ -368,7 +370,6 @@
         content: |
           #
           # MPContainer Dev-VM
-          #
           #
           # Distro: {{ ansible_distribution }}
           #
