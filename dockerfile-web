@@ -14,7 +14,8 @@ RUN chmod 644 /etc/nginx/nginx.conf && \
 
 COPY webfiles/* /usr/share/nginx/html/
 
-RUN chmod -R u+rwX,go+rX,go-w /usr/share/nginx/html/* && \
-    chown root:root /usr/share/nginx/html/*
+RUN find /usr/share/nginx/html/ -type d -exec chmod 775 {} \;
+RUN find /usr/share/nginx/html/ -type f -exec chmod 644 {} \;
+RUN chown root:root /usr/share/nginx/html/*
 
 USER nginx
