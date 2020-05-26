@@ -34,7 +34,7 @@ spec:
         mp.service: adminmmpd
     spec:
       containers:
-      - image: ectoplasm/mpcontainer-shell:latest
+      - image: cmunsw/mpcontainer-shell:latest
         imagePullPolicy: "Always"
         name: adminmmpd
         ports:

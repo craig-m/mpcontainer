@@ -1,9 +1,13 @@
+#
+# export mpc_dock_repo="xxxx"
+#
+
 build:
-	docker build -t ectoplasm/mpcontainer-mpd:latest -f dockerfile-mpd .
-	docker build -t ectoplasm/mpcontainer-shell:latest -f dockerfile-shell .
-	docker build -t ectoplasm/mpcontainer-web:latest -f dockerfile-web .
+	docker build -t ${mpc_dock_repo}/mpcontainer-mpd:latest -f dockerfile-mpd .
+	docker build -t ${mpc_dock_repo}/mpcontainer-shell:latest -f dockerfile-shell .
+	docker build -t ${mpc_dock_repo}/mpcontainer-web:latest -f dockerfile-web .
 
 publish:
-	docker push ectoplasm/mpcontainer-mpd:latest
-	docker push ectoplasm/mpcontainer-shell:latest
-	docker push ectoplasm/mpcontainer-web:latest
+	docker push ${mpc_dock_repo}/mpcontainer-mpd:latest
+	docker push ${mpc_dock_repo}/mpcontainer-shell:latest
+	docker push ${mpc_dock_repo}/mpcontainer-web:latest

@@ -20,22 +20,20 @@ Cluster:
 * Docker + [Kubernetes](https://kubernetes.io/)
 
 
-### use
+## use
 
-1) Edit the Vagrantfile to the desired OS/Stack. 
+1) Edit the Vagrantfile to set the desired OS/Stack. So far the Ansible `playbook.yml` can handle these:
 
-So far the Ansible `playbook.yml` can handle these:
+   * `generic/centos8`
+   * `generic/ubuntu1804`
 
-* `generic/centos8`
-* `generic/ubuntu1804`
+2) In a shell, start the system.
 
-2) start the system:
+   * `vagrant up`
+   * `vagrant ssh -- -L 9191:127.0.0.1:9090 3131:127.0.0.1:3000`
 
-```
-vagrant up
-vagrant ssh
-```
+   The port forwards do not always work for me so I set them.
 
-3) Run one of the /home/vagrant/start-mpc-*.sh scripts in.
+3) Run one of the "/home/vagrant/start-mpc-*.sh" scripts.
 
-3) In a shell on your host system `vagrant rsync-auto` is useful.
+3) From a shell on your host `vagrant rsync-auto` is useful.
