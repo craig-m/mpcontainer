@@ -25,5 +25,3 @@ jobs:
     # check vagrant vm playbook
     - name: ansible-lint
       uses: ansible/ansible-lint-action@v4.1.0.post0
-      run: |
-        ansible-lint dev-vm/ansible-playbook.yml 
