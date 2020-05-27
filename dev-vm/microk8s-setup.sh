@@ -14,14 +14,13 @@ while true; do
     esac
 done
 
-
 if [ ! -d /home/vagrant/.kube/ ];
 then
-    sudo snap install microk8s --classic --channel=1.18/stable
-    sudo microk8s status --wait-ready
-    sudo microk8s enable dns dashboard registry
-    sudo usermod -a -G microk8s $USER
-    sudo chown -v -f -R $USER ~/.kube
+    sudo snap install microk8s --classic --channel=1.18/stable;
+    sudo microk8s status --wait-ready;
+    sudo microk8s enable dns dashboard registry;
+    sudo usermod -a -G microk8s $USER;
+    sudo chown -v -f -R $USER ~/.kube;
 fi
 
 sudo microk8s kubectl get nodes
