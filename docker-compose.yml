@@ -37,7 +37,7 @@ services:
   # https://hub.docker.com/_/nginx
   backendweb:
     image: nginx:1.18-alpine
-    container_name: backendweb  
+    container_name: backendweb
     restart: on-failure:5
     deploy:
       restart_policy:

@@ -14,7 +14,7 @@ Single container host:
 * Podman + [podman-compose](https://github.com/containers/podman-compose)
 * Docker + [Compose](https://docs.docker.com/compose/)
 
-Cluster:
+Cluster (single node for dev):
 
 * Docker + [Swarm](https://docs.docker.com/engine/swarm/)
 * Docker + [Kubernetes](https://kubernetes.io/)

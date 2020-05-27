@@ -42,7 +42,7 @@ An ASCII art diagram of the 4 container compose setup:
 On MacOS or Windows [Docker Desktop](https://www.docker.com/products/docker-desktop) makes for a nice container experience, especially with [VSCode](https://code.visualstudio.com/).
 
 
-Start the system:
+Put some music into `music\db\` and start the system:
 
 ```
 docker-compose -f "docker-compose.yml" up -d --build
