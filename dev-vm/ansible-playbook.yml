@@ -38,6 +38,32 @@
     # Common setup tasks
     #
     - name: system setup
+      pam_limits:
+        domain: vagrant
+        limit_type: soft
+        limit_item: nofile
+        value: "128000"
+      become: true
+    - name: file limits
+      copy:
+        dest: "/etc/security/limits.conf"
+        mode: 0644
+        owner:  "root"
+        group:  "root"
+        content: |
+          # -- ansible manged file --
+          *         hard    nofile      999999
+          *         soft    nofile      999999
+          root      hard    nofile      999999
+          root      soft    nofile      999999
+      become: true
+    - name: run ansible script
+      copy:
+        dest: /home/vagrant/run-playbook.sh
+        mode: 0755
+        content: |
+          ansible-playbook --connection=local -i "127.0.0.1," -- /vagrant/dev-vm/ansible-playbook.yml;
+    - name: packages
       block:
         - name: increase limits
           pam_limits:

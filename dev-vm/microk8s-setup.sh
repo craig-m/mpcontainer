@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Setup MicroK8 https://microk8s.io/
+# ToDo: fix
 
 # confirm
 echo -e "\n Setup MicroK8 env? yes / no \n"
