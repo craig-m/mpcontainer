@@ -18,11 +18,14 @@ RUN mkdir -pv /home/dj/.ncmpcpp && \
     touch /home/dj/.ncmpcpp/config && \
       echo 'mpd_host = DJp455w0rd101@backendmpd' >> /home/dj/.ncmpcpp/config && \
       echo 'mpd_port = 6600' >> /home/dj/.ncmpcpp/config && \
-      echo 'mpd_connection_timeout = 5' >> /home/dj/.ncmpcpp/config && \
+      echo 'mpd_connection_timeout = 10' >> /home/dj/.ncmpcpp/config && \
       echo 'external_editor = vim' >> /home/dj/.ncmpcpp/config && \
       echo 'use_console_editor = yes' >> /home/dj/.ncmpcpp/config && \
+      echo 'user_interface = alternative' >> /home/dj/.ncmpcpp/config && \
+      echo 'data_fetching_delay = yes' >> /home/dj/.ncmpcpp/config && \
       echo 'colors_enabled = yes' >> /home/dj/.ncmpcpp/config && \
       echo 'display_bitrate = yes' >> /home/dj/.ncmpcpp/config && \
+      echo 'display_volume_level = no' >> /home/dj/.ncmpcpp/config && \
       echo 'header_visibility = yes' >> /home/dj/.ncmpcpp/config && \
       echo 'statusbar_visibility = yes' >> /home/dj/.ncmpcpp/config && \
       echo 'titles_visibility = yes' >> /home/dj/.ncmpcpp/config && \
@@ -36,6 +39,9 @@ RUN mkdir -pv /home/dj/.ncmpcpp && \
       echo 'set -g default-terminal "screen-256color"' >> /home/dj/.tmux.conf && \
       echo 'set -g mouse on' >> /home/dj/.tmux.conf && \
       echo 'set -g base-index 1' >> /home/dj/.tmux.conf && \
+    mkdir /home/dj/scripts && \
+      echo "curl backendmpd:3123 --head -v" > /home/dj/scripts/stream-status.sh && \
+      chmod +x -- /home/dj/scripts/*.sh && \
     chown dj:dj -R /home/dj && \
     chmod 770 /home/dj
 

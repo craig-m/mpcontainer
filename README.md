@@ -52,7 +52,7 @@ Build Images:
 
 ```
 docker login
-export mpc_dock_repo="< my docker repo name >"
+export mpc_dock_repo="my-docker-repo-name/"
 make build
 ```
 

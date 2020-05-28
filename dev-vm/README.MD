@@ -30,7 +30,7 @@ Cluster (single node for dev):
 2) In a shell, start the system.
 
    * `vagrant up`
-   * `vagrant ssh -- -L 9191:127.0.0.1:9090 3131:127.0.0.1:3000`
+   * `vagrant ssh -- -L 9191:127.0.0.1:9090 -L 3131:127.0.0.1:3000`
 
    The port forwards do not always work for me so I set them.
 

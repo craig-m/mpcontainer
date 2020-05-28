@@ -30,6 +30,7 @@
     create_folders: [
       { dir: '/etc/ansible/facts.d/', mode: '0755', owner: 'root', group: 'root' },
       { dir: '/opt/mpcontainer/', mode: '0775', owner: 'root', group: 'vagrant' },
+      { dir: '/opt/mpcontainer/images/', mode: '0775', owner: 'root', group: 'vagrant' },
       { dir: '/root/tmp/', mode: '0700', owner: 'root', group: 'root' },
       { dir: '/mnt/sshfs/', mode: '0775', owner: 'root', group: 'root' }
     ]
@@ -38,34 +39,8 @@
     # Common setup tasks
     #
     - name: system setup
-      pam_limits:
-        domain: vagrant
-        limit_type: soft
-        limit_item: nofile
-        value: "128000"
-      become: true
-    - name: file limits
-      copy:
-        dest: "/etc/security/limits.conf"
-        mode: 0644
-        owner:  "root"
-        group:  "root"
-        content: |
-          # -- ansible manged file --
-          *         hard    nofile      999999
-          *         soft    nofile      999999
-          root      hard    nofile      999999
-          root      soft    nofile      999999
-      become: true
-    - name: run ansible script
-      copy:
-        dest: /home/vagrant/run-playbook.sh
-        mode: 0755
-        content: |
-          ansible-playbook --connection=local -i "127.0.0.1," -- /vagrant/dev-vm/ansible-playbook.yml;
-    - name: packages
       block:
-        - name: increase limits
+        - name: pam limits
           pam_limits:
             domain: vagrant
             limit_type: soft
@@ -79,11 +54,12 @@
             owner:  "root"
             group:  "root"
             content: |
-              # -- ansible managed file --
+              # -- ansible manged file --
               *         hard    nofile      999999
               *         soft    nofile      999999
               root      hard    nofile      999999
               root      soft    nofile      999999
+          become: true
         - name: packages
           block:
             - name: install packages
@@ -143,7 +119,7 @@
     #----------------------------------
     - name: CentOS system
       block:
-        - name: CentOS
+        - name: Start CentOS setup
           debug:
             msg: "Set up on Cent OS linux"
         - name: install nfs utils
@@ -234,7 +210,7 @@
     #----------------------------------
     - name: Ubuntu system
       block:
-        - name: Ubuntu
+        - name: Start Ubuntu setup
           debug:
             msg: "Set up on Ubuntu linux"
         - name: install tools
@@ -242,7 +218,7 @@
             name: ['apt-transport-https', 'software-properties-common', 'gnupg2', 'ca-certificates', 'nfs-common']
             state: present
           become: true
-        - name: Docker engine setup
+        - name: Docker setup
           block:
             - name: Docker
               block:
@@ -266,6 +242,19 @@
                     name: '{{ ansible_user_id }}'
                     groups: docker
                     append: true
+            - name: Docker compose
+              block:
+                - name: check docker compose
+                  stat:
+                    path: /usr/local/bin/docker-compose
+                  register: compinst
+                - name: get compose
+                  get_url:
+                    url: https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64
+                    dest: /usr/local/bin/docker-compose
+                    mode: 0755
+                  become: true
+                  when: compinst.stat.exists == false
             - name: Kubernetes
               block:
                 - name: google gpg key
@@ -284,19 +273,6 @@
                     update_cache: yes
                     state: present
           become: true
-        - name: Docker compose
-          block:
-            - name: check docker compose
-              stat:
-                path: /usr/local/bin/docker-compose
-              register: compinst
-            - name: get compose
-              get_url:
-                url: https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64
-                dest: /usr/local/bin/docker-compose
-                mode: 0755
-              become: true
-              when: compinst.stat.exists == false
         - name: scripts
           block:
             - name: copy start-mpc-docker-compose script

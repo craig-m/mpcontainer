@@ -1,5 +1,6 @@
 # mpcontainer gitignore
 #
+localdata/
 dev-vm/.vagrant/
 music/db/*
 kubernetes/pv.yaml

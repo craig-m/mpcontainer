@@ -2,8 +2,7 @@ version: '3.7'
 
 services:
 
-  # frontend public proxy
-  # https://hub.docker.com/_/haproxy
+  # public frontend proxy
   frontend:
     image: "haproxy:2.1-alpine"
     container_name: frontend
@@ -23,6 +22,14 @@ services:
           memory: 15M
     volumes:
         - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    cap_drop:
+        - all
+    cap_add:
+        - net_bind_service
+        - chown
+        - dac_override
+        - setgid
+        - setuid
     ports:
       - "3000:3001"
     networks:
@@ -33,8 +40,7 @@ services:
     labels:
       kompose.service.type: LoadBalancer
 
-  # static web docs
-  # https://hub.docker.com/_/nginx
+  # static web docs backend
   backendweb:
     image: nginx:1.18-alpine
     container_name: backendweb
@@ -52,6 +58,14 @@ services:
         reservations:
           cpus: '0.04'
           memory: 15M
+    cap_drop:
+      - all
+    cap_add:
+      - net_bind_service
+      - chown
+      - dac_override
+      - setgid
+      - setuid
     ports:
       - "8880"
     volumes:
@@ -61,7 +75,6 @@ services:
       - webfrontnet
 
   # MPD server
-  # https://hub.docker.com/_/debian
   backendmpd:
     build:
       context: .
@@ -76,20 +89,21 @@ services:
         window: 120s
     volumes:
         - "./music/db:/var/lib/mpd/music:ro"
-    ports:
+    expose:
       - "6600"
       - "3123"
     networks:
       - webfrontmpd
       - mpdadmin
 
-  # admin Web shell
-  # https://hub.docker.com/r/tsl0922/ttyd
+  # admin DJ Web shell
   adminmmpd:
     build:
       context: .
       dockerfile: dockerfile-shell
     container_name: adminmmpd
+    environment: 
+        - TZ=UTC
     restart: on-failure:5
     deploy:
       restart_policy:
@@ -97,11 +111,16 @@ services:
         delay: 5s
         max_attempts: 5
         window: 120s
-    ports:
+    volumes:
+      - webshelldata:/home/dj/data-vol/
+    expose:
       - "7681"
     networks:
       - webfrontnet
       - mpdadmin
+
+volumes:
+  webshelldata:
 
 networks:
   webfrontnet:

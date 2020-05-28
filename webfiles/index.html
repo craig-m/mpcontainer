@@ -21,10 +21,10 @@
       </div>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="/files/">files</a>
+          <a class="nav-link" href="/files/">FileServer</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/haproxy/">HAPstat</a>
+          <a class="nav-link" href="/hastats/">ProxyStats</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/admin/shell" target="new">AdminShell</a>
@@ -35,14 +35,15 @@
     <article>
     <div class="jumbotron jumbotron-fluid">
       <div class="container">
-        <h2 class="display-5">Music Player Container</h2>
+        <h2 class="display-5">MPC Jukebox</h2>
         <p> </p>
         <p class="lead">
           <audio controls id="mpcstream">
-            <source src="/mpd/stream.mp3" type="audio/mpeg">
+            <source src="/mpd/stream.pls" type="audio/mpeg">
           Your browser does not support the audio element.
           </audio>
         </p>
+        <p>Stream <a href="/mpd/stream.mp3">link</a></p>
       </div>
     </div>
   </article>
