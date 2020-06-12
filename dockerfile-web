@@ -12,7 +12,9 @@ RUN chmod 644 /etc/nginx/nginx.conf && \
     chmod 600 /var/cache/nginx/client_temp && \
     mkdir -pv /var/cache/nginx/proxy_temp && \
     chmod 600 /var/cache/nginx/proxy_temp && \
-    chown nginx:root /var/cache/nginx/client_temp
+    chown nginx:root /var/cache/nginx/client_temp && \
+    chown nginx:root /var/run && \
+    chmod 775 /var/run
 
 COPY webfiles/* /usr/share/nginx/html/
 
