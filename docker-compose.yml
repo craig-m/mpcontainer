@@ -119,6 +119,22 @@ services:
       - webfrontnet
       - mpdadmin
 
+  # mpc python app
+  mpcpyapp:
+    build:
+      context: .
+      dockerfile: dockerfile-pyapp
+    container_name: mpcpyapp
+    environment: 
+        - TZ=UTC
+    volumes:
+      - "./pyapp/:/pyapp:ro"
+    expose:
+      - "8888"
+    networks:
+      - webfrontnet
+      - mpdadmin
+
 volumes:
   webshelldata:
 

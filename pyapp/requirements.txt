@@ -1,0 +1,6 @@
+setuptools
+Flask
+requests
+gunicorn
+Flask-Sockets
+python-mpd2

@@ -1,0 +1,25 @@
+# Python 3 MPContainer App
+# https://hub.docker.com/_/python
+
+FROM python:3-slim-buster
+EXPOSE 8888
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN groupadd -r pyapp && \
+    useradd -r -g pyapp -d /app -s /sbin/nologin -c "pyapp" pyapp
+
+ENV HOME=/pyapp
+COPY pyapp /pyapp
+WORKDIR /pyapp
+
+RUN find /pyapp -type d -exec chmod 775 {} \;
+RUN find /pyapp -type f -exec chmod 644 {} \;
+
+# install app requirements
+RUN pip install -r /pyapp/requirements.txt
+
+USER pyapp
+
+# entry point - launch gunicorn
+CMD ["bash", "/pyapp/start.sh"]

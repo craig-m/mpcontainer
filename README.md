@@ -5,7 +5,6 @@ Music Player Container - A streaming Jukebox setup.
 
 Moving the programs I like, and refuse to give up, into the modern world of browsers and containers. For learning and fun, not profit.
 
-
 # Stack
 
 mpcontainer is made from:
@@ -18,88 +17,93 @@ mpcontainer is made from:
 * [nginx](https://www.nginx.com/) - web server for staic files
 * [bootstrap](https://getbootstrap.com/) - CSS framework
 
+An ASCII art diagram of the 5 container compose setup:
 
-An ASCII art diagram of the 4 container compose setup:
-
+```code
+       ┌───────[ Browser ]                                          
+       V                                                            
+  +-------------+        +-------------+                            
+  |  HA Proxy   |───────>|  NGINX web  |===(volume)===[ ./webfiles ]
+  +-------------+(http)  +-------------+                            
+       │   │  │                                                     
+       │   │  │          +-------------+                            
+       │   │  └──(http)──| Python App  |                            
+       │   │             +-------------+                            
+ (http)│   │                      │                                 
+       │   └─────(audio)─────┐    │(mpc)                            
+       V                     V    V                                 
+  +-------------+        +-------------+                            
+  | Admin shell |───────>| MPD server  |===(volume)===[ ./music/db ]
+  +-------------+ (mpc)  +-------------+                            
 ```
-           ┌───────[ Browser ]                                         
-           V                                                           
-     +-------------+        +-------------+                            
-     |  HA Proxy   |───────>|  NGINX web  |===(volume)===[ ./webfiles ]
-     +-------------+ (http) +-------------+                            
-           │   │                                                       
-     (http)│   │                                                       
-           │   └────(audio)────────┐                                   
-           V                       V                                   
-     +-------------+        +-------------+                            
-     | Admin shell |───────>| MPD server  |===(volume)===[ ./music/db ]
-     +-------------+ (mpc)  +-------------+                            
-```
 
+
+###### future dev plans
+
+* Secondary MPD container for alternate stream.
+* Pipe the MPD audio stream into a pool of [Icecast](https://icecast.org/) containers so we can scale up for more listeners.
+* Use [liquidsoap](https://www.liquidsoap.info/) containers for HA, and add some radio station logic etc.
+* build container for web stuff (npm).
+* fix up pyapp
 
 ## Use
 
 On MacOS or Windows [Docker Desktop](https://www.docker.com/products/docker-desktop) makes for a nice container experience, especially with [VSCode](https://code.visualstudio.com/).
 
+Put some music into `.\music\db\` and start the system:
 
-Put some music into `music\db\` and start the system:
-
-```
+```shell
 docker-compose -f "docker-compose.yml" up -d --build
 ```
 
 Build Images:
 
-```
+```shell
 docker login
-export mpc_dock_repo="my-docker-repo-name/"
+export mpc_dock_repo="<repo username>/"
 make build
 ```
-
 
 Kubernetes
 ----------
 
 _K8 is a work In Progress. Thanks to [0x646e78](https://github.com/0x646e78) for most of the commits here_
 
-
 This currently supports mounting a music directory from an NFS share. Your cluster will probably need 'nfs-common' (deb) or 'nfs-utils' (rh) installed.
-
 
 ### Ingress Controller.
 
 Your cluster needs to have an Ingress Controller running. You can add an NGINX controller via:
 
-```
+```shell
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/baremetal/deploy.yaml
 ```
 
 You can get the port the ingress controller runs on from:
 
-```
+```shell
 kubectl -n ingress-nginx get svc
 ```
-
 
 ### Run
 
 Set the NFS server and path details:
 
-```
+```shell
 cp kubernetes/examples/pv.yaml.example kubernetes/pv.yaml
 vi kubernetes/pv.yaml
 ```
 
 Apply the manifests
 
-```
+```shell
 kubectl apply -f ./kubernetes/namespace.yaml
 kubectl apply -f ./kubernetes/
 ```
 
 Check on it:
 
-```
+```shell
 kubectl -n musicplayer get deployments,pods,svc,ep
 ```
 
@@ -112,7 +116,7 @@ If you're pulling from a private registry, give the namespace a secret.
 
 2) Create a secret in the namespace:
 
-```
+```shell
 kubectl -n musicplayer create secret generic regcred \
     --from-file=.dockerconfigjson=/home/vagrant/.docker/config.json \
     --type=kubernetes.io/dockerconfigjson

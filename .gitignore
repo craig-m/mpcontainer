@@ -1,9 +1,10 @@
-# mpcontainer gitignore
+# mpcontainer git ignore:
 #
 localdata/
 dev-vm/.vagrant/
 music/db/*
 kubernetes/pv.yaml
+pyapp/*.pyc
 #
 # MacOS
 .DS_Store
