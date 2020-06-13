@@ -4,7 +4,6 @@ Development environments, powered by [Vagrant](https://www.vagrantup.com/), to p
 
 Thanks to [Roboxes](https://roboxes.org/) for the Virtual Machine images.
 
-
 ## environments
 
 A work in progess as I learn and experiment with different stacks.
@@ -18,7 +17,6 @@ Cluster (single node for dev):
 
 * Docker + [Swarm](https://docs.docker.com/engine/swarm/)
 * Docker + [Kubernetes](https://kubernetes.io/)
-
 
 ## use
 
@@ -34,4 +32,4 @@ Cluster (single node for dev):
 
 3) Run one of the start-mpc-*.sh scripts in /home/vagrant/
 
-3) On your desktop open the [app](http://localhost:3131/), running `vagrant rsync-auto` in another shell is also useful.
+4) On your desktop open the [app](http://localhost:3131/), running `vagrant rsync-auto` in another shell is also useful.
