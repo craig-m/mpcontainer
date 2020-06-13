@@ -17,4 +17,4 @@ spec:
     storage: 12T
   nfs:
     path: /some/path
-    server: nfsservernameorip
+    server: nfs-server-name-or-ip

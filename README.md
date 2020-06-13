@@ -40,9 +40,9 @@ An ASCII art diagram of the 5 container setup.
 
 ### future dev plans
 
-* Secondary MPD container for alternate stream.
-* Pipe the MPD audio stream into a pool of [Icecast](https://icecast.org/) containers so we can scale out for more listeners.
-* Use [liquidsoap](https://www.liquidsoap.info/) containers for HA, and add some radio station logic etc.
+* secondary MPD container for alternate stream.
+* pipe the MPD audio stream to a pool of [Icecast](https://icecast.org/) containers so we can scale out for more listeners.
+* use [liquidsoap](https://www.liquidsoap.info/) containers for HA, and add some radio station logic etc.
 * build container for web stuff (npm).
 * fix up pyapp
 
