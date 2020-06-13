@@ -7,10 +7,9 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadOnlyMany
-  storageClassName: slow
   resources:
     requests:
-      storage: 12T
+      storage: 10Gi
   selector:
     matchLabels:
       type: "music"

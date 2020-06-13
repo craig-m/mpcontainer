@@ -3,7 +3,7 @@
 localdata/
 dev-vm/.vagrant/
 music/db/*
-kubernetes/pv.yaml
+kubernetes/pv-*
 pyapp/*.pyc
 #
 # MacOS

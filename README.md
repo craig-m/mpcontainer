@@ -1,13 +1,12 @@
-MPContainer
------------
+# MPContainer
 
 Music Player Container - A streaming Jukebox setup.
 
 Moving the programs I like, and refuse to give up, into the modern world of browsers and containers. For learning and fun, not profit.
 
-# Stack
+## Stack
 
-mpcontainer is made from:
+MPContainer exists thanks to some of these sources:
 
 * [MPD](https://www.musicpd.org/) - music server
 * [ncmpcpp](https://rybczak.net/ncmpcpp/) - an ncurses MPC client
@@ -17,31 +16,32 @@ mpcontainer is made from:
 * [nginx](https://www.nginx.com/) - web server for staic files
 * [bootstrap](https://getbootstrap.com/) - CSS framework
 
-An ASCII art diagram of the 5 container compose setup:
+## Architecture
+
+An ASCII art diagram of the 5 container setup.
 
 ```code
-       ┌───────[ Browser ]                                          
-       V                                                            
-  +-------------+        +-------------+                            
-  |  HA Proxy   |───────>|  NGINX web  |===(volume)===[ ./webfiles ]
-  +-------------+(http)  +-------------+                            
-       │   │  │                                                     
-       │   │  │          +-------------+                            
-       │   │  └──(http)──| Python App  |                            
-       │   │             +-------------+                            
- (http)│   │                      │                                 
-       │   └─────(audio)─────┐    │(mpc)                            
-       V                     V    V                                 
-  +-------------+        +-------------+                            
-  | Admin shell |───────>| MPD server  |===(volume)===[ ./music/db ]
-  +-------------+ (mpc)  +-------------+                            
+       ┌───────[ Browser ]                                    
+       V                                                      
+  +-------------+        +-------------+                      
+  |  HA Proxy   |───────>|  NGINX web  |                      
+  +-------------+ (http) +-------------+                      
+       │   │  │                                               
+       │   │  │          +-------------+                      
+       │   │  └───(http)─| Python App  |                      
+       │   │             +-------------+                      
+ (http)│   │                      │                           
+       │   └──────(audio)────┐    │(mpc)                      
+       V                     V    V                           
+  +-------------+        +-------------+                      
+  | Admin shell |───────>| MPD server  |======[ ./music/db ]  
+  +-------------+ (mpc)  +-------------+                      
 ```
 
-
-###### future dev plans
+### future dev plans
 
 * Secondary MPD container for alternate stream.
-* Pipe the MPD audio stream into a pool of [Icecast](https://icecast.org/) containers so we can scale up for more listeners.
+* Pipe the MPD audio stream into a pool of [Icecast](https://icecast.org/) containers so we can scale out for more listeners.
 * Use [liquidsoap](https://www.liquidsoap.info/) containers for HA, and add some radio station logic etc.
 * build container for web stuff (npm).
 * fix up pyapp
@@ -64,16 +64,19 @@ export mpc_dock_repo="<repo username>/"
 make build
 ```
 
-Kubernetes
-----------
+---
 
-_K8 is a work In Progress. Thanks to [0x646e78](https://github.com/0x646e78) for most of the commits here_
+## Kubernetes
 
-This currently supports mounting a music directory from an NFS share. Your cluster will probably need 'nfs-common' (deb) or 'nfs-utils' (rh) installed.
+Deploying this all to [Kubernetes](https://kubernetes.io/) is a work in progress.
 
-### Ingress Controller.
+Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commits here.
 
-Your cluster needs to have an Ingress Controller running. You can add an NGINX controller via:
+### Ingress Controller
+
+Your cluster needs to have an Ingress Controller running.
+
+You can add an NGINX controller via:
 
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/baremetal/deploy.yaml
@@ -85,14 +88,19 @@ You can get the port the ingress controller runs on from:
 kubectl -n ingress-nginx get svc
 ```
 
-### Run
+### Music Volume
 
-Set the NFS server and path details:
+Set the volume that will hold the music.
 
 ```shell
-cp kubernetes/examples/pv.yaml.example kubernetes/pv.yaml
-vi kubernetes/pv.yaml
+cp kubernetes/examples/pv-dev.yaml kubernetes/pv-dev.yaml
 ```
+
+If using `pv-nfs.yaml` then edit it to set the NFS server and path details.
+
+See [persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) documentation.
+
+### Run
 
 Apply the manifests
 
@@ -107,8 +115,7 @@ Check on it:
 kubectl -n musicplayer get deployments,pods,svc,ep
 ```
 
-
-### Pulling from a private registry
+## private registry
 
 If you're pulling from a private registry, give the namespace a secret.
 
