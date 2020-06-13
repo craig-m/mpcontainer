@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    mp.service: frontend
+  name: frontend
+  namespace: musicplayer
+spec:
+  ports:
+  - name: "3000"
+    port: 3000
+    targetPort: 3000
+  selector:
+    mp.service: frontend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    mp.service: frontend
+  name: frontend
+  namespace: musicplayer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      mp.service: frontend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        mp.network/webfrontnet: "true"
+        mp.service: frontend
+    spec:
+      containers:
+      - image: crgm/mpcontainer-frontend:latest
+        imagePullPolicy: "Always"
+        name: frontend
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
