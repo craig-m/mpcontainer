@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>--[ MPC Jukebox ]--</title>
+  <title>--[ MPC Radio ]--</title>
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
   <script src="/bootstrap/js/jquery-3.5.1.min.js"></script>
   <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -44,12 +44,16 @@
       <div class="container row marketing">
         <div class="col-lg-6">
           <h4>Stream</h4>
-          <p><audio controls preload="meta" id="mpcstream"><source src="/mpd/stream" type="audio/ogg">Your browser does not support the audio element.</audio></p>
+          <p>
+            <audio controls preload="meta" id="mpcstream">
+            <source src="/mpd/stream" type="audio/ogg">Your browser does not support the audio element.</audio>
+          </p>
           <p>Stream <a href="/mpd/stream">link</a></p>
         </div>
         <div class="col-lg-6">
-          <h4>Now playing</h4>
+          <h4>MPD Info</h4>
           <p><div id="info-np"></div></p>
+          <p><div id="info-stats"></div></p>
         </div>
       </div>
     </div>

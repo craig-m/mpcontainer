@@ -68,15 +68,13 @@ make build
 
 ## Kubernetes
 
-Deploying this all to [Kubernetes](https://kubernetes.io/) is a work in progress.
+Deploying MPContainer to [Kubernetes](https://kubernetes.io/) is a work in progress. The images are on [DockerHub](https://hub.docker.com/u/crgm).
 
 Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commits here.
 
 ### Ingress Controller
 
-Your cluster needs to have an Ingress Controller running.
-
-You can add an NGINX controller via:
+Your cluster needs to have an Ingress Controller running. You can add an NGINX controller via:
 
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/baremetal/deploy.yaml
@@ -90,19 +88,21 @@ kubectl -n ingress-nginx get svc
 
 ### Music Volume
 
-Set the volume that will hold the music.
+We need to have some config that will point to where the music is.
+
+Copy one of the config files into the kubernetes dir, make sure this file is prefixed with `pv-` so it will be ignored by Git.
 
 ```shell
 cp kubernetes/examples/pv-dev.yaml kubernetes/pv-dev.yaml
 ```
 
-If using `pv-nfs.yaml` then edit it to set the NFS server and path details.
-
-See [persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) documentation.
+See [persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) documentation for more information.
 
 ### Run
 
-Apply the manifests
+After copying and editing what you need from ./kubernetes/examples/ to ./kubernetes/.
+
+Apply the manifests to bring up MPContainer:
 
 ```shell
 kubectl apply -f ./kubernetes/namespace.yaml

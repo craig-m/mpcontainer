@@ -1,4 +1,3 @@
-
 # MPContainer Py app
 
 import flask
@@ -12,12 +11,12 @@ from mpd import MPDClient
 LISTENIP = "0.0.0.0"
 LISTENPORT = 8888
 DEBUG = False
-
 app = Flask(__name__)
 
-MPDURL = "backendmpd"
-MPDPASS = "mpcpyapp"
-MPDPORT = 6660
+
+#
+# functions
+#
 
 
 #
@@ -30,7 +29,7 @@ def index():
     html = "pyapp"
     return html.format()
 
-@app.route('/host/hostname/')
+@app.route('/host/hostname/', methods=['GET'])
 def hostmyname():
     html = "{hostname}"
     return html.format(hostname=socket.gethostname())
@@ -39,15 +38,16 @@ def hostmyname():
 def cliip():
     return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
 
-
 @app.route('/hello/')
 @app.route('/hello/<name>')
 def hello(name=None):
     return render_template('hello.html', name=name)
 
-@app.route("/pages/about/")
+# pages
+@app.route("/pages/about/", methods=['GET'])
 def pageabout():
     return render_template('about.html')
+
 
 #
 # Main

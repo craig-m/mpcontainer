@@ -16,7 +16,7 @@ RUN chmod 644 /etc/nginx/nginx.conf && \
     chown nginx:root /var/run && \
     chmod 775 /var/run
 
-COPY webfiles/* /usr/share/nginx/html/
+COPY webfiles/pub/* /usr/share/nginx/html/
 
 RUN find /usr/share/nginx/html/ -type d -exec chmod 775 {} \;
 RUN find /usr/share/nginx/html/ -type f -exec chmod 644 {} \;

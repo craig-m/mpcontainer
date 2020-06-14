@@ -70,7 +70,7 @@ services:
       - "8880"
     volumes:
         - "./nginx.conf:/etc/nginx/nginx.conf:ro"
-        - "./webfiles:/usr/share/nginx/html:ro"
+        - "./webfiles/pub:/usr/share/nginx/html:ro"
     networks:
       - webfrontnet
 
