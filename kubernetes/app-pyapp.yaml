@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    mp.service: pyapp
+  name: pyapp
+  namespace: musicplayer
+spec:
+  ports:
+  - name: "8888"
+    port: 8888
+    targetPort: 8888
+  selector:
+    mp.service: pyapp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    mp.service: pyapp
+  name: pyapp
+  namespace: musicplayer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      mp.service: pyapp
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        mp.network/webfrontnet: "true"
+        mp.service: pyapp
+    spec:
+      containers:
+      - image: crgm/mpcontainer-pyapp:latest
+        imagePullPolicy: "Always"
+        name: pyapp
+        ports:
+        - containerPort: 8888
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
