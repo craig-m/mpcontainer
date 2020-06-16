@@ -72,20 +72,6 @@ Deploying MPContainer to [Kubernetes](https://kubernetes.io/) is a work in progr
 
 Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commits here.
 
-### Ingress Controller
-
-Your cluster needs to have an Ingress Controller running. You can add an NGINX controller via:
-
-```shell
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/baremetal/deploy.yaml
-```
-
-You can get the port the ingress controller runs on from:
-
-```shell
-kubectl -n ingress-nginx get svc
-```
-
 ### Music Volume
 
 We need to have some config that will point to where the music is.
@@ -114,6 +100,10 @@ Check on it:
 ```shell
 kubectl -n musicplayer get deployments,pods,svc,ep
 ```
+
+### Ingress
+
+to do.
 
 ## private registry
 
