@@ -6,4 +6,4 @@ EXPOSE 3000 3001
 
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
-USER haproxy
+USER nobody

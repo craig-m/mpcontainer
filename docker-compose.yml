@@ -4,7 +4,12 @@ services:
 
   # public frontend proxy
   frontend:
-    image: "haproxy:2.1-alpine"
+    #image: "haproxy:2.1-alpine"
+    build:
+      context: .
+      dockerfile: dockerfile-haproxy
+      cache_from:
+        - haproxy:2.1-alpine
     container_name: frontend
     restart: on-failure:5
     deploy:
@@ -42,7 +47,12 @@ services:
 
   # static web docs backend
   backendweb:
-    image: nginx:1.18-alpine
+    #image: nginx:1.18-alpine
+    build:
+      context: .
+      dockerfile: dockerfile-web
+      cache_from:
+        - nginx:1.18-alpine
     container_name: backendweb
     restart: on-failure:5
     deploy:
@@ -79,6 +89,8 @@ services:
     build:
       context: .
       dockerfile: dockerfile-mpd
+      cache_from:
+        - debian:buster-slim
     container_name: backendmpd
     restart: on-failure:5
     deploy:
@@ -101,6 +113,8 @@ services:
     build:
       context: .
       dockerfile: dockerfile-shell
+      cache_from:
+        - tsl0922/ttyd
     container_name: adminmmpd
     environment: 
         - TZ=UTC
@@ -124,6 +138,8 @@ services:
     build:
       context: .
       dockerfile: dockerfile-pyapp
+      cache_from:
+        - python:3-slim-buster
     container_name: mpcpyapp
     environment: 
         - TZ=UTC
