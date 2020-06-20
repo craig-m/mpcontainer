@@ -1,8 +1,12 @@
-# MPD server container
+# MusicPlayerDaemon (MPD) server container
 # https://www.musicpd.org/
 
 FROM debian:buster-slim
 EXPOSE 6600 3123
+
+LABEL mpcontainer.vendor="Music Player Container"
+LABEL version="1.0"
+LABEL mpcontainer.service="MPD stream server"
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \

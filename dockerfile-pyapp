@@ -1,8 +1,12 @@
-# Python 3 MPContainer App
+# Python3 MPContainer PyApp
 # https://hub.docker.com/_/python
 
 FROM python:3-slim-buster
 EXPOSE 8888
+
+LABEL mpcontainer.vendor="Music Player Container"
+LABEL version="1.0"
+LABEL mpcontainer.service="mpc python flask app"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -20,6 +24,10 @@ RUN find /pyapp -type f -exec chmod 644 {} \;
 RUN pip install -r /pyapp/requirements.txt
 
 USER pyapp
+
+# gunicorn log-level
+ARG mpcpyapp_loglev=info
+ENV env_mpcpyapp_loglev=$mpcpyapp_loglev
 
 # entry point - launch gunicorn
 CMD ["bash", "/pyapp/start.sh"]

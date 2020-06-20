@@ -1,4 +1,7 @@
-# MPContainer Py app
+# MPContainer Pyapp
+#
+# desc: Flask is a micro web framework written in Python
+# docs: https://flask.palletsprojects.com/en/1.1.x/
 
 import flask
 import logging

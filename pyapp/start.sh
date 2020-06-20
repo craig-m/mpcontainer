@@ -1,11 +1,21 @@
 #!/bin/bash
 
-echo "start.sh: starting gunicorn";
+# start the MPContainer pyapp (mpcpyapp.py) under Gunicorn 
+#
+# desc: "Green Unicorn" is a Python WSGI HTTP Server for UNIX
+# doc: https://docs.gunicorn.org/en/latest/index.html
 
-# checks before starting gunicorn
+thedate=$(date)
+thehost=$(hostname)
+echo "starting mpcpyapp on: ${thehost} ${thedate} ";
+
+
+#
+# checks before starting
+#
 
 if [[ pyapp = "$(whoami)" ]]; then
-  echo "running as pyapp - good";
+  echo "running as pyapp (good)";
 else
   echo "ERROR: not running as pyapp";
   exit 1;
@@ -16,12 +26,21 @@ if [ ! -f /pyapp/mpcpyapp.py ]; then
   exit 1;
 fi
 
+#
+# start app with gunicorn
+#
+
 gunicorn mpcpyapp:app \
   --pid /tmp/pyapi-gunicorn.pid \
   --bind unix:/tmp/pyapp.socket \
   --bind 0.0.0.0:8888 \
   --workers 2 \
+  --threads 4 \
   --preload \
   --timeout 30 \
-  --backlog 200 \
-  --limit-request-fields 50
+  --backlog 400 \
+  --limit-request-fields 50 \
+  --worker-tmp-dir /dev/shm \
+  --error-logfile - \
+  --access-logfile - \
+  --log-level ${env_mpcpyapp_loglev}

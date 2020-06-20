@@ -1,0 +1,29 @@
+{
+  "name": "mpcontainer",
+  "version": "1.0.0",
+  "description": "MPContainer Web",
+  "main": "index.html",
+  "scripts": {
+    "test": "true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/craig-m/mpcontainer.git"
+  },
+  "keywords": [
+    "MPD",
+    "MPContainer",
+    "Jukebox"
+  ],
+  "author": "crgm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/craig-m/mpcontainer/issues"
+  },
+  "homepage": "https://github.com/craig-m/mpcontainer#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.0",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1"
+  }
+}

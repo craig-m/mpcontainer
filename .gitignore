@@ -4,8 +4,11 @@ localdata/
 dev-vm/.vagrant/
 music/db/*
 kubernetes/pv-*
+webfiles/node_modules/*
 pyapp/*.pyc
 #
+# Win
+Thumbs.db
 # MacOS
 .DS_Store
 .AppleDouble

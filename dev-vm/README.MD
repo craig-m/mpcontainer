@@ -1,6 +1,6 @@
 # dev-vm
 
-Development environments, powered by [Vagrant](https://www.vagrantup.com/), to play with different container runtimes and tooling.
+Development environments, powered by [Vagrant](https://www.vagrantup.com/) and configured by [Ansible](https://www.ansible.com/), to play with different container runtimes and tooling.
 
 Thanks to [Roboxes](https://roboxes.org/) for the Virtual Machine images.
 

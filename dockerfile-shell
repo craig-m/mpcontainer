@@ -4,9 +4,13 @@
 FROM tsl0922/ttyd
 EXPOSE 7681
 
+LABEL mpcontainer.vendor="Music Player Container"
+LABEL version="1.0"
+LABEL mpcontainer.service="ttyd DJ web shell"
+
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt update && \
-    apt-get install -y tmux vim ncmpcpp mpc mc curl && \ 
+    apt-get install -y tmux vim ncmpcpp mpc mc curl toilet && \
     apt-get clean
 
 # create a non-root user

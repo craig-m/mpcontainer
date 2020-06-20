@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Setup MicroK8 https://microk8s.io/
-# ToDo: fix
 
 # confirm
 echo -e "\n Setup MicroK8 env? yes / no \n"
@@ -33,8 +32,6 @@ cat << EOF > /home/vagrant/start-microk8.sh
 #!/bin/bash
 alias kubectl='microk8s kubectl'
 cd /vagrant || exit 1;
-# kubectl apply -f kubernetes/examples/nginx.yaml
-# kubectl -n ingress-nginx get svc
 kubectl apply -f ./kubernetes/namespace.yaml
 kubectl apply -f ./kubernetes/
 kubectl -n musicplayer get svc
