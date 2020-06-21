@@ -8,6 +8,7 @@ import logging
 import os
 import socket
 from flask import Flask, request, render_template
+from flask_caching import Cache
 from mpd import (MPDClient, CommandError)
 from socket import error as SocketError
 
@@ -15,7 +16,6 @@ from socket import error as SocketError
 LISTENIP = "0.0.0.0"
 LISTENPORT = 8888
 DEBUG = False
-app = Flask(__name__)
 
 # mpd server conf
 MPDURL = "backendmpd"
@@ -23,15 +23,14 @@ MPDPASS = "mpcpyapp"
 MPDPORT = 6600
 MPDCON_ID = {'host':MPDURL, 'port':MPDPORT}
 
+app = Flask(__name__)
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 #
 # functions
 #
 
 def mpdConnect(client, con_id):
-    """
-    Simple wrapper to connect to MPD.
-    """
     client.timeout = 10
     client.idletimeoout = None
     try:
@@ -41,9 +40,6 @@ def mpdConnect(client, con_id):
     return True
 
 def mpdAuth(client, secret):
-    """
-    Authenticate to MPD.
-    """
     client.timeout = 10
     client.idletimeoout = None
     try:
@@ -64,32 +60,34 @@ def index():
     return html.format()
 
 # container info
-@app.route('/host/hostname/', methods=['GET'])
+@app.route('/host/hostname/')
 def hostmyname():
     html = "{hostname}"
     return html.format(hostname=socket.gethostname())
 
 # client info
-@app.route('/client/ip/', methods=['GET'])
+@app.route('/client/ip/')
 def cliip():
     return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-@app.route('/client/agent/', methods=['GET'])
+@app.route('/client/agent/')
 def cliagent():
     return request.headers.get('User-Agent')
 
-# hi
+# hello
 @app.route('/hello/')
 @app.route('/hello/<name>')
 def hello(name=None):
     return render_template('hello.html', name=name)
 
 # pages
-@app.route("/pages/about/", methods=['GET'])
+@app.route("/pages/about.html")
+@cache.cached(timeout=60)
 def pageabout():
     return render_template('about.html')
 
-# mpd
-@app.route("/mpd/stat.json", methods=['GET'])
+# MPD
+@app.route("/mpd/stat.json")
+@cache.cached(timeout=60)
 def mpdstat():
     client = MPDClient()
     if mpdConnect(client, MPDCON_ID):
