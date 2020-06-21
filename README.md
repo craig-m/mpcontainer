@@ -13,8 +13,10 @@ MPContainer exists thanks to some of these sources:
 * [ttyd](https://tsl0922.github.io/ttyd/) - share your terminal over the web
 * [tmux](https://github.com/tmux/tmux) - terminal multiplexer
 * [haproxy](https://www.haproxy.org/) - frontend proxy
-* [nginx](https://www.nginx.com/) - web server for staic files
-* [bootstrap](https://getbootstrap.com/) - CSS framework
+* [nginx](https://www.nginx.com/) - web server used for static files
+* [bootstrap](https://getbootstrap.com/) and [jquery](https://jquery.com/) - web frameworks
+* [python](https://www.python.org/) [flask](https://flask.palletsprojects.com/en/1.1.x/) - web micro framework
+
 
 ## Architecture
 
@@ -34,17 +36,18 @@ An ASCII art diagram of the 5 container setup.
        │   └──────(audio)────┐    │(mpc)                      
        V                     V    V                           
   +-------------+        +-------------+                      
-  | Admin shell |───────>| MPD server  |======[ ./music/db ]  
+  | Admin shell |───────>| MPD server  |=====[ music files ]  
   +-------------+ (mpc)  +-------------+                      
 ```
 
 ### future dev plans
 
+Planning to do some of the following.
+
 * secondary MPD container for alternate stream.
-* pipe the MPD audio stream to a pool of [Icecast](https://icecast.org/) containers so we can scale out for more listeners.
-* use [liquidsoap](https://www.liquidsoap.info/) containers for HA, and add some radio station logic etc.
-* build container for web stuff (npm).
-* fix up pyapp (cache stuff in redis cluster)
+* feed MPD audio stream/s to a pool of [Icecast](https://icecast.org/) containers so we can scale out for more listeners.
+* use [liquidsoap](https://www.liquidsoap.info/) containers for High availability, and to add some radio station logic etc. Use stream silence detection to swap between MPD servers.
+* multi-stage build containers
 
 ## Use
 
