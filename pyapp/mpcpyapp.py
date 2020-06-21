@@ -7,19 +7,50 @@ import flask
 import logging
 import os
 import socket
-from flask import Flask, request
-from flask import Flask, render_template
-from mpd import MPDClient
+from flask import Flask, request, render_template
+from mpd import (MPDClient, CommandError)
+from socket import error as SocketError
 
+# Pyapp conf
 LISTENIP = "0.0.0.0"
 LISTENPORT = 8888
 DEBUG = False
 app = Flask(__name__)
 
+# mpd server conf
+MPDURL = "backendmpd"
+MPDPASS = "mpcpyapp"
+MPDPORT = 6600
+MPDCON_ID = {'host':MPDURL, 'port':MPDPORT}
+
 
 #
 # functions
 #
+
+def mpdConnect(client, con_id):
+    """
+    Simple wrapper to connect to MPD.
+    """
+    client.timeout = 10
+    client.idletimeoout = None
+    try:
+        client.connect(**con_id)
+    except SocketError:
+        return False
+    return True
+
+def mpdAuth(client, secret):
+    """
+    Authenticate to MPD.
+    """
+    client.timeout = 10
+    client.idletimeoout = None
+    try:
+        client.password(secret)
+    except CommandError:
+        return False
+    return True
 
 
 #
@@ -32,15 +63,21 @@ def index():
     html = "pyapp"
     return html.format()
 
+# container info
 @app.route('/host/hostname/', methods=['GET'])
 def hostmyname():
     html = "{hostname}"
     return html.format(hostname=socket.gethostname())
 
+# client info
 @app.route('/client/ip/', methods=['GET'])
 def cliip():
     return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+@app.route('/client/agent/', methods=['GET'])
+def cliagent():
+    return request.headers.get('User-Agent')
 
+# hi
 @app.route('/hello/')
 @app.route('/hello/<name>')
 def hello(name=None):
@@ -50,6 +87,22 @@ def hello(name=None):
 @app.route("/pages/about/", methods=['GET'])
 def pageabout():
     return render_template('about.html')
+
+# mpd
+@app.route("/mpd/stat.json", methods=['GET'])
+def mpdstat():
+    client = MPDClient()
+    if mpdConnect(client, MPDCON_ID):
+        if DEBUG:
+            print('Connected to: ' + MPDURL + ' on:',MPDPORT)
+    if mpdAuth(client, MPDPASS):
+        if DEBUG:
+            print('Authenticated')
+    else:
+        print('error: mpd connection failed')
+        client.disconnect()
+    # output
+    return client.stats(), client.disconnect()
 
 
 #

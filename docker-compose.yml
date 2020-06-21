@@ -101,6 +101,9 @@ services:
         window: 120s
     volumes:
         - "./music/db:/var/lib/mpd/music:ro"
+    #cap_add:
+    #  - SYS_TIME
+    #  - SYS_NICE
     expose:
       - "6600"
       - "3123"

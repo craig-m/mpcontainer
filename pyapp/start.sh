@@ -7,7 +7,7 @@
 
 thedate=$(date)
 thehost=$(hostname)
-echo "starting mpcpyapp on: ${thehost} ${thedate} ";
+echo "--- starting mpcpyapp on: ${thehost} ${thedate} ---";
 
 
 #
@@ -26,21 +26,29 @@ if [ ! -f /pyapp/mpcpyapp.py ]; then
   exit 1;
 fi
 
+
 #
-# start app with gunicorn
+# start gunicorn
 #
 
+# -- prod --
+gmpco_start_opt="--preload"
+# -- dev --
+#gmpco_start_opt="--reload --reload-engine auto"
+#env_mpcpyapp_loglev="debug"
+
+# run:
 gunicorn mpcpyapp:app \
   --pid /tmp/pyapi-gunicorn.pid \
   --bind unix:/tmp/pyapp.socket \
   --bind 0.0.0.0:8888 \
   --workers 2 \
   --threads 4 \
-  --preload \
   --timeout 30 \
   --backlog 400 \
   --limit-request-fields 50 \
   --worker-tmp-dir /dev/shm \
   --error-logfile - \
   --access-logfile - \
-  --log-level ${env_mpcpyapp_loglev}
+  --log-level ${env_mpcpyapp_loglev} \
+  ${gmpco_start_opt};

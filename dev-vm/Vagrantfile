@@ -4,16 +4,14 @@
 $inlinescript_post = <<-SCRIPT
 echo '-----------------------';
 uname -a;
-myip=$(ifconfig eth0 | grep inet | tr -s " ")
-echo "My IP: ${myip}";
 myip=$(ifconfig eth0 | grep inet | grep -v inet6 | tr -s " ")
+echo "My IP: ${myip}";
 echo '-----------------------';
 SCRIPT
 
 Vagrant.configure("2") do |config|
-    # centos8 ubuntu1804
     config.vm.box = "generic/ubuntu1804"
-    config.vm.box_version = "3.0.2"
+    config.vm.box_version = "3.0.10"
     config.vm.box_check_update = false
     config.vm.synced_folder "../", "/vagrant", type: "rsync"
 

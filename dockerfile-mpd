@@ -2,7 +2,7 @@
 # https://www.musicpd.org/
 
 FROM debian:buster-slim
-EXPOSE 6600 3123
+EXPOSE 6600/tcp 3123/tcp
 
 LABEL mpcontainer.vendor="Music Player Container"
 LABEL version="1.0"

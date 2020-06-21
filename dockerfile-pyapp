@@ -2,7 +2,7 @@
 # https://hub.docker.com/_/python
 
 FROM python:3-slim-buster
-EXPOSE 8888
+EXPOSE 8888/tcp
 
 LABEL mpcontainer.vendor="Music Player Container"
 LABEL version="1.0"

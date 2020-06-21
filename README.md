@@ -44,7 +44,7 @@ An ASCII art diagram of the 5 container setup.
 * pipe the MPD audio stream to a pool of [Icecast](https://icecast.org/) containers so we can scale out for more listeners.
 * use [liquidsoap](https://www.liquidsoap.info/) containers for HA, and add some radio station logic etc.
 * build container for web stuff (npm).
-* fix up pyapp
+* fix up pyapp (cache stuff in redis cluster)
 
 ## Use
 

@@ -2,7 +2,7 @@
 # https://hub.docker.com/_/nginx
 
 FROM nginx:1.18-alpine
-EXPOSE 8880
+EXPOSE 8880/tcp
 
 LABEL mpcontainer.vendor="Music Player Container"
 LABEL version="1.0"

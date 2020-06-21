@@ -294,6 +294,7 @@
                   docker container update --pids-limit=200 --memory-reservation="10m" --memory="25m" --memory-swap="25m" --cpus=2 --restart=on-failure:3 backendweb;
                   docker container update --pids-limit=200 --memory-reservation="10m" --memory="25m" --memory-swap="25m" --cpus=2 --restart=on-failure:3 backendmpd;
                   docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 adminmmpd;
+                  docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 pyapp;
             - name: copy docker-bench-security script
               copy:
                 dest: "/home/vagrant/docker-bench-security.sh"
