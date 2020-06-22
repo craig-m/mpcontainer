@@ -146,6 +146,7 @@ services:
     container_name: pyapp
     environment: 
         - TZ=UTC
+        - env_mpcpyapp_debug=false
     volumes:
       - "./pyapp/:/pyapp:ro"
     expose:

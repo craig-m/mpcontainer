@@ -6,9 +6,7 @@ EXPOSE 8888/tcp
 
 LABEL mpcontainer.vendor="Music Player Container"
 LABEL version="1.0"
-LABEL mpcontainer.service="mpc python flask app"
-
-ENV DEBIAN_FRONTEND noninteractive
+LABEL mpcontainer.service="mpc python3 flask app"
 
 RUN groupadd -r pyapp && \
     useradd -r -g pyapp -d /app -s /sbin/nologin -c "pyapp" pyapp
@@ -25,9 +23,9 @@ RUN pip install -r /pyapp/requirements.txt
 
 USER pyapp
 
-# gunicorn log-level
-ARG mpcpyapp_loglev=info
-ENV env_mpcpyapp_loglev=$mpcpyapp_loglev
+# run in debug mode?
+ARG mpcpyapp_debug=false
+ENV env_mpcpyapp_debug=$mpcpyapp_debug
 
 # entry point - launch gunicorn
 CMD ["bash", "/pyapp/start.sh"]

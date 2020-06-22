@@ -8,10 +8,9 @@ LABEL mpcontainer.vendor="Music Player Container"
 LABEL version="1.0"
 LABEL mpcontainer.service="ttyd DJ web shell"
 
-ENV DEBIAN_FRONTEND noninteractive
 RUN apt update && \
     apt-get install -y tmux vim ncmpcpp mpc \
-      mc curl lynx mtr-tiny newsbeuter \
+      mc curl socat lynx mtr-tiny newsbeuter \
       toilet toilet-fonts && \
     apt-get clean
 

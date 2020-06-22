@@ -47,24 +47,27 @@ Planning to do some of the following.
 * secondary MPD container for alternate stream.
 * feed MPD audio stream/s to a pool of [Icecast](https://icecast.org/) containers so we can scale out for more listeners.
 * use [liquidsoap](https://www.liquidsoap.info/) containers for High availability, and to add some radio station logic etc. Use stream silence detection to swap between MPD servers.
-* multi-stage build containers
+* multi-stage build containers, compile MPD from source.
 
 ## Use
 
 On MacOS or Windows [Docker Desktop](https://www.docker.com/products/docker-desktop) makes for a nice container experience, especially with [VSCode](https://code.visualstudio.com/).
 
-Put some music into `.\music\db\` and start the system:
+Put some music into `.\music\db\` so you can use the Jukebox.
+
+### docker-compose
+
+build containers and start system:
 
 ```shell
 docker-compose -f "docker-compose.yml" up -d --build
 ```
 
-Build Images:
+check on everything:
 
 ```shell
-docker login
-export mpc_dock_repo="<repo username>/"
-make build
+docker-compose ps
+docker-compose top
 ```
 
 ---
@@ -74,6 +77,17 @@ make build
 Deploying MPContainer to [Kubernetes](https://kubernetes.io/) is a work in progress. The images are on [DockerHub](https://hub.docker.com/u/crgm).
 
 Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commits here.
+
+### build images
+
+Build and push Images.
+
+```shell
+docker login
+export mpc_dock_repo="<repo username>/" # keep trailing slash
+make build
+make publish
+```
 
 ### Music Volume
 
@@ -106,7 +120,7 @@ kubectl -n musicplayer get deployments,pods,svc,ep
 
 ### Ingress
 
-to do.
+to do (for [linode](https://www.linode.com/products/kubernetes/)).
 
 ## private registry
 

@@ -7,15 +7,13 @@
 
 thedate=$(date)
 thehost=$(hostname)
-echo "--- starting mpcpyapp on: ${thehost} ${thedate} ---";
-
 
 #
 # checks before starting
 #
 
 if [[ pyapp = "$(whoami)" ]]; then
-  echo "running as pyapp (good)";
+  echo "--- starting mpcpyapp on: ${thehost} ${thedate} ---";
 else
   echo "ERROR: not running as pyapp";
   exit 1;
@@ -31,13 +29,15 @@ fi
 # start gunicorn
 #
 
-# -- prod --
-gmpco_start_opt="--preload"
-# -- dev --
-#gmpco_start_opt="--reload --reload-engine auto"
-#env_mpcpyapp_loglev="debug"
+if [[ $env_mpcpyapp_debug == "true" ]]; then
+  # debug mode for dev
+  gmpco_start_opt="--log-level info --reload --reload-engine auto"
+else
+  # prod
+  gmpco_start_opt="--log-level warning --preload"
+fi
 
-# run:
+# run
 gunicorn mpcpyapp:app \
   --pid /tmp/pyapi-gunicorn.pid \
   --bind unix:/tmp/pyapp.socket \
@@ -47,8 +47,8 @@ gunicorn mpcpyapp:app \
   --timeout 30 \
   --backlog 400 \
   --limit-request-fields 50 \
+  --limit-request-line 4094 \
   --worker-tmp-dir /dev/shm \
   --error-logfile - \
   --access-logfile - \
-  --log-level ${env_mpcpyapp_loglev} \
   ${gmpco_start_opt};
