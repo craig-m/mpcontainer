@@ -17,7 +17,6 @@ MPContainer exists thanks to some of these sources:
 * [bootstrap](https://getbootstrap.com/) and [jquery](https://jquery.com/) - web frameworks
 * [python](https://www.python.org/) [flask](https://flask.palletsprojects.com/en/1.1.x/) - web micro framework
 
-
 ## Architecture
 
 An ASCII art diagram of the 5 container setup.
@@ -93,9 +92,10 @@ make publish
 
 We need to have some config that will point to where the music is.
 
-Copy one of the config files into the kubernetes dir, make sure this file is prefixed with `pv-` so it will be ignored by Git.
+Copy the yaml config files you need for your environment into the kubernetes dir, make sure the files are prefixed with `pv-` so they will be ignored by Git.
 
 ```shell
+cp kubernetes/examples/pv-claim.yaml kubernetes/pv-claim.yaml
 cp kubernetes/examples/pv-dev.yaml kubernetes/pv-dev.yaml
 ```
 

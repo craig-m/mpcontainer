@@ -1,0 +1,17 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: music-pv
+  namespace: musicplayer
+  labels:
+    type: music
+spec:
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: linode-block-storage
+  capacity:
+    storage: 10Gi
+  mountOptions:
+    - ro
+  accessModes:
+    - ReadWriteOnce
