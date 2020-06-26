@@ -14,7 +14,7 @@ build:
 	docker build -t ${mpc_dock_repo}mpcontainer-mpd:latest -f dockerfile-mpd .
 	docker build -t ${mpc_dock_repo}mpcontainer-shell:latest -f dockerfile-shell .
 	docker build -t ${mpc_dock_repo}mpcontainer-web:latest -f dockerfile-web .
-	docker build -t ${mpc_dock_repo}mpcontainer-pyapp:latest -f dockerfile-pyapp .
+	docker build -t ${mpc_dock_repo}mpcontainer-pyapp:latest -f pyapp/Dockerfile .
 	docker build -t ${mpc_dock_repo}mpcontainer-frontend:latest -f dockerfile-haproxy .
 
 publish:

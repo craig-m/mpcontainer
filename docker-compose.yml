@@ -1,8 +1,6 @@
 version: '3.7'
-
 services:
-
-  # Container: frontend proxy
+  # --- mpcontainer-frontend ---
   frontend:
     #image: "haproxy:2.1-alpine"
     build:
@@ -44,8 +42,7 @@ services:
       - backendweb
     labels:
       kompose.service.type: LoadBalancer
-
-  # Container: static web docs backend
+  # --- mpcontainer-web ---
   backendweb:
     #image: nginx:1.18-alpine
     build:
@@ -75,8 +72,7 @@ services:
       - "./webfiles/pub:/usr/share/nginx/html:ro"
     networks:
       - webfrontnet
-
-  # Container: MPD server
+  # --- mpcontainer-mpd ---
   backendmpd:
     build:
       context: .
@@ -93,14 +89,17 @@ services:
         window: 120s
     volumes:
         - "./music/db:/var/lib/mpd/music:ro"
+    cap_drop:
+      - net_bind_service
+      - chown
+      - dac_override
     expose:
       - "6600"
       - "3123"
     networks:
       - webfrontmpd
       - mpdadmin
-
-  # Container: admin DJ Web shell
+  # --- mpcontainer-shell ---
   adminmmpd:
     build:
       context: .
@@ -124,8 +123,7 @@ services:
     networks:
       - webfrontnet
       - mpdadmin
-
-  # Container: python app
+  # --- mpcontainer-pyapp ---
   mpcpyapp:
     build:
       context: ./pyapp/
@@ -137,6 +135,12 @@ services:
         - env_mpcpyapp_debug=true
     volumes:
       - "./pyapp/:/pyapp:ro"
+    cap_drop:
+      - net_bind_service
+      - chown
+      - dac_override
+      - fsetid
+      - setgid
     expose:
       - "8888"
     networks:

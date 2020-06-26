@@ -13,7 +13,7 @@ RUN groupadd --system pyapp && \
     --comment "mpcontainer pyapp" pyapp
 
 ENV HOME=/pyapp
-COPY pyapp /pyapp
+COPY . /pyapp
 WORKDIR /pyapp
 
 RUN find /pyapp -type d -exec chmod 775 {} \;
