@@ -27,14 +27,14 @@ services:
           memory: 15M
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-    cap_drop:
-      - all
-    cap_add:
-      - net_bind_service
-      - chown
-      - dac_override
-      - setgid
-      - setuid
+    #cap_drop:
+    #  - all
+    #cap_add:
+    #  - net_bind_service
+    #  - chown
+    #  - dac_override
+    #  - setgid
+    #  - setuid
     ports:
       - "3000:3001"
     networks:
@@ -68,14 +68,6 @@ services:
         reservations:
           cpus: '0.04'
           memory: 15M
-    cap_drop:
-      - all
-    cap_add:
-      - net_bind_service
-      - chown
-      - dac_override
-      - setgid
-      - setuid
     ports:
       - "8880"
     volumes:
@@ -101,9 +93,6 @@ services:
         window: 120s
     volumes:
         - "./music/db:/var/lib/mpd/music:ro"
-    #cap_add:
-    #  - SYS_TIME
-    #  - SYS_NICE
     expose:
       - "6600"
       - "3123"
@@ -139,8 +128,7 @@ services:
   # Container: python app
   mpcpyapp:
     build:
-      context: .
-      dockerfile: dockerfile-pyapp
+      context: ./pyapp/
       cache_from:
         - python:3-slim-buster
     container_name: pyapp

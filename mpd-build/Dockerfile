@@ -1,4 +1,4 @@
-# MusicPlayerDaemon (MPD) server container
+# MusicPlayerDaemon (MPD) build container
 # https://www.musicpd.org/
 
 FROM debian:buster-slim
@@ -35,7 +35,7 @@ RUN apt-get update && \
   libboost-dev \
   libicu-dev \
   libchromaprint-dev \
-  libgcrypt20-dev
+  libgcrypt20-dev;
 
 # MPD deps we do not need (keep removing from above):
 #
@@ -44,7 +44,7 @@ RUN apt-get update && \
 
 
 RUN groupadd --system builder && \
-    useradd --system --gid builder --home-dir /code --shell /sbin/nologin \
+    useradd --system --gid builder --home-dir /code --shell /bin/bash \
     --comment "mpcontainer compile env" builder
 
 RUN mkdir /etc/mpd && \

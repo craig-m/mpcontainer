@@ -43,10 +43,9 @@ An ASCII art diagram of the 5 container setup.
 
 Planning to do some of the following.
 
-* secondary MPD container for alternate stream.
-* feed MPD audio stream/s to a pool of [Icecast](https://icecast.org/) containers so we can scale out for more listeners.
 * use [liquidsoap](https://www.liquidsoap.info/) containers for High availability, and to add some radio station logic etc. Use stream silence detection to swap between MPD servers.
-* multi-stage build containers, compile MPD from source.
+* feed MPD audio stream/s to a pool of [Icecast](https://icecast.org/) containers so we can scale out for more listeners.
+* secondary MPD container for alternate stream.
 
 ## Use
 
