@@ -12,16 +12,14 @@ from flask_caching import Cache
 from mpd import (MPDClient, CommandError)
 from socket import error as SocketError
 
+# the mpd server conf
+from confmpd import *
+
 # Pyapp conf
 LISTENIP = "0.0.0.0"
 LISTENPORT = 8888
-DEBUG = False
-
-# mpd server conf
-MPDURL = "backendmpd"
-MPDPASS = "mpcpyapp"
-MPDPORT = 6600
-MPDCON_ID = {'host':MPDURL, 'port':MPDPORT}
+# debug mode?
+DEBUG = os.getenv('mpypyapp_debug')
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
@@ -87,7 +85,7 @@ def pageabout():
 
 # MPD
 @app.route("/mpd/stat.json")
-@cache.cached(timeout=60)
+@cache.cached(timeout=120)
 def mpdstat():
     client = MPDClient()
     if mpdConnect(client, MPDCON_ID):

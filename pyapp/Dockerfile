@@ -24,9 +24,9 @@ RUN pip install -r /pyapp/requirements.txt
 
 USER pyapp
 
-# run in debug mode?
-ARG mpcpyapp_debug=false
-ENV env_mpcpyapp_debug=$mpcpyapp_debug
+# Run in Dev mode? (default False)
+ARG mpcpyapp_dev=false
+ENV env_mpcpyapp_dev=$mpcpyapp_dev
 
 # entry point - launch gunicorn
 CMD ["bash", "/pyapp/start.sh"]

@@ -9,10 +9,8 @@ import pprint
 from mpd import (MPDClient, CommandError)
 from socket import error as SocketError
 
-MPDURL = "backendmpd"
-MPDPASS = "mpcpyapp"
-MPDPORT = 6600
-MPDCON_ID = {'host':MPDURL, 'port':MPDPORT}
+# the mpd server conf
+from confmpd import *
 
 DEBUG = True
 

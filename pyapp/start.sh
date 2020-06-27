@@ -29,12 +29,18 @@ fi
 # start gunicorn
 #
 
-if [[ $env_mpcpyapp_debug == "true" ]]; then
-  # debug mode for dev
+if [[ $env_mpcpyapp_dev == "true" ]]; then
+  echo "--- env_mpcpyapp_dev ${env_mpcpyapp_dev} (Dev mode) ---";
+  # gunicorn opt
   gmpco_start_opt="--log-level info --reload --reload-engine auto"
+  # app settings
+  export mpypyapp_debug="True"
 else
-  # prod
+  echo "--- production gunicorn settings ---"
+  # gunicorn opt
   gmpco_start_opt="--log-level warning --preload"
+  # app settings
+  export mpypyapp_debug="False" 
 fi
 
 # run

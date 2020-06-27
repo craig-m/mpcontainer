@@ -132,7 +132,8 @@ services:
     container_name: pyapp
     environment: 
         - TZ=UTC
-        - env_mpcpyapp_debug=true
+        # start in Dev mode
+        - env_mpcpyapp_dev=true
     volumes:
       - "./pyapp/:/pyapp:ro"
     cap_drop:

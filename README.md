@@ -4,22 +4,9 @@ Music Player Container - A streaming Jukebox setup.
 
 Moving the programs I like, and refuse to give up, into the modern world of browsers and containers. For learning and fun, not profit.
 
-## Stack
+## App Architecture
 
-MPContainer exists thanks to some of these sources:
-
-* [MPD](https://www.musicpd.org/) - music server
-* [ncmpcpp](https://rybczak.net/ncmpcpp/) - an ncurses MPC client
-* [ttyd](https://tsl0922.github.io/ttyd/) - share your terminal over the web
-* [tmux](https://github.com/tmux/tmux) - terminal multiplexer
-* [haproxy](https://www.haproxy.org/) - frontend proxy
-* [nginx](https://www.nginx.com/) - web server used for static files
-* [bootstrap](https://getbootstrap.com/) and [jquery](https://jquery.com/) - web frameworks
-* [python](https://www.python.org/) [flask](https://flask.palletsprojects.com/en/1.1.x/) - web micro framework
-
-## Architecture
-
-An ASCII art diagram of the 5 container setup.
+An ASCII art diagram.
 
 ```code
        ┌───────[ Browser ]                                    
@@ -39,6 +26,31 @@ An ASCII art diagram of the 5 container setup.
   +-------------+ (mpc)  +-------------+                      
 ```
 
+### containers
+
+What each of the images above contains.
+
+#### 📦 mpd
+[Music Player Daemon](https://www.musicpd.org/) is a music server that can be controlled with a (mpc) client. Can output a http audio stream.
+
+#### 📦 haproxy
+[haproxy](https://www.haproxy.org/) is the frontend proxy, do L7 redirects to backends.
+
+#### 📦 Nginx
+[nginx](https://www.nginx.com/) web server is used for all static files. Hosts [bootstrap](https://getbootstrap.com/) + [jquery](https://jquery.com/) web framework files. This is the default haproxy backend.
+
+#### 📦 admin-shell
+[ttyd](https://tsl0922.github.io/ttyd/) lets you access a terminal over the web.
+
+In [tmux](https://github.com/tmux/tmux) (a terminal multiplexer) I use [ncmpcpp](https://rybczak.net/ncmpcpp/) (an ncurses MPC client) to control the MPD server.
+
+Access to this should be restricted on public deployments, that security is left to the user (don't just put this on the open internet).
+
+#### 📦 Python-App
+A [python](https://www.python.org/) [flask](https://flask.palletsprojects.com/en/1.1.x/) web app, run from [Gunicorn](https://gunicorn.org/).
+
+To talk to the MPD container (with a read only user), and provide other dynamic information.
+
 ### future dev plans
 
 Planning to do some of the following.
@@ -49,7 +61,7 @@ Planning to do some of the following.
 
 ## Use
 
-On MacOS or Windows [Docker Desktop](https://www.docker.com/products/docker-desktop) makes for a nice container experience, especially with [VSCode](https://code.visualstudio.com/).
+On MacOS or Windows [Docker Desktop](https://www.docker.com/products/docker-desktop) makes for a nice container experience, especially with [VSCode](https://code.visualstudio.com/) (get the Docker, yaml and kubernetes extensions).
 
 Put some music into `.\music\db\` so you can use the Jukebox.
 
