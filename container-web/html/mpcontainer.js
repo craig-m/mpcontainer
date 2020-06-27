@@ -1,10 +1,9 @@
 /*!
-  * MPContainer (bad) JS
+  *
+  * MPContainer JS
+  * 
   */
 
-$(document).ready(function(){
-  $("#mpcpyip").load("/pyapp/client/ip/");
-});
 
 /* get stats */
 var xmlhttp = new XMLHttpRequest();
@@ -16,3 +15,8 @@ xmlhttp.onreadystatechange = function() {
 };
 xmlhttp.open("GET", "/pyapp/mpd/stat.json", true);
 xmlhttp.send();
+
+/* footer ip */
+$(document).ready(function(){
+  $("#mpcpyip").load("/pyapp/client/ip/");
+});

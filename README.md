@@ -31,22 +31,25 @@ An ASCII art diagram.
 What each of the images above contains.
 
 #### 📦 mpd
+
 [Music Player Daemon](https://www.musicpd.org/) is a music server that can be controlled with a (mpc) client. Can output a http audio stream.
 
 #### 📦 haproxy
+
 [haproxy](https://www.haproxy.org/) is the frontend proxy, do L7 redirects to backends.
 
 #### 📦 Nginx
+
 [nginx](https://www.nginx.com/) web server is used for all static files. Hosts [bootstrap](https://getbootstrap.com/) + [jquery](https://jquery.com/) web framework files. This is the default haproxy backend.
 
 #### 📦 admin-shell
-[ttyd](https://tsl0922.github.io/ttyd/) lets you access a terminal over the web.
 
-In [tmux](https://github.com/tmux/tmux) (a terminal multiplexer) I use [ncmpcpp](https://rybczak.net/ncmpcpp/) (an ncurses MPC client) to control the MPD server.
+[ttyd](https://tsl0922.github.io/ttyd/) lets you a terminal in your browser. From [tmux](https://github.com/tmux/tmux) (a terminal multiplexer) I use [ncmpcpp](https://rybczak.net/ncmpcpp/) (an ncurses MPC client) to control the MPD server.
 
-Access to this should be restricted on public deployments, that security is left to the user (don't just put this on the open internet).
+Access to this should be restricted on public deployments, that security is left to the user (don't just put this on the open internet). This shell is for trusted users.
 
 #### 📦 Python-App
+
 A [python](https://www.python.org/) [flask](https://flask.palletsprojects.com/en/1.1.x/) web app, run from [Gunicorn](https://gunicorn.org/).
 
 To talk to the MPD container (with a read only user), and provide other dynamic information.

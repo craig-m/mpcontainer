@@ -11,11 +11,11 @@ saveimg:
 	docker save mpcontainer-pyapp > /opt/mpcontainer/images/mpcontainer-pyapp.tar
 
 build:
-	docker build -t ${mpc_dock_repo}mpcontainer-mpd:latest -f dockerfile-mpd .
-	docker build -t ${mpc_dock_repo}mpcontainer-shell:latest -f dockerfile-shell .
-	docker build -t ${mpc_dock_repo}mpcontainer-web:latest -f dockerfile-web .
-	docker build -t ${mpc_dock_repo}mpcontainer-pyapp:latest -f pyapp/Dockerfile .
-	docker build -t ${mpc_dock_repo}mpcontainer-frontend:latest -f dockerfile-haproxy .
+	docker build -t ${mpc_dock_repo}mpcontainer-mpd:latest -f container-mpd/Dockerfile ./container-mpd/
+	docker build -t ${mpc_dock_repo}mpcontainer-shell:latest -f container-shell/Dockerfile ./container-shell/
+	docker build -t ${mpc_dock_repo}mpcontainer-web:latest -f container-web/Dockerfile ./container-web/
+	docker build -t ${mpc_dock_repo}mpcontainer-pyapp:latest -f container-pyapp/Dockerfile ./container-pyapp/
+	docker build -t ${mpc_dock_repo}mpcontainer-frontend:latest -f container-haproxy/Dockerfile ./container-haproxy/
 
 publish:
 	docker push ${mpc_dock_repo}mpcontainer-mpd:latest
