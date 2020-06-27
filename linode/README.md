@@ -11,9 +11,13 @@ We can use Terraform to provision LKE, and storage for the cluster.
 
 Run `terraform`, `kubectl` and `linode-cli` from a container on our desktop.
 
-Start containers:
+Start the container:
 
 ```shell
 docker build -t mpcontainer-sysadmin:latest .
 docker run -it mpcontainer-sysadmin /bin/bash
 ```
+
+## Use
+
+To do.

@@ -1,7 +1,8 @@
 #
-# optional:
-#    export mpc_dock_repo="crgm/"
+# MPContainer makefile
 #
+
+export mpc_dock_repo="crgm/"
 
 saveimg:
 	docker save mpcontainer-mpd > /opt/mpcontainer/images/mpcontainer-mpd.tar

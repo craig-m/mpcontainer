@@ -1,0 +1,82 @@
+---
+- name: Sysadmin container
+  hosts: all
+  gather_facts: yes
+  vars:
+    package_install: [
+      { add_item: 'curl' },
+      { add_item: 'wget' },
+      { add_item: 'man-db' },
+      { add_item: 'man' },
+      { add_item: 'dos2unix' },
+      { add_item: 'tmux' },
+      { add_item: 'vim' },
+      { add_item: 'git' },
+      { add_item: 'make' },
+      { add_item: 'socat' },
+      { add_item: 'expect' },
+      { add_item: 'jq' },
+      { add_item: 'net-tools' }
+    ]
+    package_remove: [
+      { del_item: 'telnet' }
+    ]
+    create_folders: [
+      { dir: '/etc/ansible/facts.d/', mode: '0755', owner: 'root', group: 'root' },
+      { dir: '/opt/mpcontainer/', mode: '0775', owner: 'root', group: 'root' },
+      { dir: '/root/tmp/', mode: '0700', owner: 'root', group: 'root' }
+    ]
+  tasks:
+    #
+    # Common setup tasks
+    #
+    - name: system setup
+      block:
+        - name: packages
+          block:
+            - name: install packages
+              package:
+                name: "{{ item.add_item }}"
+                state: present
+              retries: 3
+              with_items: "{{ package_install }}"
+            - name: remove packages
+              package:
+                name: "{{ item.del_item }}"
+                state: absent
+              with_items: "{{ package_remove }}"
+      become: true
+    - name: files and folders
+      block:
+        - name: create common folders
+          file:
+            path: "{{ item.dir }}"
+            state: directory
+            mode: "{{ item.mode }}"
+            owner: "{{ item.owner }}"
+            group: "{{ item.group }}"
+          become: true
+          with_items: "{{ create_folders }}"
+    - name: custom ansible facts
+      block:
+        - name: create fact script
+          copy:
+            dest: "/etc/ansible/facts.d/mpconline.fact"
+            mode: 0755
+            owner: root
+            group: root
+            content: |
+              #!/usr/bin/env bash
+              # -- ansible managed file --
+              # check if mpcontainer port is open. 1 yes, 0 no.
+              mpcup=$(curl localhost:3000 --head --silent --connect-timeout .5 | grep "x-clacks-overhead: GNU Terry Pratchett" | wc -l)
+              echo "{\"mpc_online\" : \"${mpcup}\"}"
+          become: true
+        - name: refresh ansible facts
+          setup: ~
+        - name: check fact was set
+          assert:
+            that:
+              - ansible_local.mpconline.mpc_online is defined
+
+# todo: create non root user, setup, do Terraform install etc.
