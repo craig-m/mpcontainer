@@ -4,7 +4,7 @@
 FROM python:3-slim-buster
 EXPOSE 8888/tcp
 
-LABEL mpcontainer.vendor="Music Player Container"
+LABEL mpcontainer.vendor="MPContainer"
 LABEL version="1.0"
 LABEL mpcontainer.service="mpc python3 flask app"
 

@@ -4,7 +4,7 @@
 FROM debian:buster-slim
 EXPOSE 6600/tcp 3123/tcp
 
-LABEL mpcontainer.vendor="Music Player Container"
+LABEL mpcontainer.vendor="MPContainer"
 LABEL version="1.0"
 LABEL mpcontainer.service="MPD Build env"
 

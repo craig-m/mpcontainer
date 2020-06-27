@@ -4,12 +4,12 @@
 FROM debian:buster-slim
 EXPOSE 6600/tcp 3123/tcp
 
-LABEL mpcontainer.vendor="Music Player Container"
+LABEL mpcontainer.vendor="MPContainer"
 LABEL version="1.0"
 LABEL mpcontainer.service="MPD stream server"
 
 RUN apt-get update && \
-  apt-get -y install \
+  apt-get -y install --no-install-recommends \
   bash less dos2unix net-tools iproute2 gpg mpd mpc && \
   apt-get clean
 

@@ -4,7 +4,7 @@
 FROM haproxy:2.1-alpine
 EXPOSE 3000/tcp
 
-LABEL mpcontainer.vendor="Music Player Container"
+LABEL mpcontainer.vendor="MPContainer"
 LABEL version="1.0"
 LABEL mpcontainer.service="haproxy frontend gateway"
 

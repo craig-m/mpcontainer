@@ -1,12 +1,20 @@
-# Nginx webserver
-# https://hub.docker.com/_/nginx
+# MPContainer web server
 
+# https://hub.docker.com/_/node/
+FROM node:14-alpine
+WORKDIR /home/node/app
+COPY package.json* /home/node/app/
+RUN chown node:node /home/node/*
+USER node
+RUN npm install
+
+# https://hub.docker.com/_/nginx
 FROM nginx:1.18-alpine
 EXPOSE 8880/tcp
 
-LABEL mpcontainer.vendor="Music Player Container"
+LABEL mpcontainer.vendor="MPContainer"
 LABEL version="1.0"
-LABEL mpcontainer.service="nginx static webserver"
+LABEL mpcontainer.service="Web files"
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
@@ -20,7 +28,8 @@ RUN chmod 644 /etc/nginx/nginx.conf && \
     chown nginx:root /var/run && \
     chmod 775 /var/run
 
-COPY webfiles/pub/* /usr/share/nginx/html/
+# copy files from build container
+COPY --from=0 /home/node/app/node_modules/ /usr/share/nginx/node_modules/
 
 RUN find /usr/share/nginx/html/ -type d -exec chmod 775 {} \;
 RUN find /usr/share/nginx/html/ -type f -exec chmod 644 {} \;

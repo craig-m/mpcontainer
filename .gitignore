@@ -4,8 +4,8 @@ localdata/
 dev-vm/.vagrant/
 music/db/*
 kubernetes/pv-*
-webfiles/node_modules/*
-pyapp/*.pyc
+container-web/node_modules/*
+container-pyapp/*.pyc
 #
 # Win
 Thumbs.db

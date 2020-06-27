@@ -1,6 +1,6 @@
 FROM debian:buster-slim
 
-LABEL mpcontainer.vendor="Music Player Container"
+LABEL mpcontainer.vendor="MPContainer"
 LABEL version="1.0"
 LABEL mpcontainer.service="MPD Build env"
 
