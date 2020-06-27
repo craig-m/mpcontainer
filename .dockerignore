@@ -1,8 +1,0 @@
-# mpcontainer Docker ignore:
-#
-.git/
-.github/
-.vscode/
-localdata/
-kubernetes/
-dev-vm/
