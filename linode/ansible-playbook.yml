@@ -16,6 +16,7 @@
       { add_item: 'make' },
       { add_item: 'socat' },
       { add_item: 'expect' },
+      { add_item: 'whois' },
       { add_item: 'jq' },
       { add_item: 'unzip' },
       { add_item: 'apt-transport-https' },

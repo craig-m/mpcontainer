@@ -4,12 +4,14 @@ Notes on deploying MPContainer to LKE.
 
 Prerequisites:
 
-* Get LKE setup
-* Have your  `kubectl` talking to your Linode K8.
+* Deploy a LKE.
+* Have your `kubectl` talking to your LKE.
 
 See the [docs](https://www.linode.com/docs/kubernetes/deploy-and-manage-lke-cluster-with-api-a-tutorial/) and then continue.
 
 ## create
+
+If you are inside the container `cd /opt/` and then carry on.
 
 create the MPContainer name space:
 

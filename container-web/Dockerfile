@@ -28,11 +28,13 @@ RUN chmod 644 /etc/nginx/nginx.conf && \
     chown nginx:root /var/run && \
     chmod 775 /var/run
 
-# copy files from build container
+# copy files from build container (lazy)
 COPY --from=0 /home/node/app/node_modules/ /usr/share/nginx/node_modules/
 
-RUN find /usr/share/nginx/html/ -type d -exec chmod 775 {} \;
-RUN find /usr/share/nginx/html/ -type f -exec chmod 644 {} \;
-RUN chown root:root /usr/share/nginx/html/*
+# webserver file perms
+RUN find /usr/share/nginx/ -type d -exec chmod 775 {} \;
+RUN find /usr/share/nginx/ -type f -exec chmod 644 {} \;
+RUN chown root:root /usr/share/nginx/*
 
+WORKDIR /usr/share/nginx/
 USER nginx

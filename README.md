@@ -34,7 +34,7 @@ What each of the images above contains:
 
 #### 📦 mpd
 
-[Music Player Daemon](https://www.musicpd.org/) is a music server that can be controlled with a (mpc) client. Can output a http audio stream.
+[Music Player Daemon](https://www.musicpd.org/) is a music server that can be controlled with a (mpc) client. Can output vorbis audio stream over http.
 
 #### 📦 haproxy
 
@@ -42,13 +42,15 @@ What each of the images above contains:
 
 #### 📦 Nginx
 
-[nginx](https://www.nginx.com/) web server is used for all static files. Hosts [bootstrap](https://getbootstrap.com/) + [jquery](https://jquery.com/) web framework files. This is the default haproxy backend.
+[nginx](https://www.nginx.com/) web server is used for hosting static files. Hosts [bootstrap](https://getbootstrap.com/) + [jquery](https://jquery.com/) frameworks (installed with npm). This is the default haproxy backend.
+
+A Multi-stage build is done, npm is not included in the final image.
 
 #### 📦 admin-shell
 
-[ttyd](https://tsl0922.github.io/ttyd/) lets you a terminal in your browser. From [tmux](https://github.com/tmux/tmux) (a terminal multiplexer) I use [ncmpcpp](https://rybczak.net/ncmpcpp/) (an ncurses MPC client) to control the MPD server.
+[ttyd](https://tsl0922.github.io/ttyd/) lets you run a terminal in your browser. From [tmux](https://github.com/tmux/tmux) (a terminal multiplexer) you can use [ncmpcpp](https://rybczak.net/ncmpcpp/) (an ncurses MPC client) to control the MPD server.
 
-Access to this should be restricted on public deployments, that security is left to the user (don't just put this on the open internet). This shell is for trusted users.
+Access to this should be restricted on public deployments, this security is left to the user (don't just put this on the open internet). This web shell is for trusted users only.
 
 #### 📦 Python-App
 
@@ -95,11 +97,10 @@ Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commit
 
 ### build images
 
-Build and push Images.
+Build and push Images:
 
 ```shell
 docker login
-export mpc_dock_repo="<repo username>/" # keep trailing slash
 make build
 make publish
 ```

@@ -2,7 +2,7 @@ FROM debian:buster-slim
 
 LABEL mpcontainer.vendor="MPContainer"
 LABEL version="1.0"
-LABEL mpcontainer.service="MPD SysAdmin container"
+LABEL mpcontainer.service="MPC SysAdmin container"
 
 RUN apt-get update && \
   apt-get -y install \
