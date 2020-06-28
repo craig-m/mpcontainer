@@ -9,15 +9,23 @@ We can use Terraform to provision LKE, and storage for the cluster.
 
 ## admin container
 
-Run `terraform`, `kubectl` and `linode-cli` from a container on our desktop.
+Build the container, setup is done by Ansible.
+
+```shell
+docker build -t mpcontainer-sysadmin:latest .
+```
 
 Start the container:
 
 ```shell
-docker build -t mpcontainer-sysadmin:latest .
-docker run -it mpcontainer-sysadmin /bin/bash
+docker run -it \
+    --mount type=bind,source="$(pwd)"/terraform,target=/opt/terraform \
+    --mount type=bind,source="$(pwd)"/../kubernetes,target=/opt/kubernetes \
+    mpcontainer-sysadmin /bin/bash
 ```
+
+You can run `terraform`, `kubectl`, `linode-cli` and `ansible` from this container.
 
 ## Use
 
-To do.
+See the `deploy.md` document for use.

@@ -2,6 +2,7 @@
 - name: Sysadmin container
   hosts: all
   gather_facts: yes
+
   vars:
     package_install: [
       { add_item: 'curl' },
@@ -16,6 +17,9 @@
       { add_item: 'socat' },
       { add_item: 'expect' },
       { add_item: 'jq' },
+      { add_item: 'unzip' },
+      { add_item: 'apt-transport-https' },
+      { add_item: 'unzip' },
       { add_item: 'net-tools' }
     ]
     package_remove: [
@@ -26,10 +30,12 @@
       { dir: '/opt/mpcontainer/', mode: '0775', owner: 'root', group: 'root' },
       { dir: '/root/tmp/', mode: '0700', owner: 'root', group: 'root' }
     ]
+    # software versions
+    terraform_ver: "0.12.28"
+    terraform_sha: "sha256:be99da1439a60942b8d23f63eba1ea05ff42160744116e84f46fc24f1a8011b6"
+
   tasks:
-    #
-    # Common setup tasks
-    #
+
     - name: system setup
       block:
         - name: packages
@@ -46,6 +52,7 @@
                 state: absent
               with_items: "{{ package_remove }}"
       become: true
+
     - name: files and folders
       block:
         - name: create common folders
@@ -57,26 +64,48 @@
             group: "{{ item.group }}"
           become: true
           with_items: "{{ create_folders }}"
-    - name: custom ansible facts
-      block:
-        - name: create fact script
-          copy:
-            dest: "/etc/ansible/facts.d/mpconline.fact"
-            mode: 0755
-            owner: root
-            group: root
-            content: |
-              #!/usr/bin/env bash
-              # -- ansible managed file --
-              # check if mpcontainer port is open. 1 yes, 0 no.
-              mpcup=$(curl localhost:3000 --head --silent --connect-timeout .5 | grep "x-clacks-overhead: GNU Terry Pratchett" | wc -l)
-              echo "{\"mpc_online\" : \"${mpcup}\"}"
-          become: true
-        - name: refresh ansible facts
-          setup: ~
-        - name: check fact was set
-          assert:
-            that:
-              - ansible_local.mpconline.mpc_online is defined
 
-# todo: create non root user, setup, do Terraform install etc.
+    - name: user setup
+      block:
+        - name: account
+          user:
+            name: sysadmin
+            comment: mpcontainer admin
+      become: true
+
+    # Terraform
+    # https://www.terraform.io/downloads.html
+    - name: Terraform
+      block:
+        - name: get terraform
+          get_url:
+            url: https://releases.hashicorp.com/terraform/{{ terraform_ver }}/terraform_{{ terraform_ver }}_linux_amd64.zip
+            dest: "/tmp/terraform_{{ terraform_ver }}_linux_amd64.zip"
+            checksum: "{{ terraform_sha }}"
+        - name: unzip terraform
+          unarchive:
+            src: "/tmp/terraform_{{ terraform_ver }}_linux_amd64.zip"
+            dest: /usr/local/bin
+            remote_src: yes
+          become: true
+
+    # Kubectl
+    # https://kubernetes.io/docs/tasks/tools/install-kubectl/
+    - name: Kubernetes
+      block:
+        - name: google gpg key
+          apt_key:
+            url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+            state: present
+        - name: apt repo kubernetes
+          copy:
+            dest: /etc/apt/sources.list.d/kubernetes.list
+            mode: 0644
+            content: |
+              deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main
+        - name: Kubectl
+          apt:
+            name: kubectl
+            update_cache: yes
+            state: present
+      become: true

@@ -6,7 +6,7 @@ Moving the programs I like, and refuse to give up, into the modern world of brow
 
 ## App Architecture
 
-An ASCII art diagram.
+An ASCII art diagram:
 
 ```code
        ┌───────[ Browser ]                                    
@@ -26,9 +26,11 @@ An ASCII art diagram.
   +-------------+ (mpc)  +-------------+                      
 ```
 
+Currently 5 different images are used.
+
 ### containers
 
-What each of the images above contains.
+What each of the images above contains:
 
 #### 📦 mpd
 

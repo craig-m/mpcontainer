@@ -1,3 +1,5 @@
+ #!/usr/bin/env python
+
 # print out mpd stats
 #
 # https://github.com/Mic92/python-mpd2/tree/master/examples (base source)
