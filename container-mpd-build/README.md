@@ -2,6 +2,8 @@
 
 Things that to relate to compiling MPD from source.
 
+note: currently MPContainer uses MPD from Debian's apt.
+
 ## sources
 
 Source code links:
@@ -15,7 +17,7 @@ Debian pacakge sources:
 * https://packages.debian.org/source/buster/mpd
 * https://packages.debian.org/source/buster/mpc
 
-### use
+### container
 
 Create the build container:
 
@@ -29,17 +31,19 @@ Run container and login:
 docker run -it mpcontainer-mpdbuild /bin/bash
 ```
 
-## build
+#### build mpd
 
-build script:
+Run the build script:
 
 ```
 ./build.sh
 ```
 
----
+to do: spit out a .zip or .deb that can be used.
 
-notes / to-do / check lists:
+## notes
+
+A to do list, things to check, and otehr random information.
 
 * do [Reproducuble builds](https://reproducible-builds.org/)
 

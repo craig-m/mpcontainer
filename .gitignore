@@ -6,6 +6,9 @@ music/db/*
 kubernetes/pv-*
 container-web/node_modules/*
 container-pyapp/*.pyc
+linode/terraform/lke/.terraform
+linode/terraform/lke/terraform.tfstate*
+linode/terraform/lke/.terraform.tfstate.lock.info
 #
 # Win
 Thumbs.db

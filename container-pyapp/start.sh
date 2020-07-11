@@ -19,8 +19,8 @@ else
   exit 1;
 fi
 
-if [ ! -f /pyapp/mpcpyapp.py ]; then
-  echo "ERROR: missing app";
+if [[ ! 644 = $(stat -c '%a' /pyapp/mpcpyapp.py) ]]; then
+  echo "bad file perms"
   exit 1;
 fi
 
@@ -43,7 +43,6 @@ else
   export mpypyapp_debug="False" 
 fi
 
-# run
 gunicorn mpcpyapp:app \
   --pid /tmp/pyapi-gunicorn.pid \
   --bind unix:/tmp/pyapp.socket \

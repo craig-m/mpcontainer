@@ -5,6 +5,7 @@
 
   vars:
     package_install: [
+      { add_item: 'openssh-client' },
       { add_item: 'curl' },
       { add_item: 'wget' },
       { add_item: 'man-db' },
@@ -28,7 +29,7 @@
     ]
     create_folders: [
       { dir: '/etc/ansible/facts.d/', mode: '0755', owner: 'root', group: 'root' },
-      { dir: '/opt/mpcontainer/', mode: '0775', owner: 'root', group: 'root' },
+      { dir: '/home/sysadmin/tmp/', mode: '0770', owner: 'sysadmin', group: 'sysadmin' },
       { dir: '/root/tmp/', mode: '0700', owner: 'root', group: 'root' }
     ]
     # software versions
@@ -54,6 +55,14 @@
               with_items: "{{ package_remove }}"
       become: true
 
+    - name: user setup
+      block:
+        - name: account
+          user:
+            name: sysadmin
+            comment: mpcontainer admin
+      become: true
+
     - name: files and folders
       block:
         - name: create common folders
@@ -65,14 +74,6 @@
             group: "{{ item.group }}"
           become: true
           with_items: "{{ create_folders }}"
-
-    - name: user setup
-      block:
-        - name: account
-          user:
-            name: sysadmin
-            comment: mpcontainer admin
-      become: true
 
     # Terraform
     # https://www.terraform.io/downloads.html
