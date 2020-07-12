@@ -110,6 +110,9 @@ services:
         window: 120s
     volumes:
       - webshelldata:/home/dj/data-vol/
+    cap_drop:
+      - fsetid
+      - setgid
     expose:
       - "7681"
     networks:

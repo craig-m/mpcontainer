@@ -19,11 +19,6 @@ else
   exit 1;
 fi
 
-if [[ ! 644 = $(stat -c '%a' /pyapp/mpcpyapp.py) ]]; then
-  echo "bad file perms"
-  exit 1;
-fi
-
 
 #
 # start gunicorn
@@ -41,6 +36,12 @@ else
   gmpco_start_opt="--log-level warning --preload"
   # app settings
   export mpypyapp_debug="False" 
+
+  # production checks
+  if [[ ! 644 = $(stat -c '%a' /pyapp/mpcpyapp.py) ]]; then
+    echo "ERROR: file perm not safe"
+    exit 1;
+  fi
 fi
 
 gunicorn mpcpyapp:app \
