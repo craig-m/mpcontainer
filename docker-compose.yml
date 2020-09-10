@@ -1,6 +1,9 @@
+#
+# MPContainer compose (for dev)
+#
 version: '3.7'
 services:
-  # --- mpcontainer-frontend ---
+  # ------ mpcontainer-frontend ------
   frontend:
     build:
       context: ./container-haproxy/
@@ -40,7 +43,7 @@ services:
       - backendweb
     labels:
       kompose.service.type: LoadBalancer
-  # --- mpcontainer-web ---
+  # ------ mpcontainer-web ------
   backendweb:
     build:
       context: ./container-web/
@@ -66,7 +69,7 @@ services:
       - "./container-web/html/:/usr/share/nginx/html:ro"
     networks:
       - webfrontnet
-  # --- mpcontainer-mpd ---
+  # ------ mpcontainer-mpd ------
   backendmpd:
     build:
       context: ./container-mpd/
@@ -92,7 +95,7 @@ services:
     networks:
       - webfrontmpd
       - mpdadmin
-  # --- mpcontainer-shell ---
+  # ------ mpcontainer-shell ------
   adminmmpd:
     build:
       context: ./container-shell/
@@ -118,7 +121,7 @@ services:
     networks:
       - webfrontnet
       - mpdadmin
-  # --- mpcontainer-pyapp ---
+  # ------ mpcontainer-pyapp ------
   mpcpyapp:
     build:
       context: ./container-pyapp/

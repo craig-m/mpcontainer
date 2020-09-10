@@ -31,9 +31,9 @@ Get a [Token](https://cloud.linode.com/profile/tokens) from the web panel then, 
 linode-cli configure
 ```
 
-Note: you do NOT want to publish this image after logging into your Linode account :)
+Note: you do NOT want to publish this image, especially after logging into your Linode account :)
 
-From here we can create infra and deploy MPContainer onto it.
+From here we can create infrastructure and deploy MPContainer onto it.
 
 ---
 
@@ -119,7 +119,7 @@ kubectl create -f ./kubernetes/examples/pv-store-linode.yaml
 apply volume claim:
 
 ```shell
-kubectl apply -f ./kubernetes/examples/pv-claim-linode.yaml
+kubectl create -f ./kubernetes/examples/pv-claim-linode.yaml
 ```
 
 ### application

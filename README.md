@@ -97,10 +97,24 @@ Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commit
 
 ### build images
 
+Images, along with this code, are hosted thanks to Github.
+
+Create a Personal Access Token ([pat](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)) for git, then add create environment vars for this and your username.
+
+```
+export GIT_TOKE="xxxxx"
+export GIT_UN="<git username>"
+```
+
+login to registry:
+
+```
+docker login https://docker.pkg.github.com -u $GIT_UN --password $GIT_TOKE
+```
+
 Build and push Images:
 
 ```shell
-docker login
 make build
 make publish
 ```
@@ -141,7 +155,7 @@ to do (for [linode](https://www.linode.com/products/kubernetes/)).
 
 ## private registry
 
-If you're pulling from a private registry, give the namespace a secret.
+If you're pulling from a [private registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/), give the namespace a secret.
 
 1) Login via `docker login` or paste into `~/.docker/config.json`
 

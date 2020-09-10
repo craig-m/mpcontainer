@@ -15,7 +15,7 @@ resource "linode_lke_cluster" "my-cluster" {
 }
 
 
-//Export this cluster's attributes
+// Export this cluster's attributes
 output "kubeconfig" {
    value = linode_lke_cluster.my-cluster.kubeconfig
 }

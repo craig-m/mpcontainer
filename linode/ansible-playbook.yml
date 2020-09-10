@@ -1,5 +1,5 @@
 ---
-- name: Sysadmin container
+- name: Sysadmin container playbook
   hosts: all
   gather_facts: yes
 
