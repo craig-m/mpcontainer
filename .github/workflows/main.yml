@@ -19,5 +19,4 @@ jobs:
         targets: |
           dev-vm/ansible-playbook.yml
           linode/ansible-playbook.yml
-        override-deps: |
-          -x 601, 204
+        args: "-x 601,204"
