@@ -88,6 +88,7 @@
           unarchive:
             src: "/tmp/terraform_{{ terraform_ver }}_linux_amd64.zip"
             dest: /usr/local/bin
+            mode: '0755'
             remote_src: yes
           become: true
 
