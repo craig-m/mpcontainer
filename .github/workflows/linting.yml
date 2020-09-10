@@ -1,6 +1,6 @@
 # Github Actions
 
-name: MPContainer CI
+name: MPContainer CI lint
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
     branches: [ master ]
 
 jobs:
+
   staticcheck:
     runs-on: ubuntu-18.04
     steps:
@@ -19,4 +20,5 @@ jobs:
         targets: |
           dev-vm/ansible-playbook.yml
           linode/ansible-playbook.yml
+        # ignore checks: long lines, compare true/false
         args: "-x 601,204"

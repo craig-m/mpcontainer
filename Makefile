@@ -2,21 +2,21 @@
 # MPContainer makefile
 #
 
-huburl=docker.pkg.github.com/${GIT_UN}/mpcontainer
+regurl=docker.pkg.github.com/${GIT_UN}/mpcontainer
 
 build:
-	docker build -t ${huburl}/mpcontainer-mpd:latest -f container-mpd/Dockerfile ./container-mpd/
-	docker build -t ${huburl}/mpcontainer-shell:latest -f container-shell/Dockerfile ./container-shell/
-	docker build -t ${huburl}/mpcontainer-web:latest -f container-web/Dockerfile ./container-web/
-	docker build -t ${huburl}/mpcontainer-pyapp:latest -f container-pyapp/Dockerfile ./container-pyapp/
-	docker build -t ${huburl}/mpcontainer-frontend:latest -f container-haproxy/Dockerfile ./container-haproxy/
+	docker build -t ${regurl}/mpcontainer-mpd:latest -f container-mpd/Dockerfile ./container-mpd/
+	docker build -t ${regurl}/mpcontainer-shell:latest -f container-shell/Dockerfile ./container-shell/
+	docker build -t ${regurl}/mpcontainer-web:latest -f container-web/Dockerfile ./container-web/
+	docker build -t ${regurl}/mpcontainer-pyapp:latest -f container-pyapp/Dockerfile ./container-pyapp/
+	docker build -t ${regurl}/mpcontainer-frontend:latest -f container-haproxy/Dockerfile ./container-haproxy/
 
 publish:
-	docker push ${huburl}/mpcontainer-mpd:latest
-	docker push ${huburl}/mpcontainer-shell:latest
-	docker push ${huburl}/mpcontainer-web:latest
-	docker push ${huburl}/mpcontainer-pyapp:latest
-	docker push ${huburl}/mpcontainer-frontend:latest
+	docker push ${regurl}/mpcontainer-mpd:latest
+	docker push ${regurl}/mpcontainer-shell:latest
+	docker push ${regurl}/mpcontainer-web:latest
+	docker push ${regurl}/mpcontainer-pyapp:latest
+	docker push ${regurl}/mpcontainer-frontend:latest
 
 saveimg:
 	docker save mpcontainer-mpd > /opt/mpcontainer/images/mpcontainer-mpd.tar
