@@ -1,8 +1,9 @@
-# Github Actions
-name: MPContainer docker build
+name: container build
+
 on:
   push:
     branches: [ master ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,17 +15,24 @@ jobs:
         GIT_TOKE: ${{ secrets.GIT_TOKE }}
       run: |
         docker login https://docker.pkg.github.com -u $GIT_UN --password $GIT_TOKE
-    - name: build mpcontainer-mpd
+        - name: build mpcontainer-mpd
       run: |
         docker build -t mpcontainer-mpd:latest -f container-mpd/Dockerfile ./container-mpd/
-    - name: build mpcontainer-shell
+        - name: build mpcontainer-shell
       run: |
         docker build -t mpcontainer-shell:latest -f container-shell/Dockerfile ./container-shell/
-    - name: build mpcontainer-web
+        - name: build mpcontainer-web
       run: |
         docker build -t mpcontainer-web:latest -f container-web/Dockerfile ./container-web/
+    - name: build mpcontainer-pyapp
+      run: |
+        docker build -t mpcontainer-pyapp:latest -f container-pyapp/Dockerfile ./container-pyapp/
+    - name: build mpcontainer-frontend
+        docker build -t mpcontainer-frontend:latest -f container-haproxy/Dockerfile ./container-haproxy/
     - name: push images to registry
       run: |
-        docker push docker.pkg.github.com/$GIT_UN/mpcontainer/mpcontainer-mpd:latest
-        docker push docker.pkg.github.com/$GIT_UN/mpcontainer/mpcontainer-shell:latest
-        docker push docker.pkg.github.com/$GIT_UN/mpcontainer/mpcontainer-web:latest
+        docker push mpcontainer-mpd:latest
+        docker push mpcontainer-shell:latest
+        docker push mpcontainer-web:latest
+        docker push mpcontainer-pyapp:latest
+        docker push mpcontainer-frontend:latest
