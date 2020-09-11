@@ -10,11 +10,11 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: docker login
+      uses: docker/login-action@v1
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
         GIT_TOKE: ${{ secrets.GIT_TOKE }}
-      run: |
-        docker login https://docker.pkg.github.com -u $GIT_UN --password $GIT_TOKE
+        registry: ghcr.io
 
     - name: build mpcontainer-mpd
       run: |
@@ -38,8 +38,8 @@ jobs:
 
     - name: push images to GitHub registry
       run: |
-        docker push docker.pkg.github.com/${GIT_UN}/mpcontainer/mpcontainer-mpd:latest
-        docker push docker.pkg.github.com/${GIT_UN}/mpcontainer/mpcontainer-shell:latest
-        docker push docker.pkg.github.com/${GIT_UN}/mpcontainer/mpcontainer-web:latest
-        docker push docker.pkg.github.com/${GIT_UN}/mpcontainer/mpcontainer-pyapp:latest
-        docker push docker.pkg.github.com/${GIT_UN}/mpcontainer/mpcontainer-frontend:latest
+        docker push mpcontainer-mpd:latest
+        docker push mpcontainer-shell:latest
+        docker push mpcontainer-web:latest
+        docker push mpcontainer-pyapp:latest
+        docker push mpcontainer-frontend:latest
