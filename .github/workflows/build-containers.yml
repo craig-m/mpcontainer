@@ -1,4 +1,4 @@
-name: container build
+name: build containers
 
 on:
   push:
@@ -17,26 +17,36 @@ jobs:
         docker login https://ghcr.io/ -u $GIT_UN --password $GIT_TOKE
 
     - name: build mpcontainer-mpd
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
       run: |
         docker build -t mpcontainer-mpd:latest -f container-mpd/Dockerfile ./container-mpd/
         docker tag mpcontainer-mpd ghcr.io/$GIT_UN/mpcontainer-mpd:latest
 
     - name: build mpcontainer-shell
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
       run: |
         docker build -t mpcontainer-shell:latest -f container-shell/Dockerfile ./container-shell/
         docker tag mpcontainer-shell ghcr.io/$GIT_UN/mpcontainer-shell:latest
 
     - name: build mpcontainer-web
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
       run: |
         docker build -t mpcontainer-web:latest -f container-web/Dockerfile ./container-web/
         docker tag mpcontainer-web ghcr.io/$GIT_UN/mpcontainer-web:latest
 
     - name: build mpcontainer-pyapp
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
       run: |
         docker build -t mpcontainer-pyapp:latest -f container-pyapp/Dockerfile ./container-pyapp/
         docker tag mpcontainer-pyapp ghcr.io/$GIT_UN/mpcontainer-pyapp
 
     - name: build mpcontainer-frontend
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
       run: |
         docker build -t mpcontainer-frontend:latest -f container-haproxy/Dockerfile ./container-haproxy/
         docker tag mpcontainer-frontend ghcr.io/$GIT_UN/mpcontainer-frontend

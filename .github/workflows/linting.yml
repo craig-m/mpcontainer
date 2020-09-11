@@ -1,4 +1,4 @@
-name: code linting
+name: linting actions
 
 on:
   push:
@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
+
+    # check ansible
     - name: lint ansible playbooks
       uses: ansible/ansible-lint-action@master
       with:
