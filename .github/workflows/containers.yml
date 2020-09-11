@@ -7,15 +7,14 @@ jobs:
   container-build:
     runs-on: ubuntu-latest
     steps:
-
     - uses: actions/checkout@v2
 
     - name: docker login
-      uses: docker/login-action@v1
       env:
-        registry: ghcr.io
-        username: ${{ secrets.GIT_UN }}
-        password: ${{ secrets.GIT_TOKE }}
+        GIT_UN: ${{ secrets.GIT_UN }}
+        GIT_TOKE: ${{ secrets.GIT_TOKE }}
+      run: |
+        docker login https://ghcr.io/ -u $GIT_UN --password $GIT_TOKE
 
     - name: build mpcontainer-mpd
       run: |
@@ -38,9 +37,11 @@ jobs:
         docker build -t mpcontainer-frontend:latest -f container-haproxy/Dockerfile ./container-haproxy/
 
     - name: push images to GitHub registry
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
       run: |
-        docker push mpcontainer-mpd:latest
-        docker push mpcontainer-shell:latest
-        docker push mpcontainer-web:latest
-        docker push mpcontainer-pyapp:latest
-        docker push mpcontainer-frontend:latest
+        docker push mpcontainer/mpcontainer-mpd:latest
+        docker push mpcontainer/mpcontainer-shell:latest
+        docker push mpcontainer/mpcontainer-web:latest
+        docker push mpcontainer/mpcontainer-pyapp:latest
+        docker push mpcontainer/mpcontainer-frontend:latest
