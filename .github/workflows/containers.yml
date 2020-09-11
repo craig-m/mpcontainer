@@ -7,16 +7,15 @@ jobs:
   container-build:
     runs-on: ubuntu-latest
     steps:
+
     - uses: actions/checkout@v2
 
     - name: docker login
       uses: docker/login-action@v1
       env:
-        GIT_UN: ${{ secrets.GIT_UN }}
-        GIT_TOKE: ${{ secrets.GIT_TOKE }}
         registry: ghcr.io
-      run: |
-        docker login -u $GIT_UN --password $GIT_TOKE
+        username: ${{ secrets.GIT_UN }}
+        password: ${{ secrets.GIT_TOKE }}
 
     - name: build mpcontainer-mpd
       run: |
