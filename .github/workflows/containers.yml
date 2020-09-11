@@ -40,8 +40,8 @@ jobs:
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
-        docker push https://ghcr.io/mpcontainer/mpcontainer-mpd:latest
-        docker push https://ghcr.io/mpcontainer/mpcontainer-shell:latest
-        docker push https://ghcr.io/mpcontainer/mpcontainer-web:latest
-        docker push https://ghcr.io/mpcontainer/mpcontainer-pyapp:latest
-        docker push https://ghcr.io/mpcontainer/mpcontainer-frontend:latest
+        docker push mpcontainer-mpd:latest
+        docker push https://ghcr.io/ $GIT_UN/mpcontainer-shell:latest
+        docker push https://ghcr.io/ $GIT_UN/mpcontainer-web:latest
+        docker push https://ghcr.io/ $GIT_UN/mpcontainer-pyapp:latest
+        docker push https://ghcr.io/ $GIT_UN/mpcontainer-frontend:latest
