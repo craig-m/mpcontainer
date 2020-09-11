@@ -3,9 +3,8 @@ name: container build
 on:
   push:
     branches: [ master ]
-
 jobs:
-  build:
+  container-build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -37,10 +36,10 @@ jobs:
       run: |
         docker build -t mpcontainer-frontend:latest -f container-haproxy/Dockerfile ./container-haproxy/
 
-    - name: push images to registry
+    - name: push images to GitHub registry
       run: |
-        docker push mpcontainer-mpd:latest
-        docker push mpcontainer-shell:latest
-        docker push mpcontainer-web:latest
-        docker push mpcontainer-pyapp:latest
-        docker push mpcontainer-frontend:latest
+        docker push docker.pkg.github.com/${GIT_UN}/mpcontainer/mpcontainer-mpd:latest
+        docker push docker.pkg.github.com/${GIT_UN}/mpcontainer/mpcontainer-shell:latest
+        docker push docker.pkg.github.com/${GIT_UN}/mpcontainer/mpcontainer-web:latest
+        docker push docker.pkg.github.com/${GIT_UN}/mpcontainer/mpcontainer-pyapp:latest
+        docker push docker.pkg.github.com/${GIT_UN}/mpcontainer/mpcontainer-frontend:latest
