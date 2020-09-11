@@ -4,6 +4,9 @@ Music Player Container - A streaming Jukebox setup.
 
 Moving the programs I like, and refuse to give up, into the modern world of browsers and containers. For learning and fun, not profit.
 
+![build containers](https://github.com/craig-m/mpcontainer/workflows/build%20containers/badge.svg)
+![linting actions](https://github.com/craig-m/mpcontainer/workflows/linting%20actions/badge.svg)
+
 ## App Architecture
 
 An ASCII art diagram:
@@ -91,7 +94,7 @@ docker-compose top
 
 ## Kubernetes
 
-Deploying MPContainer to [Kubernetes](https://kubernetes.io/) is a work in progress. The images are on [DockerHub](https://hub.docker.com/u/crgm).
+Deploying MPContainer to [Kubernetes](https://kubernetes.io/) is a work in progress.
 
 Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commits here.
 

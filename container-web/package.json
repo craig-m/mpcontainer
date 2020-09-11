@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/craig-m/mpcontainer#readme",
   "dependencies": {
-    "bootstrap": "^4.5.0",
+    "@popperjs/core": "^2.4.4",
+    "bootstrap": "^4.5.2",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1"
   }
