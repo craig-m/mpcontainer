@@ -22,7 +22,7 @@ jobs:
 
     - name: build mpcontainer-shell
       run: |
-        docker build -t mpcontainer-shell:latest -f container-shell/Dockerfile ./container-shell/
+        docker build -t mpcontainer-shell:latest https://ghcr.io/$GIT_UN/mpcontainer-shell:latest -f container-shell/Dockerfile ./container-shell/
 
     - name: build mpcontainer-web
       run: |
@@ -40,8 +40,4 @@ jobs:
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
-        docker push mpcontainer-mpd:latest
-        docker push https://ghcr.io/ $GIT_UN/mpcontainer-shell:latest
-        docker push https://ghcr.io/ $GIT_UN/mpcontainer-web:latest
-        docker push https://ghcr.io/ $GIT_UN/mpcontainer-pyapp:latest
-        docker push https://ghcr.io/ $GIT_UN/mpcontainer-frontend:latest
+        docker push https://ghcr.io/$GIT_UN/mpcontainer-shell:latest
