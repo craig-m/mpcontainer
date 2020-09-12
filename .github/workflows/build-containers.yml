@@ -14,7 +14,7 @@ jobs:
         GIT_UN: ${{ secrets.GIT_UN }}
         GIT_TOKE: ${{ secrets.GIT_TOKE }}
       run: |
-        docker login https://ghcr.io/ -u $GIT_UN --password $GIT_TOKE
+        echo $GIT_TOKE | docker login https://ghcr.io/ -u $GIT_UN --password-stdin
 
     - name: build mpcontainer-mpd
       env:
