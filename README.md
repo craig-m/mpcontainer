@@ -69,7 +69,7 @@ Planning to do some of the following.
 
 ## Use
 
-On MacOS or Windows [Docker Desktop](https://www.docker.com/products/docker-desktop) makes for a nice container experience, especially with [VSCode](https://code.visualstudio.com/) (get the Docker, yaml and kubernetes extensions).
+On MacOS or Windows [Docker Desktop](https://www.docker.com/products/docker-desktop) makes for a nice container experience, especially with [VSCode](https://code.visualstudio.com/) (get the [Docker](https://code.visualstudio.com/docs/containers/overview), yaml and kubernetes extensions).
 
 Put some music into `.\music\db\` so you can use the Jukebox.
 
@@ -120,7 +120,7 @@ Deploying MPContainer to [Kubernetes](https://kubernetes.io/) is a work in progr
 
 Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commits here.
 
-## Music Volume
+### Music Volume
 
 We need to have some config that will point to where the music is.
 
@@ -133,7 +133,7 @@ cp kubernetes/examples/pv-dev.yaml kubernetes/pv-dev.yaml
 
 See [persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) documentation for more information.
 
-## private registry
+### private registry
 
 If you're pulling from a [private registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/), give the namespace a secret.
 
@@ -147,7 +147,7 @@ kubectl -n musicplayer create secret generic regcred \
     --type=kubernetes.io/dockerconfigjson
 ```
 
-### Run
+## Run
 
 After copying and editing what you need from ./kubernetes/examples/ to ./kubernetes/.
 

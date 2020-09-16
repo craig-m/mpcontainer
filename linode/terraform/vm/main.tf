@@ -11,13 +11,23 @@ resource "linode_stackscript" "mpc_vm_stackscript" {
    rev_note = "initial version"
 }
 
+
+resource "random_uuid" "vmtrack" { }
+
 resource "random_password" "my_root_password" {
-   length = 24
+   length = 25
    special = false
+   min_upper = 5
+   min_lower = 5
+   min_numeric = 5
 }
+
 resource "random_password" "my_user_password" {
-   length = 24
+   length = 25
    special = false
+   min_upper = 5
+   min_lower = 5
+   min_numeric = 5
 }
 
 resource "linode_instance" "vm1" {
@@ -32,7 +42,7 @@ resource "linode_instance" "vm1" {
    stackscript_data = {
       "adduser" = var.stackscript_data["adduser"]
       "userpass" = random_password.my_user_password.result
-      "testvar" = var.stackscript_data["testvar"]
+      "uuidvar" = random_uuid.vmtrack.result
    }
    authorized_keys   = var.authorized_keys
    root_pass         = random_password.my_root_password.result

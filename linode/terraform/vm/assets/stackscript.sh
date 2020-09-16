@@ -4,10 +4,10 @@
 # https://github.com/craig-m/mpcontainer
 
 #
-# input vars
+# input vars:
 #
 
-# <UDF name="testvar" default="testvar" label="for testing" example="defaultvar" />
+# <UDF name="uuidvar" default="aabbccdd-eeff-0011-2233-445566778899" label="uuidvar" example="uuid" />
 # <UDF name="adduser" default="sysadmin" label="non-root admin user for vm" example="sysadmin" />
 # <UDF name="userpass" default="password" label="non-root admin user for vm" example="password" />
 
@@ -21,12 +21,15 @@ logit() {
     printf "$1 \\n";
     logger "stackscript: $1";
 }
+
 logit "starting deployment"
 logit "stackscript test var: ${TESTVAR}"
 logit "Linode ID is: ${LINODE_ID}"
 
 if [ ! -d /root/log/ ]; then
     mkdir -v /root/log/;
+    touch -f /root/log/ctf.txt
+    echo ${UUIDVAR} > /root/log/ctf.txt
 else
     logit "stackscript has already run";
 fi
@@ -106,7 +109,7 @@ if [ ! -f /root/log/packages.txt ]; then
     chattr +i /root/log/packages.txt
 fi
 
-# log ssh keys
+# log sshd fingerprints 
 if [ ! -f /opt/linode_vm/ssh_keys.txt ]; then
     touch /opt/linode_vm/ssh_keys.txt
     ssh-keygen -l -f /etc/ssh/ssh_host_rsa_key >> /opt/linode_vm/ssh_keys.txt
@@ -123,11 +126,13 @@ if [[ "${user_state}" = "true" ]]; then
     logit "user already exists"
 else
     adduser ${ADDUSER} --disabled-password --gecos ""
+    echo "$ADDUSER:$USERPASS" | chpasswd
     mkdir -pv --mode=700 /home/${ADDUSER}/.ssh/
     touch -f /home/${ADDUSER}/.ssh/authorized_keys
     chmod 600 /home/${ADDUSER}/.ssh/authorized_keys
     chown -R ${ADDUSER}:${ADDUSER} /home/${ADDUSER}/
-    sqlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('user_state', 'true');"
+    getent passwd $ADDUSER && \
+        sqlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('user_state', 'true');"
     logit "created user"
 fi
 
@@ -142,7 +147,7 @@ else
     # add docker
     logit "setup docker repo"
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-    apt-key fingerprint 0EBFCD88 || exit 1
+    apt-key fingerprint 0EBFCD88 || { logit "ERROR bad fingerprint" && exit 1 }
     add-apt-repository \
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
         $(lsb_release -cs) \
@@ -154,8 +159,19 @@ else
     chmod +x /usr/local/bin/docker-compose
     # test
     logit "test docker"
-    docker run hello-world && sqlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('docker_inst', 'true');" || exit 1
+    docker run hello-world && \
+        sqlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('docker_inst', 'true');" || exit 1
     logit "docker install finished"
+fi
+
+# get source code
+git_clone=$(sqlite3 "${state_db_file}" "SELECT state from sysstate where name='git_clone';")
+if [[ "${git_clone}" = "true" ]]; then
+    logit "have code already"
+else
+    git -C /opt/linode_vm/ clone https://github.com/craig-m/mpcontainer.git && \
+        sqlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('git_clone', 'true');"
+    logit "checked out code"
 fi
 
 #
@@ -170,4 +186,4 @@ else
     logit "stackscript finished"
 fi
 
-#eof
+# eof

@@ -66,7 +66,10 @@ def hostmyname():
 # client info
 @app.route('/client/ip/')
 def cliip():
-    return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+    if 'X-Forwarded-For' in request.remote_addr:
+        return request.environ.get('X-Forwarded-For', request.remote_addr)
+    else:
+        return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
 @app.route('/client/agent/')
 def cliagent():
     return request.headers.get('User-Agent')

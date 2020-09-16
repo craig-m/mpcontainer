@@ -19,10 +19,8 @@ services:
         window: 120s
       resources:
         limits:
-          cpus: '0.05'
           memory: 20M
         reservations:
-          cpus: '0.04'
           memory: 15M
     volumes:
       - ./container-haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
@@ -57,10 +55,8 @@ services:
         window: 120s
       resources:
         limits:
-          cpus: '0.05'
           memory: 20M
         reservations:
-          cpus: '0.04'
           memory: 15M
     ports:
       - "8880"

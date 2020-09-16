@@ -11,7 +11,7 @@ Our admin tools (Terraform etc) are in this container.
 To build and start the admin container:
 
 ```shell
-./start-login.sh
+./start-container.sh
 ```
 
 When finished just type `exit` to stop the container.
