@@ -28,7 +28,9 @@ RUN chmod 644 /etc/nginx/nginx.conf && \
     chown nginx:root /var/run && \
     chmod 775 /var/run
 
-# copy files from build container (lazy)
+COPY ./html/ /usr/share/nginx/html/
+
+# copy files from build container (not the right way to do this :])
 COPY --from=0 /home/node/app/node_modules/ /usr/share/nginx/node_modules/
 
 # webserver file perms

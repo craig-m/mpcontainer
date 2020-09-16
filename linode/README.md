@@ -1,24 +1,17 @@
 # Readme
 
-The Linode Kubernetes Engine ([LKE](https://www.linode.com/products/kubernetes/)) is a fully-managed container orchestration engine.
+The [Linode](https://www.linode.com/) Kubernetes Engine ([LKE](https://www.linode.com/products/kubernetes/)) is a fully-managed container orchestration engine. Linode also offer great hosting for linux virtual machines.
 
-We can use [Terraform](https://www.terraform.io/) to provision a LKE environment for MPContainer.
+We can use [Terraform](https://www.terraform.io/) to provision an environment in Linode for MPContainer.
 
 ## admin container
 
-Build the container to run these tools from:
+Our admin tools (Terraform etc) are in this container.
+
+To build and start the admin container:
 
 ```shell
-docker build -t mpcontainer-sysadmin:latest .
-```
-
-Start the container and login to it:
-
-```shell
-docker run -it \
-    --mount type=bind,source="$(pwd)"/terraform,target=/opt/terraform \
-    --mount type=bind,source="$(pwd)"/../kubernetes,target=/opt/kubernetes \
-    mpcontainer-sysadmin /bin/bash
+./start-login.sh
 ```
 
 When finished just type `exit` to stop the container.
@@ -42,6 +35,7 @@ From here we can create infrastructure and deploy MPContainer onto it.
 * https://github.com/terraform-providers/terraform-provider-linode
 * https://www.linode.com/community/questions/17611/the-linode-kubernetes-module-for-terraform
 * https://www.terraform.io/docs/providers/linode/r/lke_cluster.html
+* https://developers.linode.com/api/v4/
 
 ### setup
 

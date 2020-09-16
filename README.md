@@ -29,11 +29,9 @@ An ASCII art diagram:
   +-------------+ (mpc)  +-------------+                      
 ```
 
-Currently 5 different images are used.
-
 ### containers
 
-What each of the images above contains:
+What each of the 5 images above contains:
 
 #### 📦 mpd
 
@@ -90,29 +88,21 @@ docker-compose ps
 docker-compose top
 ```
 
----
+## build images
 
-## Kubernetes
+Thanks to Github [Actions](https://github.com/actions) each time this repo changes the images in the registry are updated too.
 
-Deploying MPContainer to [Kubernetes](https://kubernetes.io/) is a work in progress.
+For manually updating first create a Personal Access Token ([pat](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)) for git, then add create environment vars for this and your username.
 
-Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commits here.
-
-### build images
-
-Images, along with this code, are hosted thanks to Github.
-
-Create a Personal Access Token ([pat](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)) for git, then add create environment vars for this and your username.
-
-```
+```shell
 export GIT_TOKE="xxxxx"
 export GIT_UN="<git username>"
 ```
 
 login to registry:
 
-```
-docker login https://docker.pkg.github.com -u $GIT_UN --password $GIT_TOKE
+```shell
+echo $GIT_TOKE | docker login https://ghcr.io/ -u $GIT_UN --password-stdin
 ```
 
 Build and push Images:
@@ -122,7 +112,15 @@ make build
 make publish
 ```
 
-### Music Volume
+---
+
+## Kubernetes
+
+Deploying MPContainer to [Kubernetes](https://kubernetes.io/) is a work in progress.
+
+Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commits here.
+
+## Music Volume
 
 We need to have some config that will point to where the music is.
 
@@ -134,6 +132,20 @@ cp kubernetes/examples/pv-dev.yaml kubernetes/pv-dev.yaml
 ```
 
 See [persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) documentation for more information.
+
+## private registry
+
+If you're pulling from a [private registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/), give the namespace a secret.
+
+1) Login via `docker login` or paste into `~/.docker/config.json`
+
+2) Create a secret in the namespace:
+
+```shell
+kubectl -n musicplayer create secret generic regcred \
+    --from-file=.dockerconfigjson=/home/vagrant/.docker/config.json \
+    --type=kubernetes.io/dockerconfigjson
+```
 
 ### Run
 
@@ -150,22 +162,4 @@ Check on it:
 
 ```shell
 kubectl -n musicplayer get deployments,pods,svc,ep
-```
-
-### Ingress
-
-to do (for [linode](https://www.linode.com/products/kubernetes/)).
-
-## private registry
-
-If you're pulling from a [private registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/), give the namespace a secret.
-
-1) Login via `docker login` or paste into `~/.docker/config.json`
-
-2) Create a secret in the namespace:
-
-```shell
-kubectl -n musicplayer create secret generic regcred \
-    --from-file=.dockerconfigjson=/home/vagrant/.docker/config.json \
-    --type=kubernetes.io/dockerconfigjson
 ```
