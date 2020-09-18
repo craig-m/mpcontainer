@@ -28,6 +28,7 @@ Cluster (single node for dev):
 2) In a shell, start the VM and login to it. The port forwards do not always work for me so I set them.
 
    A) `vagrant up`
+
    B) `vagrant ssh -- -L 9191:127.0.0.1:9090 -L 3131:127.0.0.1:3000`
 
 3) Run one of the `/home/vagrant/start-mpc-*.sh` scripts to start MPContainer.

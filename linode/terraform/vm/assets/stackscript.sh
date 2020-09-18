@@ -159,8 +159,7 @@ else
     chmod +x /usr/local/bin/docker-compose
     # test
     logit "test docker"
-    docker run hello-world && \
-        sqlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('docker_inst', 'true');" || exit 1
+    docker run hello-world && sqlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('docker_inst', 'true');" || exit 1
     logit "docker install finished"
 fi
 

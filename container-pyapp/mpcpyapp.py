@@ -12,17 +12,14 @@ from flask_caching import Cache
 from mpd import (MPDClient, CommandError)
 from socket import error as SocketError
 
-# the mpd server conf
+# config in confmpd/__init__.py
 from confmpd import *
-
-# Pyapp conf
-LISTENIP = "0.0.0.0"
-LISTENPORT = 8888
-# debug mode?
-DEBUG = os.getenv('mpypyapp_debug')
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
+
+# Pyapp in debug mode?
+DEBUG = os.getenv('mpypyapp_debug')
 
 #
 # functions
@@ -52,24 +49,34 @@ def mpdAuth(client, secret):
 #
 
 # default
+
 @app.route('/')
 def index():
     html = "pyapp"
     return html.format()
 
 # container info
+
 @app.route('/host/hostname/')
 def hostmyname():
     html = "{hostname}"
     return html.format(hostname=socket.gethostname())
 
+@app.route('/host/env/')
+def hostenvtest():
+    html = "{envinfo}"
+    return html.format(envinfo=os.getenv('env_mpypyapp_envtest'))
+
+
 # client info
+
 @app.route('/client/ip/')
 def cliip():
-    if 'X-Forwarded-For' in request.remote_addr:
+    if request.environ.get('X-Forwarded-For', request.remote_addr):
         return request.environ.get('X-Forwarded-For', request.remote_addr)
     else:
         return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+
 @app.route('/client/agent/')
 def cliagent():
     return request.headers.get('User-Agent')

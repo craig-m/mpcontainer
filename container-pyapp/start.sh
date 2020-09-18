@@ -21,9 +21,11 @@ fi
 
 
 #
-# start gunicorn
+# run gunicorn
 #
 
+# Start with Dev or Prod options?
+# note: container default is Prod
 if [[ $env_mpcpyapp_dev == "true" ]]; then
   echo "--- env_mpcpyapp_dev ${env_mpcpyapp_dev} (Dev mode) ---";
   # gunicorn opt
@@ -44,6 +46,9 @@ else
   fi
 fi
 
+#export env_mpypyapp_envtest=start_script
+
+# start
 gunicorn mpcpyapp:app \
   --pid /tmp/pyapi-gunicorn.pid \
   --bind unix:/tmp/pyapp.socket \

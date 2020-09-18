@@ -8,13 +8,15 @@ services:
     build:
       context: ./container-haproxy/
       cache_from:
-        - haproxy:2.1-alpine
+        - haproxy:2.2-alpine
     container_name: frontend
     restart: on-failure:5
+    #environment: 
+    #  - haproxy_user_pass=password2223
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 5s
+        delay: 10s
         max_attempts: 5
         window: 120s
       resources:
@@ -24,6 +26,7 @@ services:
           memory: 15M
     volumes:
       - ./container-haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./container-haproxy/hello.lua:/usr/local/bin/hello.lua:ro
     #cap_drop:
     #  - all
     #cap_add:
@@ -125,9 +128,9 @@ services:
         - python:3-slim-buster
     container_name: pyapp
     environment: 
-        - TZ=UTC
-        # start in Dev mode
-        - env_mpcpyapp_dev=true
+      - TZ=UTC
+      - env_mpypyapp_envtest=docker_compose
+      - env_mpcpyapp_dev=true
     volumes:
       - "./container-pyapp/:/pyapp:ro"
     cap_drop:

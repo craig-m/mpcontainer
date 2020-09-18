@@ -28,5 +28,8 @@ USER pyapp
 ARG mpcpyapp_dev=false
 ENV env_mpcpyapp_dev=$mpcpyapp_dev
 
+ARG mpypyapp_envtest=container_default
+ENV env_mpypyapp_envtest=$mpypyapp_envtest
+
 # entry point - launch gunicorn
 CMD ["bash", "/pyapp/start.sh"]
