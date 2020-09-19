@@ -11,8 +11,8 @@ services:
         - haproxy:2.2-alpine
     container_name: frontend
     restart: on-failure:5
-    #environment: 
-    #  - haproxy_user_pass=password2223
+    environment: 
+      - HAPX_US_PASS=leftthedefault2
     deploy:
       restart_policy:
         condition: on-failure
@@ -27,14 +27,16 @@ services:
     volumes:
       - ./container-haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
       - ./container-haproxy/hello.lua:/usr/local/bin/hello.lua:ro
-    #cap_drop:
-    #  - all
-    #cap_add:
-    #  - net_bind_service
-    #  - chown
-    #  - dac_override
-    #  - setgid
-    #  - setuid
+    cap_drop:
+      - setfcap
+      - net_bind_service
+      - dac_override
+      - net_raw
+    cap_add:
+      - chown
+      - dac_override
+      - setgid
+      - setuid
     ports:
       - "3000:3001"
     networks:
@@ -87,6 +89,7 @@ services:
     cap_drop:
       - net_bind_service
       - chown
+      - mknod
       - dac_override
     expose:
       - "6600"
@@ -115,6 +118,9 @@ services:
     cap_drop:
       - fsetid
       - setgid
+      - mknod
+      - net_bind_service
+      - dac_override
     expose:
       - "7681"
     networks:

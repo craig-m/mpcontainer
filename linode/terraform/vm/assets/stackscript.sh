@@ -147,7 +147,7 @@ else
     # add docker
     logit "setup docker repo"
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-    apt-key fingerprint 0EBFCD88 || { logit "ERROR bad fingerprint" && exit 1 }
+    apt-key fingerprint 0EBFCD88 || exit 1
     add-apt-repository \
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
         $(lsb_release -cs) \
@@ -169,7 +169,7 @@ if [[ "${git_clone}" = "true" ]]; then
     logit "have code already"
 else
     git -C /opt/linode_vm/ clone https://github.com/craig-m/mpcontainer.git && \
-        sqlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('git_clone', 'true');"
+    qlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('git_clone', 'true');"
     logit "checked out code"
 fi
 
