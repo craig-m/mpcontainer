@@ -52,7 +52,7 @@ def mpdAuth(client, secret):
 
 @app.route('/')
 def index():
-    html = "pyapp"
+    html = "mpc-pyapp"
     return html.format()
 
 # container info
@@ -94,8 +94,9 @@ def pageabout():
     return render_template('about.html')
 
 # MPD
+
 @app.route("/mpd/stat.json")
-@cache.cached(timeout=120)
+@cache.cached(timeout=300)
 def mpdstat():
     client = MPDClient()
     if mpdConnect(client, MPDCON_ID):
@@ -103,13 +104,22 @@ def mpdstat():
             print('Connected to: ' + MPDURL + ' on:',MPDPORT)
     if mpdAuth(client, MPDPASS):
         if DEBUG:
-            print('Authenticated')
+            print('authed to: ' + MPDURL + ' on:',MPDPORT)
+        # output
+        return client.stats(), client.disconnect()
     else:
         print('error: mpd connection failed')
         client.disconnect()
-    # output
-    return client.stats(), client.disconnect()
+        html = "stats error"
+        return html.format()
 
+@app.route("/mpd/current.json")
+@cache.cached(timeout=60)
+def mpdnowplay():
+    client = MPDClient()
+    mpdConnect(client, MPDCON_ID)
+    mpdAuth(client, MPDPASS)
+    return client.currentsong(), client.disconnect()
 
 #
 # Main

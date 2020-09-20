@@ -28,16 +28,17 @@ fi
 # note: container default is Prod
 if [[ $env_mpcpyapp_dev == "true" ]]; then
   echo "--- env_mpcpyapp_dev ${env_mpcpyapp_dev} (Dev mode) ---";
-  # gunicorn opt
+
   gmpco_start_opt="--log-level info --reload --reload-engine auto"
-  # app settings
   export mpypyapp_debug="True"
+  export FLASK_ENV=development
+
 else
   echo "--- production gunicorn settings ---"
-  # gunicorn opt
+
   gmpco_start_opt="--log-level warning --preload"
-  # app settings
   export mpypyapp_debug="False" 
+  export FLASK_ENV=production
 
   # production checks
   if [[ ! 644 = $(stat -c '%a' /pyapp/mpcpyapp.py) ]]; then
