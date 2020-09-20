@@ -2,7 +2,7 @@
 
 The [Linode](https://www.linode.com/) Kubernetes Engine ([LKE](https://www.linode.com/products/kubernetes/)) is a fully-managed container orchestration engine. Linode also offer great hosting for linux virtual machines.
 
-We can use [Terraform](https://www.terraform.io/) to provision an environment in Linode for MPContainer.
+We can use [Terraform](https://www.terraform.io/) to provision an environment in Linode for MPContainer, on LKE or in a VM.
 
 ## admin container
 

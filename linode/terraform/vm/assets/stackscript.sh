@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# MPContainer StackScript (beta)
+# MPContainer StackScript
 # https://github.com/craig-m/mpcontainer
 
 #
@@ -23,8 +23,6 @@ logit() {
 }
 
 logit "starting deployment"
-logit "stackscript test var: ${TESTVAR}"
-logit "Linode ID is: ${LINODE_ID}"
 
 if [ ! -d /root/log/ ]; then
     mkdir -v /root/log/;
@@ -72,8 +70,18 @@ apt install -y -q \
 if [ ! -x "$(command -v ansible)" ]; then
     apt-add-repository --yes --update ppa:ansible/ansible
     apt install -y -q ansible
+    mkdir -pv /etc/ansible/facts.d/
     logit "installed ansible"
 fi
+
+# ansible fact
+cat << EOF > /etc/ansible/facts.d/mpconline.fact
+#!/usr/bin/env bash
+# check if mpcontainer port is open. 1 yes, 0 no.
+mpcup=$(curl -6 localhost:3000 --head --silent --connect-timeout .5 | grep "x-clacks-overhead: GNU Terry Pratchett" | wc -l)
+echo "{\"mpc_online\" : \"${mpcup}\"}"
+EOF
+chmod 0755 /etc/ansible/facts.d/mpconline.fact
 
 #
 # env setup
@@ -159,9 +167,14 @@ else
     chmod +x /usr/local/bin/docker-compose
     # test
     logit "test docker"
-    docker run hello-world && sqlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('docker_inst', 'true');" || exit 1
+    docker run hello-world && \
+        sqlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('docker_inst', 'true');" || exit 1
     logit "docker install finished"
 fi
+
+#
+# mpcontainer app
+#
 
 # get source code
 git_clone=$(sqlite3 "${state_db_file}" "SELECT state from sysstate where name='git_clone';")
