@@ -9,7 +9,7 @@ services:
       context: ./container-haproxy/
       cache_from:
         - haproxy:2.2-alpine
-    container_name: frontend
+    container_name: haproxy
     restart: on-failure:5
     environment: 
       - HAPX_US_PASS=leftthedefault2
@@ -103,7 +103,7 @@ services:
       context: ./container-shell/
       cache_from:
         - tsl0922/ttyd
-    container_name: adminmmpd
+    container_name: adminshell
     environment: 
         - TZ=UTC
     restart: on-failure:5
@@ -132,8 +132,8 @@ services:
       context: ./container-pyapp/
       cache_from:
         - python:3-slim-buster
-    container_name: pyapp
-    environment: 
+    container_name: mpcpyapp
+    environment:
       - TZ=UTC
       - env_mpypyapp_envtest=docker_compose
       - env_mpcpyapp_dev=true
