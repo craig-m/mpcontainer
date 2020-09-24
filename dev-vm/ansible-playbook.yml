@@ -1,8 +1,9 @@
 ---
 #
+# Ansible Playbook for MPContainer development VM
 # https://docs.ansible.com/ansible/latest/index.html
 #
-- name: MPContainer Dev VM Playbook
+- name: MPContainer Dev VM
   hosts: all
   gather_facts: yes
   vars:
@@ -22,7 +23,8 @@
       { add_item: 'socat' },
       { add_item: 'expect' },
       { add_item: 'jq' },
-      { add_item: 'net-tools' }
+      { add_item: 'net-tools' },
+      { add_item: 'sqlite3' }
     ]
     package_remove: [
       { del_item: 'telnet' }
