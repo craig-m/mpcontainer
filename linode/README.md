@@ -50,13 +50,13 @@ terraform init
 
 See what the plan will do (no changes):
 
-```
+```shell
 terraform plan
 ```
 
 deploy the plan (makes changes!):
 
-```
+```shell
 terraform apply -var "token=$(grep token ~/.config/linode-cli | awk '{print $3}')"
 ```
 
@@ -66,7 +66,7 @@ We need to connect kubectl to the lke.
 
 Get the config with terraform:
 
-```
+```shell
 export KUBE_VAR=`terraform output kubeconfig`
 echo $KUBE_VAR | base64 -d > ~/lke-mpc.yaml
 export KUBECONFIG=~/lke-mpc.yaml
@@ -74,7 +74,7 @@ export KUBECONFIG=~/lke-mpc.yaml
 
 test it:
 
-```
+```shell
 kubectl config get-contexts
 kubectl get nodes
 ```
