@@ -1,11 +1,16 @@
-name: build containers
+name: build-containers
 
 on:
 
   push:
     branches: [ master ]
+    paths:
+      - 'container-**'
+
   pull_request:
     branches: [ master ]
+    paths:
+      - 'container-**'
 
 jobs:
 
@@ -14,53 +19,53 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: docker login
+    - name: docker_login
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
         GIT_TOKE: ${{ secrets.GIT_TOKE }}
       run: |
         echo $GIT_TOKE | docker login https://ghcr.io/ -u $GIT_UN --password-stdin
 
-    - name: build mpcontainer-mpd
+    - name: build_mpcontainer-mpd
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
         docker build -t mpcontainer-mpd:latest -f container-mpd/Dockerfile ./container-mpd/
         docker tag mpcontainer-mpd ghcr.io/$GIT_UN/mpcontainer-mpd:latest
 
-    - name: build mpcontainer-shell
+    - name: build_mpcontainer-shell
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
         docker build -t mpcontainer-shell:latest -f container-shell/Dockerfile ./container-shell/
         docker tag mpcontainer-shell ghcr.io/$GIT_UN/mpcontainer-shell:latest
 
-    - name: build mpcontainer-web
+    - name: build_mpcontainer-web
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
         docker build -t mpcontainer-web:latest -f container-web/Dockerfile ./container-web/
         docker tag mpcontainer-web ghcr.io/$GIT_UN/mpcontainer-web:latest
 
-    - name: build mpcontainer-pyapp
+    - name: build_mpcontainer-pyapp
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
         docker build -t mpcontainer-pyapp:latest -f container-pyapp/Dockerfile ./container-pyapp/
         docker tag mpcontainer-pyapp ghcr.io/$GIT_UN/mpcontainer-pyapp
 
-    - name: build mpcontainer-frontend
+    - name: build_mpcontainer-frontend
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
         docker build -t mpcontainer-frontend:latest -f container-haproxy/Dockerfile ./container-haproxy/
         docker tag mpcontainer-frontend ghcr.io/$GIT_UN/mpcontainer-frontend
 
-    - name: list docker images
+    - name: list_docker_images
       run: |
         docker images
 
-    - name: push images to GitHub registry
+    - name: push_images_GitHub_reg
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |

@@ -149,9 +149,7 @@ kubectl -n musicplayer create secret generic regcred \
 
 ## Run
 
-After copying and editing what you need from ./kubernetes/examples/ to ./kubernetes/.
-
-Apply the manifests to bring up MPContainer:
+After copying and editing what you need from `/kubernetes/examples/` to `/kubernetes/` for the configuration of your music volume you can apply the Kubernetes manifests to bring up MPContainer:
 
 ```shell
 kubectl apply -f ./kubernetes/namespace.yaml
@@ -161,5 +159,5 @@ kubectl apply -f ./kubernetes/
 Check on it:
 
 ```shell
-kubectl -n musicplayer get deployments,pods,svc,ep
+kubectl -n musicplayer get deployments,pods,svc,ep,pv
 ```

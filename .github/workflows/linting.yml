@@ -1,11 +1,18 @@
-name: linting actions
+name: linting
 
 on:
 
   push:
     branches: [ master ]
+    paths:
+      - 'dev-vm/ansible-playbook.yml'
+      - 'linode/ansible-playbook.yml'
+
   pull_request:
     branches: [ master ]
+    paths:
+      - 'dev-vm/ansible-playbook.yml'
+      - 'linode/ansible-playbook.yml'
 
 jobs:
 

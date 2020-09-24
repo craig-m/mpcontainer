@@ -15,8 +15,6 @@ RUN chmod 644 /usr/local/etc/haproxy/haproxy.cfg && \
 
 COPY *.lua /usr/local/bin/
 
-# to encrypt
-# printf "leftthedefault" | mkpasswd --stdin --method=sha-512
 ARG haproxy_user_pass=leftthedefault1
 ENV HAPX_US_PASS=$haproxy_user_pass
 

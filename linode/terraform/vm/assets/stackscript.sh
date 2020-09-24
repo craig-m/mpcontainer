@@ -26,6 +26,7 @@ logit "starting deployment"
 
 if [ ! -d /root/log/ ]; then
     mkdir -v /root/log/;
+    # capture the flag token
     touch -f /root/log/ctf.txt
     echo ${UUIDVAR} > /root/log/ctf.txt
 else

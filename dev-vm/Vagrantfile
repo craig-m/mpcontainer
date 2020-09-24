@@ -11,7 +11,7 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
     config.vm.box = "generic/ubuntu1804"
-    config.vm.box_version = "3.0.10"
+    config.vm.box_version = "3.0.32"
     config.vm.box_check_update = false
     config.vm.synced_folder "../", "/vagrant", type: "rsync"
 

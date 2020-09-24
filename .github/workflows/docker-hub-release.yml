@@ -1,6 +1,7 @@
 name: docker-hub-release
 
 on:
+
   release:
     types:
       - created

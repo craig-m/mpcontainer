@@ -1,11 +1,18 @@
-name: security scans
+name: security-scans
 
 on:
 
   push:
     branches: [ master ]
+    paths:
+      - '/linode/terraform/vm/'
+      - '/linode/terraform/lke/'
+
   pull_request:
     branches: [ master ]
+    paths:
+      - '/linode/terraform/vm/'
+      - '/linode/terraform/lke/'
 
 jobs:
 
@@ -14,7 +21,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: terraform-security-sca
+    - name: terraform-security-scan-vm
       uses: triat/terraform-security-scan@v1
       with:
         args: "tfsec_actions_working_dir: ./linode/terraform/vm/"
+
+    - name: terraform-security-scan-lke
+      uses: triat/terraform-security-scan@v1
+      with:
+        args: "tfsec_actions_working_dir: ./linode/terraform/lke/"

@@ -27,6 +27,7 @@ resource "linode_stackscript" "mpc_vm_stackscript" {
 }
 
 
+# gen UUID for as Capture The Flag token ;)
 resource "random_uuid" "vmtrack" { }
 
 resource "random_password" "my_root_password" {
