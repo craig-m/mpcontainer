@@ -1,0 +1,26 @@
+#
+# MPContainer compose (dev components)
+#
+version: '3.7'
+services:
+  # ------ mpcontainer-frontend ------
+  frontend:
+    volumes:
+      - ./container-haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./container-haproxy/hello.lua:/usr/local/bin/hello.lua:ro
+  # ------ mpcontainer-web ------
+  backendweb:
+    volumes:
+     - ./container-web/nginx.conf:/etc/nginx/nginx.conf:ro
+     - ./container-web/html/:/usr/share/nginx/html:ro
+  # ------ mpcontainer-shell ------
+  adminmmpd:
+    volumes:
+     - webshelldata:/home/dj/data-vol/
+  # ------ mpcontainer-pyapp ------
+  mpcpyapp:
+    volumes:
+     - ./container-pyapp/:/pyapp:ro
+
+volumes:
+  webshelldata:

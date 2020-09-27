@@ -7,6 +7,7 @@ Moving the programs I like, and refuse to give up, into the modern world of brow
 ![build containers](https://github.com/craig-m/mpcontainer/workflows/build%20containers/badge.svg)
 ![linting actions](https://github.com/craig-m/mpcontainer/workflows/linting%20actions/badge.svg)
 
+
 ## App Architecture
 
 An ASCII art diagram:
@@ -75,18 +76,27 @@ Put some music into `.\music\db\` so you can use the Jukebox.
 
 ### docker-compose
 
-build containers and start system:
+Build containers and start system:
 
 ```shell
-docker-compose -f "docker-compose.yml" up -d --build
+docker-compose -f docker-compose.yml up -d --build
 ```
 
-check on everything:
+If you're deving or want to mount config files from the repo:
+
+```shell
+docker-compose -f docker-compose.yml -f dev-compose.yaml up -d --build
+```
+
+Check on everything:
 
 ```shell
 docker-compose ps
 docker-compose top
 ```
+
+By default MPContainer is available on port 3000 of your local interface. 
+The admin shell is password protected, and the `HAPX_US_PASS` & `HAPX_US_PASS` can be set to override the defaults (set in docker-compose and haproxy.conf).
 
 ## build images
 

@@ -1,5 +1,5 @@
 #
-# MPContainer compose (for dev)
+# MPContainer compose
 #
 version: '3.7'
 services:
@@ -24,9 +24,6 @@ services:
           memory: 20M
         reservations:
           memory: 15M
-    volumes:
-      - ./container-haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-      - ./container-haproxy/hello.lua:/usr/local/bin/hello.lua:ro
     cap_drop:
       - setfcap
       - net_bind_service
@@ -65,9 +62,6 @@ services:
           memory: 15M
     ports:
       - "8880"
-    volumes:
-      - "./container-web/nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "./container-web/html/:/usr/share/nginx/html:ro"
     networks:
       - webfrontnet
   # ------ mpcontainer-mpd ------
@@ -85,7 +79,7 @@ services:
         max_attempts: 5
         window: 120s
     volumes:
-        - "./music/db:/var/lib/mpd/music:ro"
+        - ./music/db:/var/lib/mpd/music:ro
     cap_drop:
       - net_bind_service
       - chown
@@ -113,8 +107,6 @@ services:
         delay: 5s
         max_attempts: 5
         window: 120s
-    volumes:
-      - webshelldata:/home/dj/data-vol/
     cap_drop:
       - fsetid
       - setgid
@@ -137,8 +129,6 @@ services:
       - TZ=UTC
       - env_mpypyapp_envtest=docker_compose
       - env_mpcpyapp_dev=true
-    volumes:
-      - "./container-pyapp/:/pyapp:ro"
     cap_drop:
       - net_bind_service
       - chown
@@ -150,9 +140,6 @@ services:
     networks:
       - webfrontnet
       - mpdadmin
-
-volumes:
-  webshelldata:
 
 networks:
   webfrontnet:
