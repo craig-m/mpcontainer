@@ -14,4 +14,4 @@ spec:
   mountOptions:
     - ro
   hostPath:
-    path: \Users\dev\git\mpcontainer\music\db\
+    path: /vagrant/music/db

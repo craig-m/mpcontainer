@@ -11,19 +11,8 @@ services:
         - haproxy:2.2-alpine
     container_name: haproxy
     restart: on-failure:5
-    environment: 
+    environment:
       - HAPX_US_PASS=leftthedefault2
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 10s
-        max_attempts: 5
-        window: 120s
-      resources:
-        limits:
-          memory: 20M
-        reservations:
-          memory: 15M
     cap_drop:
       - setfcap
       - net_bind_service
@@ -49,17 +38,6 @@ services:
       context: ./container-web/
     container_name: backendweb
     restart: on-failure:5
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-        window: 120s
-      resources:
-        limits:
-          memory: 20M
-        reservations:
-          memory: 15M
     ports:
       - "8880"
     networks:
@@ -72,12 +50,6 @@ services:
         - debian:buster-slim
     container_name: backendmpd
     restart: on-failure:5
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-        window: 120s
     volumes:
         - ./music/db:/var/lib/mpd/music:ro
     cap_drop:
@@ -101,12 +73,6 @@ services:
     environment: 
         - TZ=UTC
     restart: on-failure:5
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-        window: 120s
     cap_drop:
       - fsetid
       - setgid
