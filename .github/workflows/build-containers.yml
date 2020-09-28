@@ -7,11 +7,6 @@ on:
     paths:
       - 'container-**'
 
-  pull_request:
-    branches: [ master ]
-    paths:
-      - 'container-**'
-
 jobs:
 
   container-build:

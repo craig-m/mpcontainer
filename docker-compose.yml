@@ -94,7 +94,6 @@ services:
     environment:
       - TZ=UTC
       - env_mpypyapp_envtest=docker_compose
-      - env_mpcpyapp_dev=true
     cap_drop:
       - net_bind_service
       - chown
