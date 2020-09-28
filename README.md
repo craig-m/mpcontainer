@@ -4,8 +4,8 @@ Music Player Container - A streaming Jukebox setup.
 
 Moving the programs I like, and refuse to give up, into the modern world of browsers and containers. For learning and fun, not profit.
 
-![build containers](https://github.com/craig-m/mpcontainer/workflows/build%20containers/badge.svg)
-![linting actions](https://github.com/craig-m/mpcontainer/workflows/linting%20actions/badge.svg)
+![build containers](https://github.com/craig-m/mpcontainer/workflows/build-containers/badge.svg)
+![linting actions](https://github.com/craig-m/mpcontainer/workflows/linting/badge.svg)
 
 ## App Architecture
 
