@@ -4,7 +4,7 @@
 FROM node:14-alpine
 WORKDIR /home/node/app
 COPY package.json* /home/node/app/
-RUN chown node:node /home/node/*
+RUN chown -R node:node /home/node/
 USER node
 RUN npm install
 
@@ -26,7 +26,8 @@ RUN chmod 644 /etc/nginx/nginx.conf && \
     chmod 600 /var/cache/nginx/proxy_temp && \
     chown nginx:root /var/cache/nginx/client_temp && \
     chown nginx:root /var/run && \
-    chmod 775 /var/run
+    chmod 775 /var/run && \
+    chmod -R 777 /tmp
 
 COPY ./html/ /usr/share/nginx/html/
 
