@@ -5,7 +5,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'container-web/'
+      - 'container-web/**'
 
 jobs:
 
