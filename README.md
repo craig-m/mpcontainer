@@ -58,9 +58,9 @@ Access to this should be restricted on public deployments, this security is left
 
 A [python](https://www.python.org/) [flask](https://flask.palletsprojects.com/en/1.1.x/) web app, run from [Gunicorn](https://gunicorn.org/).
 
-To talk to the MPD container (with a read only user), and provide other dynamic information.
+Connects to the MPD api (with a read only user) to get stream and other dynamic information about MPD.
 
-### future dev plans
+### future plans
 
 Planning to do some of the following.
 
@@ -85,7 +85,7 @@ docker-compose -f docker-compose.yml up -d --build
 If you're deving or want to mount config files from the repo:
 
 ```shell
-docker-compose -f docker-compose.yml -f dev-compose.yaml up -d --build
+docker-compose -f docker-compose.yml -f dev-compose.yaml up --build
 ```
 
 Check on everything:
@@ -95,7 +95,8 @@ docker-compose ps
 docker-compose top
 ```
 
-By default MPContainer is available on port 3000 of your local interface. 
+By default MPContainer is available on port 3000 of your local interface.
+
 The admin shell is password protected, and the `HAPX_US_PASS` & `HAPX_US_PASS` can be set to override the defaults (set in docker-compose and haproxy.conf).
 
 ## build images

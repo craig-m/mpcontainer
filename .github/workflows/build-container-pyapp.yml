@@ -1,0 +1,39 @@
+name: build-containers-pyapp
+
+on:
+
+  push:
+    branches: [ master ]
+    paths:
+      - 'container-pyapp/'
+
+jobs:
+
+  container-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: docker_login
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
+        GIT_TOKE: ${{ secrets.GIT_TOKE }}
+      run: |
+        echo $GIT_TOKE | docker login https://ghcr.io/ -u $GIT_UN --password-stdin
+
+    - name: build_mpcontainer-pyapp
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
+      run: |
+        docker build -t mpcontainer-pyapp:latest -f container-pyapp/Dockerfile ./container-pyapp/
+        docker tag mpcontainer-pyapp ghcr.io/$GIT_UN/mpcontainer-pyapp
+
+    - name: list_docker_images
+      run: |
+        docker images
+
+    - name: push_images_GitHub_reg
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
+      run: |
+        docker push ghcr.io/$GIT_UN/mpcontainer-pyapp:latest

@@ -22,7 +22,7 @@ jobs:
     - uses: actions/checkout@v2
 
     # check ansible
-    - name: lint ansible playbooks
+    - name: lint_ansible_playbooks
       uses: ansible/ansible-lint-action@master
       with:
         targets: |

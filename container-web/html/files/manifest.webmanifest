@@ -1,0 +1,10 @@
+{
+    "short_name": "MPContainer",
+    "name": "MPContainer Jukebox",
+    "description": "Music Player Container",
+    "start_url": "/",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#ffffff"
+}

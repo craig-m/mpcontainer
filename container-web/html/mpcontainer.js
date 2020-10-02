@@ -16,7 +16,7 @@ xmlhttp.onreadystatechange = function() {
 xmlhttp.open("GET", "/pyapp/mpd/stat.json", true);
 xmlhttp.send();
 
-/* footer ip */
+/* footer */
 $(document).ready(function(){
-  $("#mpcpyip").load("/pyapp/client/ip/");
+  $("#mpcpyip").load("/pyapp/host/date/");
 });

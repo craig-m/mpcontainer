@@ -8,62 +8,112 @@ on:
 
 jobs:
 
-  container-build:
+  container-build-mpd:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-
     - name: docker login
       env:
         DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
         DOCK_HUB_PW: ${{ secrets.DOCK_HUB_PW }}
       run: |
         echo $DOCK_HUB_PW | docker login -u $DOCK_HUB_UN --password-stdin
-
-    - name: build mpcontainer-mpd
+    - name: build_mpcontainer-mpd
       env:
         DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
       run: |
         docker build -t mpcontainer-mpd:latest -f container-mpd/Dockerfile ./container-mpd/
         docker tag mpcontainer-mpd $DOCK_HUB_UN/mpcontainer-mpd:latest
+    - name: push image to Docker Hub
+      env:
+        DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
+      run: |
+        docker push $DOCK_HUB_UN/mpcontainer-mpd:latest
 
-    - name: build mpcontainer-shell
+  container-build-shell:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
+        DOCK_HUB_PW: ${{ secrets.DOCK_HUB_PW }}
+      run: |
+        echo $DOCK_HUB_PW | docker login -u $DOCK_HUB_UN --password-stdin
+    - name: build_mpcontainer-shell
       env:
         DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
       run: |
         docker build -t mpcontainer-shell:latest -f container-shell/Dockerfile ./container-shell/
         docker tag mpcontainer-shell $DOCK_HUB_UN/mpcontainer-shell:latest
+    - name: push images to Docker Hub
+      env:
+        DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
+      run: |
+        docker push $DOCK_HUB_UN/mpcontainer-shell:latest
 
-    - name: build mpcontainer-web
+  container-build-web:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
+        DOCK_HUB_PW: ${{ secrets.DOCK_HUB_PW }}
+      run: |
+        echo $DOCK_HUB_PW | docker login -u $DOCK_HUB_UN --password-stdin
+    - name: build_mpcontainer-web
       env:
         DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
       run: |
         docker build -t mpcontainer-web:latest -f container-web/Dockerfile ./container-web/
         docker tag mpcontainer-web $DOCK_HUB_UN/mpcontainer-web:latest
+    - name: push images to Docker Hub
+      env:
+        DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
+      run: |
+        docker push $DOCK_HUB_UN/mpcontainer-web:latest
 
-    - name: build mpcontainer-pyapp
+  container-build-pyapp:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
+        DOCK_HUB_PW: ${{ secrets.DOCK_HUB_PW }}
+      run: |
+        echo $DOCK_HUB_PW | docker login -u $DOCK_HUB_UN --password-stdin
+    - name: build_mpcontainer-pyapp
       env:
         DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
       run: |
         docker build -t mpcontainer-pyapp:latest -f container-pyapp/Dockerfile ./container-pyapp/
         docker tag mpcontainer-pyapp $DOCK_HUB_UN/mpcontainer-pyapp
+    - name: push images to Docker Hub
+      env:
+        DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
+      run: |
+        docker push $DOCK_HUB_UN/mpcontainer-pyapp:latest
 
-    - name: build mpcontainer-frontend
+  container-build-front:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
+        DOCK_HUB_PW: ${{ secrets.DOCK_HUB_PW }}
+      run: |
+        echo $DOCK_HUB_PW | docker login -u $DOCK_HUB_UN --password-stdin
+    - name: build_mpcontainer-frontend
       env:
         DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
       run: |
         docker build -t mpcontainer-frontend:latest -f container-haproxy/Dockerfile ./container-haproxy/
         docker tag mpcontainer-frontend $DOCK_HUB_UN/mpcontainer-frontend
-
-    - name: list docker images
-      run: docker images
-
     - name: push images to Docker Hub
       env:
         DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
       run: |
-        docker push $DOCK_HUB_UN/mpcontainer-mpd:latest
-        docker push $DOCK_HUB_UN/mpcontainer-shell:latest
-        docker push $DOCK_HUB_UN/mpcontainer-web:latest
-        docker push $DOCK_HUB_UN/mpcontainer-pyapp:latest
         docker push $DOCK_HUB_UN/mpcontainer-frontend:latest

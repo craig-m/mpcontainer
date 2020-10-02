@@ -14,6 +14,7 @@ Vagrant.configure("2") do |config|
     config.vm.box_version = "3.0.32"
     config.vm.box_check_update = false
     config.vm.synced_folder "../", "/vagrant", type: "rsync"
+    config.vm.box = "mpcontainer-dev-vm"
 
     config.vm.provision "ansible_local" do |ansible|
         ansible.playbook = "dev-vm/ansible-playbook.yml"

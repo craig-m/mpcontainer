@@ -1,0 +1,39 @@
+name: build-container-web
+
+on:
+
+  push:
+    branches: [ master ]
+    paths:
+      - 'container-web/'
+
+jobs:
+
+  container-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: docker_login
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
+        GIT_TOKE: ${{ secrets.GIT_TOKE }}
+      run: |
+        echo $GIT_TOKE | docker login https://ghcr.io/ -u $GIT_UN --password-stdin
+
+    - name: build_mpcontainer-web
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
+      run: |
+        docker build -t mpcontainer-web:latest -f container-web/Dockerfile ./container-web/
+        docker tag mpcontainer-web ghcr.io/$GIT_UN/mpcontainer-web:latest
+
+    - name: list_docker_images
+      run: |
+        docker images
+
+    - name: push_images_GitHub_reg
+      env:
+        GIT_UN: ${{ secrets.GIT_UN }}
+      run: |
+        docker push ghcr.io/$GIT_UN/mpcontainer-web:latest

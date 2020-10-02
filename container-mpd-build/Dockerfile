@@ -54,7 +54,7 @@ RUN mkdir /etc/mpd && \
   mkdir -pv /code && \
   chown builder:builder -R /code
 
-COPY build.sh /code/build.sh
+COPY build_sh /code/build.sh
 
 USER builder
 WORKDIR /code

@@ -1,7 +1,11 @@
 ---
 #
-# Ansible Playbook for MPContainer development VM
-# https://docs.ansible.com/ansible/latest/index.html
+# Ansible Playbook for MPContainer development VM:
+#
+# [*] common setup tasks
+# [.] install podman (CentOS Only)
+# [.] install docker (Ubuntu Only)
+# [*] common testing
 #
 - name: MPContainer Dev VM
   hosts: all

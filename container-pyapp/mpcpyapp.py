@@ -7,6 +7,7 @@ import flask
 import logging
 import os
 import socket
+from datetime import datetime
 from flask import Flask, request, render_template
 from flask_caching import Cache
 from mpd import (MPDClient, CommandError)
@@ -67,6 +68,10 @@ def hostenvtest():
     html = "{envinfo}"
     return html.format(envinfo=os.getenv('env_mpypyapp_envtest'))
 
+@app.route('/host/date/')
+def thedate():
+    html = "{date}"
+    return html.format(date=datetime.now())
 
 # client info
 

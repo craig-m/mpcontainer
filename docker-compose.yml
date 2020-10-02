@@ -30,6 +30,7 @@ services:
       - webfrontmpd
     depends_on:
       - backendweb
+      - mpcpyapp
     labels:
       kompose.service.type: LoadBalancer
   # ------ mpcontainer-web ------
@@ -84,6 +85,8 @@ services:
     networks:
       - webfrontnet
       - mpdadmin
+    depends_on:
+      - backendmpd
   # ------ mpcontainer-pyapp ------
   mpcpyapp:
     build:
@@ -105,6 +108,8 @@ services:
     networks:
       - webfrontnet
       - mpdadmin
+    depends_on:
+      - backendmpd
 
 networks:
   webfrontnet:
