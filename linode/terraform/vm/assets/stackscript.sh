@@ -4,7 +4,7 @@
 # https://github.com/craig-m/mpcontainer
 
 #
-# input vars:
+# Linode u_d_f input vars:
 #
 
 # <UDF name="uuidvar" default="aabbccdd-eeff-0011-2233-445566778899" label="uuidvar" example="uuid" />
@@ -165,7 +165,7 @@ else
     apt install -y -q docker-ce docker-ce-cli containerd.io
     # add docker compose
     curl -L "https://github.com/docker/compose/releases/download/1.27.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
+    chmod 755 /usr/local/bin/docker-compose
     # test
     logit "test docker"
     docker run hello-world && \

@@ -7,7 +7,6 @@ Moving the programs I like, and refuse to give up, into the modern world of brow
 ![build containers](https://github.com/craig-m/mpcontainer/workflows/build-containers/badge.svg)
 ![linting actions](https://github.com/craig-m/mpcontainer/workflows/linting/badge.svg)
 
-
 ## App Architecture
 
 An ASCII art diagram:
@@ -38,9 +37,13 @@ What each of the 5 images above contains:
 
 [Music Player Daemon](https://www.musicpd.org/) is a music server that can be controlled with a (mpc) client. Can output vorbis audio stream over http.
 
+![build-container-mpd](https://github.com/craig-m/mpcontainer/workflows/build-container-mpd/badge.svg)
+
 #### 📦 haproxy
 
 [haproxy](https://www.haproxy.org/) is the frontend proxy, do L7 redirects to backends.
+
+![build-container-hpx](https://github.com/craig-m/mpcontainer/workflows/build-container-hpx/badge.svg)
 
 #### 📦 Nginx
 
@@ -48,11 +51,15 @@ What each of the 5 images above contains:
 
 A Multi-stage build is done, npm is not included in the final image.
 
+![build-container-web](https://github.com/craig-m/mpcontainer/workflows/build-container-web/badge.svg)
+
 #### 📦 admin-shell
 
 [ttyd](https://tsl0922.github.io/ttyd/) lets you run a terminal in your browser. From [tmux](https://github.com/tmux/tmux) (a terminal multiplexer) you can use [ncmpcpp](https://rybczak.net/ncmpcpp/) (an ncurses MPC client) to control the MPD server.
 
 Access to this should be restricted on public deployments, this security is left to the user (don't just put this on the open internet). This web shell is for trusted users only.
+
+![build-container-shell](https://github.com/craig-m/mpcontainer/workflows/build-container-shell/badge.svg)
 
 #### 📦 Python-App
 
@@ -60,13 +67,7 @@ A [python](https://www.python.org/) [flask](https://flask.palletsprojects.com/en
 
 Connects to the MPD api (with a read only user) to get stream and other dynamic information about MPD.
 
-### future plans
-
-Planning to do some of the following.
-
-* use [liquidsoap](https://www.liquidsoap.info/) containers for High availability, and to add some radio station logic etc. Use stream silence detection to swap between MPD servers.
-* feed MPD audio stream/s to a pool of [Icecast](https://icecast.org/) containers so we can scale out for more listeners.
-* secondary MPD container for alternate stream.
+![build-containers-pyapp](https://github.com/craig-m/mpcontainer/workflows/build-containers-pyapp/badge.svg)
 
 ## Use
 

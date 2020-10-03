@@ -117,3 +117,12 @@ jobs:
         DOCK_HUB_UN: ${{ secrets.DOCK_HUB_UN }}
       run: |
         docker push $DOCK_HUB_UN/mpcontainer-frontend:latest
+
+  list-my-iamges:
+    runs-on: ubuntu-latest
+    needs: [container-build-mpd, container-build-shell, container-build-mpd, container-build-web, container-build-pyapp, container-build-front]
+    steps:
+    - uses: actions/checkout@v2
+    - name: list_docker_images
+      run: |
+        docker images
