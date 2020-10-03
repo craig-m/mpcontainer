@@ -40,5 +40,8 @@ spec:
         - containerPort: 8888
           protocol: TCP
         resources: {}
+        env:
+          - name: env_mpypyapp_envtest
+            value: "kubernetes_default"
       restartPolicy: Always
       serviceAccountName: ""

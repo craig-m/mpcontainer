@@ -40,5 +40,8 @@ spec:
         - containerPort: 3000
           protocol: TCP
         resources: {}
+        env:
+          - name: HAPX_US_PASS
+            value: "leftthedefault2"
       restartPolicy: Always
       serviceAccountName: ""
