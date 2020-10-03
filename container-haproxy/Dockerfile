@@ -5,7 +5,7 @@ FROM haproxy:2.2-alpine
 EXPOSE 3000/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="1.0"
+LABEL version="1.1"
 LABEL mpcontainer.service="haproxy frontend gateway"
 
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg

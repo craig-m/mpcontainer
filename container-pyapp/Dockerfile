@@ -5,7 +5,7 @@ FROM python:3-slim-buster
 EXPOSE 8888/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="1.0"
+LABEL version="1.1"
 LABEL mpcontainer.service="mpc python3 flask app"
 
 RUN groupadd --system pyapp && \

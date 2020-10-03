@@ -177,6 +177,12 @@ Check on it:
 kubectl -n musicplayer get deployments,pods,svc,ep,pv
 ```
 
+Access the service for testing with a command like:
+
+```shell
+kubectl -n musicplayer port-forward frontend-6bc9c5dd68-frw8g 3000:3001
+```
+
 Clean up:
 
 ```shell

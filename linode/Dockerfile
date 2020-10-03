@@ -1,7 +1,7 @@
 FROM debian:buster-slim
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="1.0"
+LABEL version="1.1"
 LABEL mpcontainer.service="MPC SysAdmin container"
 
 RUN apt-get update && \

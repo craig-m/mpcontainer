@@ -13,7 +13,7 @@ FROM nginx:1.18-alpine
 EXPOSE 8880/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="1.0"
+LABEL version="1.1"
 LABEL mpcontainer.service="Web files"
 
 COPY nginx.conf /etc/nginx/nginx.conf
