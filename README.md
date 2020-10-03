@@ -1,14 +1,10 @@
 # MPContainer
 
-Music Player Container - A streaming Jukebox setup.
+Music Player Container 🔊 - A streaming Jukebox setup.
 
 Moving the programs I like, and refuse to give up, into the modern world of browsers and containers. For learning and fun, not profit.
 
-![linting](https://github.com/craig-m/mpcontainer/workflows/linting/badge.svg)
-
-![security-scans](https://github.com/craig-m/mpcontainer/workflows/security-scans/badge.svg)
-
-![docker-hub-release](https://github.com/craig-m/mpcontainer/workflows/docker-hub-release/badge.svg)
+![linting](https://github.com/craig-m/mpcontainer/workflows/linting/badge.svg) ![security-scans](https://github.com/craig-m/mpcontainer/workflows/security-scans/badge.svg) ![CodeQL](https://github.com/craig-m/mpcontainer/workflows/CodeQL/badge.svg) ![docker-hub-release](https://github.com/craig-m/mpcontainer/workflows/docker-hub-release/badge.svg)
 
 ## App Architecture
 
@@ -131,9 +127,9 @@ make publish
 
 ## Kubernetes
 
-Deploying MPContainer to [Kubernetes](https://kubernetes.io/) is a work in progress.
+Deploying MPContainer to [Kubernetes](https://kubernetes.io/) is a work in progress. Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commits here.
 
-Thanks to [0x646e78](https://github.com/0x646e78) for most of the initial commits here.
+[Docker Desktop](https://www.docker.com/products/docker-desktop) includes a standalone single-node Kubernetes cluster which can be used for dev work.
 
 ### Music Volume
 
