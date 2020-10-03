@@ -4,8 +4,11 @@ Music Player Container - A streaming Jukebox setup.
 
 Moving the programs I like, and refuse to give up, into the modern world of browsers and containers. For learning and fun, not profit.
 
-![build containers](https://github.com/craig-m/mpcontainer/workflows/build-containers/badge.svg)
-![linting actions](https://github.com/craig-m/mpcontainer/workflows/linting/badge.svg)
+![linting](https://github.com/craig-m/mpcontainer/workflows/linting/badge.svg)
+
+![security-scans](https://github.com/craig-m/mpcontainer/workflows/security-scans/badge.svg)
+
+![docker-hub-release](https://github.com/craig-m/mpcontainer/workflows/docker-hub-release/badge.svg)
 
 ## App Architecture
 
@@ -140,7 +143,7 @@ Copy the yaml config files you need for your environment into the kubernetes dir
 
 ```shell
 cp kubernetes/examples/pv-claim.yaml kubernetes/pv-claim.yaml
-cp kubernetes/examples/pv-dev.yaml kubernetes/pv-dev.yaml
+cp kubernetes/examples/pv-store-dev.yaml kubernetes/pv-store-dev.yaml
 ```
 
 See [persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) documentation for more information.
@@ -173,3 +176,11 @@ Check on it:
 ```shell
 kubectl -n musicplayer get deployments,pods,svc,ep,pv
 ```
+
+Clean up:
+
+```shell
+kubectl -n musicplayer delete all --all
+```
+
+That's all!

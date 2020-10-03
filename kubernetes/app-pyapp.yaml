@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    mp.service: pyapp
-  name: pyapp
+    mp.service: mpcpyapp
+  name: mpcpyapp
   namespace: musicplayer
 spec:
   ports:
@@ -11,31 +11,31 @@ spec:
     port: 8888
     targetPort: 8888
   selector:
-    mp.service: pyapp
+    mp.service: mpcpyapp
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    mp.service: pyapp
-  name: pyapp
+    mp.service: mpcpyapp
+  name: mpcpyapp
   namespace: musicplayer
 spec:
   replicas: 1
   selector:
     matchLabels:
-      mp.service: pyapp
+      mp.service: mpcpyapp
   strategy: {}
   template:
     metadata:
       labels:
         mp.network/webfrontnet: "true"
-        mp.service: pyapp
+        mp.service: mpcpyapp
     spec:
       containers:
       - image: crgm/mpcontainer-pyapp:latest
         imagePullPolicy: "Always"
-        name: pyapp
+        name: mpcpyapp
         ports:
         - containerPort: 8888
           protocol: TCP

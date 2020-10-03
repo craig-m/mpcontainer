@@ -21,13 +21,13 @@ Debian pacakge sources:
 
 Create the build container:
 
-```
+```shell
 docker build -t mpcontainer-mpdbuild:latest .
 ```
 
 Run container and login:
 
-```
+```shell
 docker run -it mpcontainer-mpdbuild /bin/bash
 ```
 
@@ -35,7 +35,7 @@ docker run -it mpcontainer-mpdbuild /bin/bash
 
 Run the build script:
 
-```
+```shell
 ./build.sh
 ```
 
