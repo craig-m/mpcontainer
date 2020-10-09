@@ -3,7 +3,7 @@ name: 'compile-mermaid-markdown'
 on:
   push:
     paths:
-      - '**/*.mermaid'
+      - '*.mermaid'
 
 jobs:
   build:
