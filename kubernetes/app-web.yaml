@@ -21,7 +21,7 @@ metadata:
   name: backendweb
   namespace: musicplayer
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       mp.service: backendweb
@@ -40,5 +40,17 @@ spec:
         - containerPort: 8880
           protocol: TCP
         resources: {}
+        livenessProbe:
+          httpGet:
+            path: /ping/stat
+            port: 8880
+          timeoutSeconds: 5
+          initialDelaySeconds: 2
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ping/stat
+            port: 8880
+          timeoutSeconds: 5
       restartPolicy: Always
       serviceAccountName: ""
