@@ -8,41 +8,19 @@ Moving the programs I like, and refuse to give up, into the modern world of brow
 
 ## App Architecture
 
-An ASCII art diagram:
-
-```code
-       ┌───────[ Browser ]                                    
-       V                                                      
-  +-------------+        +-------------+                      
-  |  HA Proxy   |───────>|  NGINX web  |                      
-  +-------------+ (http) +-------------+                      
-       │   │  │                                               
-       │   │  │          +-------------+                      
-       │   │  └───(http)─| Python App  |                      
-       │   │             +-------------+                      
- (http)│   │                      │                           
-       │   └──────(audio)────┐    │(mpc)                      
-       V                     V    V                           
-  +-------------+        +-------------+                      
-  | Admin shell |───────>| MPD server  |=====[ music files ]  
-  +-------------+ (mpc)  +-------------+                      
-```
+![mpcontainer.mermaid](https://raw.githubusercontent.com/craig-m/mpcontainer/master/mpcontainer-mermaid.png)
 
 ### containers
 
-What each of the 5 images above contains:
+What runs in each of the 5 containers that MPContainer consists of.
 
 #### 📦 mpd
 
-[Music Player Daemon](https://www.musicpd.org/) is a music server that can be controlled with a (mpc) client. Can output vorbis audio stream over http.
-
-![build-container-mpd](https://github.com/craig-m/mpcontainer/workflows/build-container-mpd/badge.svg)
+[Music Player Daemon](https://www.musicpd.org/) is a music server that can be controlled with a client over an API ([mpc protocol](https://www.musicpd.org/doc/html/protocol.html)). Can output vorbis audio stream over http.
 
 #### 📦 haproxy
 
 [haproxy](https://www.haproxy.org/) is the frontend proxy, do L7 redirects to backends.
-
-![build-container-hpx](https://github.com/craig-m/mpcontainer/workflows/build-container-hpx/badge.svg)
 
 #### 📦 Nginx
 
@@ -50,15 +28,11 @@ What each of the 5 images above contains:
 
 A Multi-stage build is done, npm is not included in the final image.
 
-![build-container-web](https://github.com/craig-m/mpcontainer/workflows/build-container-web/badge.svg)
-
 #### 📦 admin-shell
 
 [ttyd](https://tsl0922.github.io/ttyd/) lets you run a terminal in your browser. From [tmux](https://github.com/tmux/tmux) (a terminal multiplexer) you can use [ncmpcpp](https://rybczak.net/ncmpcpp/) (an ncurses MPC client) to control the MPD server.
 
 Access to this should be restricted on public deployments, this security is left to the user (don't just put this on the open internet). This web shell is for trusted users only.
-
-![build-container-shell](https://github.com/craig-m/mpcontainer/workflows/build-container-shell/badge.svg)
 
 #### 📦 Python-App
 
@@ -66,7 +40,11 @@ A [python](https://www.python.org/) [flask](https://flask.palletsprojects.com/en
 
 Connects to the MPD api (with a read only user) to get stream and other dynamic information about MPD.
 
-![build-containers-pyapp](https://github.com/craig-m/mpcontainer/workflows/build-containers-pyapp/badge.svg)
+### build status
+
+Thanks to Github [Actions](https://github.com/actions) each time this repo changes the images in the registry are updated too.
+
+![build-container-mpd](https://github.com/craig-m/mpcontainer/workflows/build-container-mpd/badge.svg) ![build-container-hpx](https://github.com/craig-m/mpcontainer/workflows/build-container-hpx/badge.svg) ![build-container-web](https://github.com/craig-m/mpcontainer/workflows/build-container-web/badge.svg) ![build-container-shell](https://github.com/craig-m/mpcontainer/workflows/build-container-shell/badge.svg) ![build-containers-pyapp](https://github.com/craig-m/mpcontainer/workflows/build-containers-pyapp/badge.svg)
 
 ## Use
 
@@ -100,8 +78,6 @@ By default MPContainer is available on port 3000 of your local interface.
 The admin shell is password protected, and the `HAPX_US_PASS` & `HAPX_US_PASS` can be set to override the defaults (set in docker-compose and haproxy.conf).
 
 ## build images
-
-Thanks to Github [Actions](https://github.com/actions) each time this repo changes the images in the registry are updated too.
 
 For manually updating first create a Personal Access Token ([pat](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)) for git, then add create environment vars for this and your username.
 
