@@ -43,6 +43,8 @@ spec:
         readinessProbe:
           exec:
             command:
+            - /bin/sh
+            - -c
             - /usr/local/bin/checkhap.sh
           initialDelaySeconds: 10
           periodSeconds: 10
