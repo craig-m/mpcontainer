@@ -76,7 +76,7 @@ def thedate():
 # health check
 @app.route('/host/ping/stat')
 def healthping():
-    html = "pong"
+    html = "py-pong"
     return html.format()
 
 # client info

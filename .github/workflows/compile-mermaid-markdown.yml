@@ -3,8 +3,7 @@ name: 'compile-mermaid-markdown'
 on:
   push:
     paths:
-      - '*.mermaid'
-      - '**/*.mermaid'
+      - 'mpcontainer.mermaid'
 
 jobs:
   build:
@@ -21,7 +20,7 @@ jobs:
       run: |
         echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -e '.*\.mermaid$' | xargs)"
 
-    - name: md files changed
+    - name: mermaid files changed
       run: |
         echo ${{ steps.getfile.outputs.files }}
 

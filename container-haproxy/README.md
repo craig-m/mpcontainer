@@ -35,10 +35,14 @@ Issue commands:
 echo "help" | nc local:/tmp/hapee-lb.sock
 ```
 
+```shell
+echo "show backend" | nc local:/tmp/hapee-lb.sock
+```
+
 This will let us add/remove hosts on backend servers.
 
 notes:
 
 * https://www.haproxy.com/blog/dynamic-scaling-for-microservices-with-runtime-api/
 
-TODO: have Kubernetes call a script, to interact with haproxy api, that can manage the pool of backend servers as containers scale out.
+TODO: have Kubernetes to interact with haproxy api.

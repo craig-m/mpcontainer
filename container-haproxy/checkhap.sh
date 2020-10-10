@@ -1,0 +1,1 @@
+echo "show backend" | nc local:/tmp/hapee-lb.sock | grep -e 'http_nginx'

@@ -7,6 +7,7 @@ services:
   frontend:
     volumes:
       - ./container-haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./container-haproxy/checkhap.sh:/usr/local/bin/checkhap.sh:ro
       - ./container-haproxy/lua/:/usr/local/bin/lua/:ro
   # ------ mpcontainer-web ------
   backendweb:
