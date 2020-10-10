@@ -46,6 +46,13 @@ spec:
         - containerPort: 3123
           protocol: TCP
         resources: {}
+        readinessProbe:
+          exec:
+            command:
+            - /usr/bin/mpc
+            - -h
+            - DJp455w0rd101@backendmpd
+            - outputs
         tty: true
         volumeMounts:
         - name: music
