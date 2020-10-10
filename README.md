@@ -54,17 +54,25 @@ Put some music into `.\music\db\` so you can use the Jukebox.
 
 ### docker-compose
 
-Build containers and start system:
+Deploy MPContainer in prod, or work in dev.
+
+#### production
+
+Start the system with images on docker hub:
 
 ```shell
-docker-compose -f docker-compose.yml up -d --build
+docker-compose -f docker-compose.yml up -d
 ```
 
-If you're deving or want to mount config files from the repo:
+#### development
+
+If you're deving and want to mount config files from the repo and expose ports etc:
 
 ```shell
 docker-compose -f docker-compose.yml -f dev-compose.yaml up --build
 ```
+
+### check on it
 
 Check on everything:
 
@@ -77,7 +85,7 @@ By default MPContainer is available on port 3000 of your local interface.
 
 The admin shell is password protected, and the `HAPX_US_PASS` & `HAPX_US_PASS` can be set to override the defaults (set in docker-compose and haproxy.conf).
 
-## build images
+## manually build images
 
 For manually updating first create a Personal Access Token ([pat](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)) for git, then add create environment vars for this and your username.
 
@@ -152,7 +160,7 @@ kubectl -n musicplayer get deployments,pods,svc,ep,pv
 Access the service for testing with a command like:
 
 ```shell
-kubectl -n musicplayer port-forward frontend-6bc9c5dd68-frw8g 3000:3001
+kubectl -n musicplayer port-forward frontend-6bc9c5dd68-frw8g 3000:3000
 ```
 
 Clean up:

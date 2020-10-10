@@ -40,7 +40,7 @@ spec:
         - containerPort: 3000
           protocol: TCP
         resources: {}
-        readinessProbe:
+        startupProbe:
           exec:
             command:
             - /bin/sh
@@ -48,6 +48,18 @@ spec:
             - /usr/local/bin/checkhap.sh
           initialDelaySeconds: 10
           periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /ping/stat
+            port: 3000
+          timeoutSeconds: 5
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ping/stat
+            port: 3000
+          timeoutSeconds: 5
         env:
           - name: HAPX_US_PASS
             value: "leftthedefault2"

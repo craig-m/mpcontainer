@@ -5,10 +5,7 @@ version: '3.7'
 services:
   # ------ mpcontainer-frontend ------
   frontend:
-    build:
-      context: ./container-haproxy/
-      cache_from:
-        - haproxy:2.2-alpine
+    image: crgm/mpcontainer-frontend:latest
     container_name: haproxy
     restart: on-failure:5
     environment:
@@ -24,7 +21,7 @@ services:
       - setgid
       - setuid
     ports:
-      - "3000:3001"
+      - "3000:3000"
     networks:
       - webfrontnet
       - webfrontmpd
@@ -35,20 +32,16 @@ services:
       kompose.service.type: LoadBalancer
   # ------ mpcontainer-web ------
   backendweb:
-    build:
-      context: ./container-web/
+    image: crgm/mpcontainer-web:latest
     container_name: backendweb
     restart: on-failure:5
-    ports:
+    expose:
       - "8880"
     networks:
       - webfrontnet
   # ------ mpcontainer-mpd ------
   backendmpd:
-    build:
-      context: ./container-mpd/
-      cache_from:
-        - debian:buster-slim
+    image: crgm/mpcontainer-mpd:latest
     container_name: backendmpd
     restart: on-failure:5
     volumes:
@@ -66,10 +59,7 @@ services:
       - mpdadmin
   # ------ mpcontainer-shell ------
   adminmmpd:
-    build:
-      context: ./container-shell/
-      cache_from:
-        - tsl0922/ttyd
+    image: crgm/mpcontainer-shell:latest
     container_name: adminshell
     environment: 
         - TZ=UTC
@@ -89,13 +79,11 @@ services:
       - backendmpd
   # ------ mpcontainer-pyapp ------
   mpcpyapp:
-    build:
-      context: ./container-pyapp/
-      cache_from:
-        - python:3-slim-buster
+    image: crgm/mpcontainer-pyapp:latest
     container_name: mpcpyapp
     environment:
       - TZ=UTC
+      - env_mpcpyapp_dev=false
       - env_mpypyapp_envtest=docker_compose
     cap_drop:
       - net_bind_service
