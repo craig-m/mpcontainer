@@ -46,6 +46,15 @@ spec:
         - containerPort: 3123
           protocol: TCP
         resources: {}
+        startupProbe:
+          exec:
+            command:
+            - /usr/bin/mpc
+            - -h
+            - DJp455w0rd101@backendmpd
+            - outputs
+          failureThreshold: 30
+          periodSeconds: 10
         readinessProbe:
           exec:
             command:
@@ -53,6 +62,7 @@ spec:
             - -h
             - DJp455w0rd101@backendmpd
             - outputs
+          timeoutSeconds: 30
         tty: true
         volumeMounts:
         - name: music

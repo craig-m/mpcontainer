@@ -10,11 +10,16 @@ echo '-----------------------';
 SCRIPT
 
 Vagrant.configure("2") do |config|
+
+    # --- Ubuntu ---
     config.vm.box = "generic/ubuntu1804"
     config.vm.box_version = "3.0.32"
+    # --- CentOS ---
+    #config.vm.box = "generic/centos8"
+    #config.vm.box_version = "3.0.34"
+
     config.vm.box_check_update = false
     config.vm.synced_folder "../", "/vagrant", type: "rsync"
-    config.vm.box = "mpcontainer-dev-vm"
 
     config.vm.provision "ansible_local" do |ansible|
         ansible.playbook = "dev-vm/ansible-playbook.yml"
@@ -27,4 +32,5 @@ Vagrant.configure("2") do |config|
         t.info = "running inlinescript_post"
         t.run_remote = {inline: $inlinescript_post, :privileged => false}
     end
+
 end

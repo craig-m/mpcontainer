@@ -47,6 +47,12 @@ spec:
 #          timeoutSeconds: 5
 #          initialDelaySeconds: 5
 #          periodSeconds: 10
+#        startupProbe:
+#          httpGet:
+#            path: /host/ping/stat
+#            port: 8888
+#          failureThreshold: 30
+#          periodSeconds: 10
 #        readinessProbe:
 #          httpGet:
 #            path: /host/ping/stat

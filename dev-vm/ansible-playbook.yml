@@ -1,6 +1,8 @@
 ---
 #
-# Ansible Playbook for MPContainer development VM:
+# Ansible Playbook for MPContainer development VM.
+#
+# Sectioned as followed:
 #
 # [*] common setup tasks
 # [.] install podman (CentOS Only)
@@ -28,7 +30,7 @@
       { add_item: 'expect' },
       { add_item: 'jq' },
       { add_item: 'net-tools' },
-      { add_item: 'sqlite3' }
+      { add_item: 'sqlite' }
     ]
     package_remove: [
       { del_item: 'telnet' }
@@ -200,11 +202,9 @@
                   source ~/venv/bin/activate
                   # Set SELinux context
                   chcon -R -t svirt_sandbox_file_t /vagrant/music
-                  chcon -R -t svirt_sandbox_file_t /vagrant/webfiles/*
-                  chcon -R -t svirt_sandbox_file_t /vagrant/haproxy.cfg
-                  chcon -R -t svirt_sandbox_file_t /vagrant/*.conf
                   cd /vagrant/
-                  podman-compose up
+                  podman-compose build
+                  podman-compose -f /vagrant/docker-compose.yml -f /vagrant/dev-compose.yaml up
         - name: done
           debug:
             msg: "CentOS setup done"
@@ -296,11 +296,11 @@
                 mode: 0755
                 content: |
                   #!/usr/bin/env bash
-                  docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 frontend;
+                  docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 haproxy;
                   docker container update --pids-limit=200 --memory-reservation="10m" --memory="25m" --memory-swap="25m" --cpus=2 --restart=on-failure:3 backendweb;
                   docker container update --pids-limit=200 --memory-reservation="10m" --memory="25m" --memory-swap="25m" --cpus=2 --restart=on-failure:3 backendmpd;
-                  docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 adminmmpd;
-                  docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 pyapp;
+                  docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 adminshell;
+                  docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 mpcpyapp;
             - name: copy docker-bench-security script
               copy:
                 dest: "/home/vagrant/docker-bench-security.sh"
