@@ -1,9 +1,9 @@
 graph TD
-    A(client) -->|http/s| C{haproxy}
+    A(fa:fa-user-o client) -->|http/s| C[haproxy<br>fontend]
     C -->|/<br>tcp:8880| D[nginx<br>static hosting]
     C -->|/pyapp/<br>tcp:8888| E[python<br>flask app]
     E -->|mpc api<br>tcp:6600| G
     C -->|/admin/shell<br>tcp:7681| F[admin web shell<br>ttytd + tmux + mpc]
     F -->|mpc api<br>tcp:6600| G
     C -->|/mpd/stream.mp3<br>tcp:3123| G[Music Player Daemon]
-    G -->|file system|J[(music dir)]
+    G -->|file system|J[(music dir<br>fa:fa-file-audio-o fa:fa-file-audio-o fa:fa-file-audio-o)]
