@@ -40,6 +40,18 @@ spec:
         - containerPort: 3000
           protocol: TCP
         resources: {}
+        livenessProbe:
+          httpGet:
+            path: /ping/stat
+            port: 3000
+          timeoutSeconds: 5
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ping/stat
+            port: 3000
+          timeoutSeconds: 3
         env:
           - name: HAPX_US_PASS
             value: "leftthedefault2"

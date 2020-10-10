@@ -8,12 +8,15 @@ LABEL mpcontainer.vendor="MPContainer"
 LABEL version="1.1"
 LABEL mpcontainer.service="haproxy frontend gateway"
 
+RUN mkdir /usr/local/bin/lua
+
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
-COPY *.lua /usr/local/bin/
+COPY lua/*.lua /usr/local/bin/lua/
 
 RUN chmod 644 /usr/local/etc/haproxy/haproxy.cfg && \
     chown root:root /usr/local/etc/haproxy/haproxy.cfg && \
-    chmod o+rX -R /usr/local
+    chmod 644 /usr/local/bin/lua/*.lua && \
+    chown root:root /usr/local/bin/lua/*.lua 
 
 ARG haproxy_user_pass=leftthedefault1
 ENV HAPX_US_PASS=$haproxy_user_pass

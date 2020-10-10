@@ -1,0 +1,1 @@
+core.Debug("HAProxy MPContainer starting\n")

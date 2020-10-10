@@ -41,6 +41,13 @@ spec:
         - containerPort: 7681
           protocol: TCP
         resources: {}
+#        livenessProbe:
+#          exec:
+#            command:
+#            - pgrep
+#            - tini
+#          initialDelaySeconds: 5
+#          periodSeconds: 10
       restartPolicy: Always
       serviceAccountName: ""
       volumes: null

@@ -73,6 +73,12 @@ def thedate():
     html = "{date}"
     return html.format(date=datetime.now())
 
+# health check
+@app.route('/host/ping/stat')
+def healthping():
+    html = "pong"
+    return html.format()
+
 # client info
 
 @app.route('/client/ip/')

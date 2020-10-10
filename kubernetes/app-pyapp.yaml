@@ -40,6 +40,18 @@ spec:
         - containerPort: 8888
           protocol: TCP
         resources: {}
+#        livenessProbe:
+#          httpGet:
+#            path: /host/ping/stat
+#            port: 8888
+#          timeoutSeconds: 5
+#          initialDelaySeconds: 5
+#          periodSeconds: 10
+#        readinessProbe:
+#          httpGet:
+#            path: /host/ping/stat
+#            port: 8888
+#          timeoutSeconds: 3
         env:
           - name: env_mpypyapp_envtest
             value: "kubernetes_default"
