@@ -6,12 +6,18 @@
         {
             "label": "docker-build",
             "type": "shell",
-            "command": "docker-compose -f 'docker-compose.yml' up -d --build",
+            "command": "docker-compose -f 'docker-compose.yml' -f 'dev-compose.yaml' up -d --build",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "docker-logs",
+            "type": "shell",
+            "command": "docker-compose logs --tail='all' -f",
+            "problemMatcher": []
         },
         {
             "label": "vm-ssh",

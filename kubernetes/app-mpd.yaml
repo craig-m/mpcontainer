@@ -51,7 +51,7 @@ spec:
             command:
             - /usr/bin/mpc
             - -h
-            - DJp455w0rd101@backendmpd
+            - DJp455w0rd101@localhost
             - outputs
           failureThreshold: 30
           periodSeconds: 10
@@ -60,7 +60,7 @@ spec:
             command:
             - /usr/bin/mpc
             - -h
-            - DJp455w0rd101@backendmpd
+            - DJp455w0rd101@localhost
             - outputs
           timeoutSeconds: 30
         tty: true
