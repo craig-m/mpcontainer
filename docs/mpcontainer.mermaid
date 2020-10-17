@@ -6,4 +6,4 @@ graph TD
     C -->|/admin/shell<br>tcp:7681| F[admin web shell<br>ttytd + tmux + mpc]
     F -->|mpc api rw<br>tcp:6600| G
     C -->|/mpd/stream.mp3<br>tcp:3123| G[Music Player Daemon]
-    G -->|file system<br>local, nfs, k8 other|J[(music files)]
+    G -->|file system<br>local, nfs, k8 others|J[(music files)]
