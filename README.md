@@ -8,7 +8,7 @@ Moving the programs I like, and refuse to give up, into the modern world of brow
 
 ## App Architecture
 
-![mpcontainer.mermaid](https://raw.githubusercontent.com/craig-m/mpcontainer/master/mpcontainer-mermaid.png)
+![mpcontainer.mermaid](https://raw.githubusercontent.com/craig-m/mpcontainer/master/docs/mpcontainer-mermaid.png)
 
 ### containers
 
