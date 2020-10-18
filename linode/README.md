@@ -100,20 +100,13 @@ apply block store driver:
 
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/linode/linode-blockstorage-csi-driver/master/pkg/linode-bs/deploy/releases/linode-blockstorage-csi-driver-v0.1.6.yaml
+kubectl get storageclasses
 ```
 
-create the volume:
-
-todo: Fix. Why is mine broken?!
+todo: this is broken
 
 ```shell
-kubectl create -f ./kubernetes/examples/pv-store-linode.yaml
-```
-
-apply volume claim:
-
-```shell
-kubectl create -f ./kubernetes/examples/pv-claim-linode.yaml
+kubectl create -f ./kubernetes/examples/linode-storage.yaml
 ```
 
 ### application

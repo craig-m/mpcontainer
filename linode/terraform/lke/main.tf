@@ -2,13 +2,17 @@
 # MPContainer Terraform for LKE
 #
 
+terraform {
+
+}
+
 provider "linode" {
   token = var.token
 }
 
 resource "linode_lke_cluster" "my-cluster" {
     label       = "mpcontainer-cluster"
-    k8s_version = "1.17"
+    k8s_version = "1.18"
     region      = "ap-southeast"
     tags        = ["prod"]
 
