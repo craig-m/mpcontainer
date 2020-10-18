@@ -1,7 +1,7 @@
 # MPContainer web server
 
 # https://hub.docker.com/_/node/
-FROM node:14-alpine
+FROM node:14.14.0-alpine3.12
 WORKDIR /home/node/app
 COPY package.json* /home/node/app/
 RUN chown -R node:node /home/node/
@@ -9,7 +9,7 @@ USER node
 RUN npm install
 
 # https://hub.docker.com/_/nginx
-FROM nginx:1.18-alpine
+FROM nginx:1.18.0-alpine
 EXPOSE 8880/tcp
 
 LABEL mpcontainer.vendor="MPContainer"

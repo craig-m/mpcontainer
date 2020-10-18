@@ -1,7 +1,7 @@
 # mpcontainer git ignore:
 #
 localdata/
-dev-vm/.vagrant/
+vagrant-dev-vm/.vagrant/
 music/db/*
 linode/terraform/lke/.terraform
 linode/terraform/lke/terraform.tfstate*

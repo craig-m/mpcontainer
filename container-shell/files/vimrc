@@ -1,0 +1,4 @@
+# /home/dj/.vimrc
+set laststatus=2
+syntax on
+set number

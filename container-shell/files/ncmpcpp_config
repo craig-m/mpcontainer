@@ -1,0 +1,16 @@
+# /home/dj/.ncmpcpp/config 
+mpd_host = DJp455w0rd101@backendmpd
+mpd_port = 6600
+mpd_connection_timeout = 10
+external_editor = vim
+use_console_editor = yes
+user_interface = alternative
+data_fetching_delay = yes
+colors_enabled = yes
+display_bitrate = yes
+display_volume_level = no
+header_visibility = yes
+statusbar_visibility = yes
+titles_visibility = yes
+enable_window_title = yes
+mouse_support = yes

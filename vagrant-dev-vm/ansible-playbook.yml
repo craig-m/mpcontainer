@@ -89,7 +89,7 @@
             dest: /home/vagrant/run-playbook.sh
             mode: 0755
             content: |
-              ansible-playbook --connection=local -i "127.0.0.1," -- /vagrant/dev-vm/ansible-playbook.yml;
+              ansible-playbook --connection=local -i "127.0.0.1," -- /vagrant/vagrant-dev-vm/ansible-playbook.yml;
         - name: create common folders
           file:
             path: "{{ item.dir }}"
@@ -381,7 +381,7 @@
         mode: 0644
         content: |
           #
-          # MPContainer Dev-VM
+          # MPContainer vagrant-dev-vm
           #
           # Distro: {{ ansible_distribution }}
           #

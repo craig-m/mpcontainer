@@ -1,7 +1,7 @@
 # Python3 MPContainer PyApp
 # https://hub.docker.com/_/python
 
-FROM python:3-slim-buster
+FROM python:3.9.0-slim-buster
 EXPOSE 8888/tcp
 
 LABEL mpcontainer.vendor="MPContainer"

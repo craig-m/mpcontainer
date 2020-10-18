@@ -40,6 +40,8 @@ services:
       context: ./container-pyapp/
       cache_from:
         - python:3-slim-buster
+    ports:
+      - "8888:8888"
     environment:
       - env_mpcpyapp_dev=true
       - env_mpypyapp_envtest=docker_compose_dev

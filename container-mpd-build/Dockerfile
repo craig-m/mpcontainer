@@ -1,7 +1,7 @@
 # MusicPlayerDaemon (MPD) build container
 # https://www.musicpd.org/
 
-FROM debian:buster-slim
+FROM debian:buster-20201012-slim
 EXPOSE 6600/tcp 3123/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
@@ -54,7 +54,7 @@ RUN mkdir /etc/mpd && \
   mkdir -pv /code && \
   chown builder:builder -R /code
 
-COPY build_sh /code/build.sh
+COPY build.sh /code/build.sh
 
 USER builder
 WORKDIR /code

@@ -1,4 +1,4 @@
-# dev-vm
+# vagrant-dev-vm
 
 Development environments, powered by [Vagrant](https://www.vagrantup.com/) and configured by [Ansible](https://www.ansible.com/), to play with different container runtimes and tooling.
 

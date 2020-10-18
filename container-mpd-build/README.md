@@ -43,7 +43,7 @@ to do: spit out a .zip or .deb that can be used.
 
 ## notes
 
-A to do list, things to check, and otehr random information.
+A to do list, things to check, and other random information (even if a low/no priority).
 
 * do [Reproducuble builds](https://reproducible-builds.org/)
 

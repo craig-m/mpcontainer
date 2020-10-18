@@ -6,6 +6,7 @@
 import flask
 import logging
 import os
+import platform
 import socket
 from datetime import datetime
 from flask import Flask, request, render_template
@@ -43,7 +44,6 @@ def mpdAuth(client, secret):
     except CommandError:
         return False
     return True
-
 
 #
 # routes

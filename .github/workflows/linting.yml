@@ -5,13 +5,13 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'dev-vm/ansible-playbook.yml'
+      - 'vagrant-dev-vm/ansible-playbook.yml'
       - 'linode/ansible-playbook.yml'
 
   pull_request:
     branches: [ master ]
     paths:
-      - 'dev-vm/ansible-playbook.yml'
+      - 'vagrant-dev-vm/ansible-playbook.yml'
       - 'linode/ansible-playbook.yml'
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
       uses: ansible/ansible-lint-action@master
       with:
         targets: |
-          dev-vm/ansible-playbook.yml
+          vagrant-dev-vm/ansible-playbook.yml
           linode/ansible-playbook.yml
         # ignore checks: long lines, compare true/false
         args: "-x 601,204"

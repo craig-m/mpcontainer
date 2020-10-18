@@ -1,7 +1,8 @@
 # MusicPlayerDaemon (MPD) server container
 # https://www.musicpd.org/
+# https://hub.docker.com/_/debian
 
-FROM debian:buster-slim
+FROM debian:buster-20201012-slim
 EXPOSE 6600/tcp 3123/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
