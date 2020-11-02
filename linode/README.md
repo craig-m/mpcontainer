@@ -57,7 +57,7 @@ terraform plan
 deploy the plan (makes changes!):
 
 ```shell
-terraform apply -var "token=$(grep token ~/.config/linode-cli | awk '{print $3}')"
+terraform apply -var "token=$(grep token ~/.config/linode-cli | awk '{print $3}')" -auto-approve
 ```
 
 ### setup kubectl

@@ -1,5 +1,4 @@
-# -*- mode: ruby -*-
-# vi: ft=ruby :
+# MPContainer Dev VM
 
 $inlinescript_post = <<-SCRIPT
 echo '-----------------------';
@@ -34,3 +33,6 @@ Vagrant.configure("2") do |config|
     end
 
 end
+
+# -*- mode: ruby -*-
+# vi: ft=ruby :
