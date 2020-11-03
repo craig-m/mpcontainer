@@ -66,9 +66,9 @@ kubectl -n musicplayer port-forward frontend-6bc9c5dd68-frw8g 3000:3000
 kubectl -n musicplayer delete all --all
 ```
 
-[docs-pv](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
-[docs-ingress-controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
-[docs-ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
-[nginx-ingress](https://kubernetes.github.io/ingress-nginx/)
+[docs-pv]: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+[docs-ingress-controller]: https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
+[docs-ingress]: https://kubernetes.io/docs/concepts/services-networking/ingress/
+[nginx-ingress]: https://kubernetes.github.io/ingress-nginx/
 
 
