@@ -15,7 +15,7 @@ You will then need to update the values in `pv-store-nfs.yaml`
 
 This example uses NFS, for local storage use `-dev`. If you are using NFS your Nodes will also need NFS tools to be able to mount the volume:
 
-```
+```shell
 apt install -y nfs-common
 ```
 
@@ -27,13 +27,13 @@ You can optionaly run an Ingress in front of HAProxy.
 
 You will need an [ingress controller][docs-ingress-controller] running in your cluster, such as [nginx][nginx-ingress], which could be installed such as:
 
-```
+```shell
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.40.2/deploy/static/provider/baremetal/deploy.yaml
 ```
 
 You can then copy in the provided configuration:
 
-```
+```shell
 cp kubernetes/examples/ingress.yaml kubernetes/ingress.yaml
 ```
 
@@ -61,6 +61,12 @@ kubectl -n musicplayer port-forward frontend-6bc9c5dd68-frw8g 3000:3000
 ```
 
 ## Tearing Down
+
+```shell
+kubectl delete -f kubernetes/
+```
+
+_or_
 
 ```shell
 kubectl -n musicplayer delete all --all
