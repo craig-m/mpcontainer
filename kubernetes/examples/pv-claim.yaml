@@ -5,6 +5,7 @@ metadata:
   namespace: musicplayer
 spec:
   volumeMode: Filesystem
+  storageClassName: slow
   accessModes:
     - ReadOnlyMany
   resources:
