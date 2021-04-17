@@ -88,10 +88,6 @@ def cliip():
     else:
         return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
 
-@app.route('/client/agent/')
-def cliagent():
-    return request.headers.get('User-Agent')
-
 # hello
 @app.route('/hello/')
 @app.route('/hello/<name>')
