@@ -8,7 +8,7 @@ services:
     build:
       context: ./container-haproxy/
       cache_from:
-        - haproxy:2.2-alpine
+        - haproxy:2.2.13-alpine
     volumes:
       - ./container-haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
       - ./container-haproxy/checkhap.sh:/usr/local/bin/checkhap.sh:ro

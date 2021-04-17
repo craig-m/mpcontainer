@@ -1,11 +1,11 @@
 # Python3 MPContainer PyApp
 # https://hub.docker.com/_/python
 
-FROM python:3.9.0-slim-buster
+FROM python:3.9.4-slim-buster
 EXPOSE 8888/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="1.1"
+LABEL version="2.0"
 LABEL mpcontainer.service="mpc python3 flask app"
 
 RUN groupadd --system pyapp && \

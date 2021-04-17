@@ -1,7 +1,7 @@
 # MPContainer web server
 
 # https://hub.docker.com/_/node/
-FROM node:14.14.0-alpine3.12
+FROM node:14.16.1-alpine3.12
 WORKDIR /home/node/app
 COPY package.json* /home/node/app/
 RUN chown -R node:node /home/node/
@@ -13,7 +13,7 @@ FROM nginx:1.18.0-alpine
 EXPOSE 8880/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="1.1"
+LABEL version="2.0"
 LABEL mpcontainer.service="Web files"
 
 COPY nginx.conf /etc/nginx/nginx.conf

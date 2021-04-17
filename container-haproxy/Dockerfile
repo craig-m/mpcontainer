@@ -1,11 +1,11 @@
 # HAProxy L7 frontend
 # https://hub.docker.com/_/haproxy
 
-FROM haproxy:2.2.4-alpine
+FROM haproxy:2.2.13-alpine
 EXPOSE 3000/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="1.1"
+LABEL version="2.0"
 LABEL mpcontainer.service="haproxy frontend gateway"
 
 RUN mkdir /usr/local/bin/lua

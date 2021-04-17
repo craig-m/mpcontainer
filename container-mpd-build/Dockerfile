@@ -1,11 +1,11 @@
 # MusicPlayerDaemon (MPD) build container
 # https://www.musicpd.org/
 
-FROM debian:buster-20201012-slim
+FROM debian:buster-20210408-slim
 EXPOSE 6600/tcp 3123/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="1.1"
+LABEL version="2.0"
 LABEL mpcontainer.service="MPD Build env"
 
 RUN apt-get update && \

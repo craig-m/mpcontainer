@@ -62,6 +62,7 @@ apt install -y -q \
     unzip \
     make \
     expect \
+    pwgen \
     inotify-tools \
     monitoring-plugins-common \
     monitoring-plugins-basic \
@@ -186,6 +187,12 @@ else
     qlite3 "${state_db_file}" "INSERT INTO sysstate VALUES ('git_clone', 'true');"
     logit "checked out code"
 fi
+
+
+# start MPContainer
+cd /opt/linode_vm/mpcontainer/
+docker-compose -f docker-compose.yml up -d
+
 
 #
 # done

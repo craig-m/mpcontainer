@@ -6,7 +6,7 @@ FROM tsl0922/ttyd
 EXPOSE 7681/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="1.1"
+LABEL version="2.0"
 LABEL mpcontainer.service="ttyd DJ web shell"
 
 RUN apt update && \

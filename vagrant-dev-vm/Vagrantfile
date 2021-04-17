@@ -1,5 +1,7 @@
 # MPContainer Dev VM
 
+Vagrant.require_version ">= 2.2.14"
+
 $inlinescript_post = <<-SCRIPT
 echo '-----------------------';
 uname -a;
@@ -12,10 +14,10 @@ Vagrant.configure("2") do |config|
 
     # --- Ubuntu ---
     config.vm.box = "generic/ubuntu1804"
-    config.vm.box_version = "3.0.32"
+    config.vm.box_version = "3.2.16"
     # --- CentOS ---
     #config.vm.box = "generic/centos8"
-    #config.vm.box_version = "3.0.34"
+    #config.vm.box_version = "3.2.16"
 
     config.vm.box_check_update = false
     config.vm.synced_folder "../", "/vagrant", type: "rsync"

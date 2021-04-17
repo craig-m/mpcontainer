@@ -23,7 +23,7 @@ resource "linode_stackscript" "mpc_vm_stackscript" {
    script      = file("${path.module}/assets/stackscript.sh")
    images      = ["linode/ubuntu18.04"]
    is_public   = "false"
-   rev_note    = "initial version"
+   rev_note    = "initial version v2"
 }
 
 

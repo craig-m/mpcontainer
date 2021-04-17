@@ -1,12 +1,10 @@
 # vagrant-dev-vm
 
-Development environments, powered by [Vagrant](https://www.vagrantup.com/) and configured by [Ansible](https://www.ansible.com/), to play with different container runtimes and tooling.
+Development environment, powered by [Vagrant](https://www.vagrantup.com/) and configured by [Ansible](https://www.ansible.com/), to play with different container runtimes and tooling.
 
 Thanks to [Roboxes](https://roboxes.org/) for the Virtual Machine [images](https://app.vagrantup.com/roboxes).
 
 ## environments
-
-A work in progess as I learn and experiment with different stacks.
 
 Single container host:
 
@@ -22,8 +20,8 @@ Cluster (single node for dev):
 
 1) Edit the `Vagrantfile` to set the desired OS/Stack. So far `ansible-playbook.yml` can handle one of these options:
 
-   * `generic/centos8`
-   * `generic/ubuntu1804`
+   * [generic/centos8](https://app.vagrantup.com/generic/boxes/centos8)
+   * [generic/ubuntu1804](https://app.vagrantup.com/generic/boxes/ubuntu1804)
 
 2) In a shell, start the VM and login to it. The port forwards do not always work for me so I set them.
 
