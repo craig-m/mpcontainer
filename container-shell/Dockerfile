@@ -11,7 +11,7 @@ LABEL mpcontainer.service="ttyd DJ web shell"
 
 RUN apt update && \
     apt-get install -y tmux vim ncmpcpp mpc \
-    mc curl socat lynx mtr-tiny newsbeuter \
+    mc curl socat lynx mtr-tiny \
     toilet toilet-fonts && \
     apt-get clean
 
