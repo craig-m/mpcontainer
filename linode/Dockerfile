@@ -4,6 +4,9 @@ LABEL mpcontainer.vendor="MPContainer"
 LABEL version="2.0"
 LABEL mpcontainer.service="MPC SysAdmin container"
 
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
 RUN apt-get update && \
   apt-get -y install \
   bash less dos2unix gnupg2 net-tools iproute2 python3-pip && \

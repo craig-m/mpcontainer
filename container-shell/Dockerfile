@@ -9,6 +9,9 @@ LABEL mpcontainer.vendor="MPContainer"
 LABEL version="2.0"
 LABEL mpcontainer.service="ttyd DJ web shell"
 
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
 RUN apt update && \
     apt-get install -y tmux vim ncmpcpp mpc \
     mc curl socat lynx mtr-tiny \

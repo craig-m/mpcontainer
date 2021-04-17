@@ -8,6 +8,8 @@ LABEL mpcontainer.vendor="MPContainer"
 LABEL version="2.0"
 LABEL mpcontainer.service="haproxy frontend gateway"
 
+ENV TZ=UTC
+
 RUN mkdir /usr/local/bin/lua
 
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg

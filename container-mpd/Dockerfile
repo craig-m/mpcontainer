@@ -9,6 +9,9 @@ LABEL mpcontainer.vendor="MPContainer"
 LABEL version="2.0"
 LABEL mpcontainer.service="MPD stream server"
 
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
 RUN apt-get update && \
   apt-get -y install --no-install-recommends \
   bash less dos2unix net-tools iproute2 gpg mpd mpc && \

@@ -5,6 +5,9 @@ FROM node:14.16.1-alpine3.12
 WORKDIR /home/node/app
 COPY package.json* /home/node/app/
 RUN chown -R node:node /home/node/
+
+ENV TZ=UTC
+
 USER node
 RUN npm install
 

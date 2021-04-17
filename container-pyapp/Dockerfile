@@ -8,6 +8,9 @@ LABEL mpcontainer.vendor="MPContainer"
 LABEL version="2.0"
 LABEL mpcontainer.service="mpc python3 flask app"
 
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTZ
+
 RUN groupadd --system pyapp && \
     useradd --system --gid pyapp --home-dir /app --shell /sbin/nologin \
     --comment "mpcontainer pyapp" pyapp
