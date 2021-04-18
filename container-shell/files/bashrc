@@ -1,0 +1,3 @@
+# /home/dj/.bashrc
+#
+export TERM="xterm-256color"

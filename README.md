@@ -4,7 +4,13 @@ Music Player Container 🔊 - A streaming Jukebox setup.
 
 Moving the programs I like, and refuse to give up, into the modern world of browsers and containers. For learning and fun, not profit.
 
+## build status
+
 ![linting](https://github.com/craig-m/mpcontainer/workflows/linting/badge.svg) ![security-scans](https://github.com/craig-m/mpcontainer/workflows/security-scans/badge.svg) ![CodeQL](https://github.com/craig-m/mpcontainer/workflows/CodeQL/badge.svg) ![docker-hub-release](https://github.com/craig-m/mpcontainer/workflows/docker-hub-release/badge.svg)
+
+Thanks to Github [Actions](https://github.com/actions) each time this repo changes the images in the registry are updated too.
+
+![build-container-mpd](https://github.com/craig-m/mpcontainer/workflows/build-container-mpd/badge.svg) ![build-container-hpx](https://github.com/craig-m/mpcontainer/workflows/build-container-hpx/badge.svg) ![build-container-web](https://github.com/craig-m/mpcontainer/workflows/build-container-web/badge.svg) ![build-container-shell](https://github.com/craig-m/mpcontainer/workflows/build-container-shell/badge.svg) ![build-containers-pyapp](https://github.com/craig-m/mpcontainer/workflows/build-containers-pyapp/badge.svg)
 
 ## App Architecture
 
@@ -39,12 +45,6 @@ Access to this should be restricted on public deployments, this security is left
 A [python](https://www.python.org/) [flask](https://flask.palletsprojects.com/en/1.1.x/) web app, run from [Gunicorn](https://gunicorn.org/).
 
 Connects to the MPD api (with a read only user) to get stream and other dynamic information about MPD.
-
-### build status
-
-Thanks to Github [Actions](https://github.com/actions) each time this repo changes the images in the registry are updated too.
-
-![build-container-mpd](https://github.com/craig-m/mpcontainer/workflows/build-container-mpd/badge.svg) ![build-container-hpx](https://github.com/craig-m/mpcontainer/workflows/build-container-hpx/badge.svg) ![build-container-web](https://github.com/craig-m/mpcontainer/workflows/build-container-web/badge.svg) ![build-container-shell](https://github.com/craig-m/mpcontainer/workflows/build-container-shell/badge.svg) ![build-containers-pyapp](https://github.com/craig-m/mpcontainer/workflows/build-containers-pyapp/badge.svg)
 
 ## Use
 
@@ -83,7 +83,7 @@ docker-compose top
 
 By default MPContainer is available on port 3000 of your local interface.
 
-The admin shell is password protected, and the `HAPX_US_PASS` & `HAPX_US_PASS` can be set to override the defaults (set in docker-compose and haproxy.conf).
+The admin shell is password protected, and the `HAPX_US_USER` & `HAPX_US_PASS` can be set to override the defaults (set in docker-compose and haproxy.conf).
 
 ## manually build images
 
