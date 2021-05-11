@@ -43,8 +43,20 @@ See [ingress][docs-ingress] documentation for more information.
 
 After copying and editing what you need from `/kubernetes/examples/` to `/kubernetes/` for the configuration of your music volume you can apply the Kubernetes manifests to bring up MPContainer:
 
+### Namespace
+
 ```shell
 kubectl apply -f ./kubernetes/namespace.yaml
+```
+## Configure a configMap for MPD configuration
+
+```shell
+kubectl create configmap mpdconf --from-file=container-mpd/mpd.conf --namespace musicplayer
+```
+
+### Deploy services
+
+```shell
 kubectl apply -f ./kubernetes/
 ```
 

@@ -45,7 +45,7 @@ services:
     container_name: backendmpd
     restart: on-failure:5
     volumes:
-        - ./music/db:/var/lib/mpd/music:ro
+        - ./music/db:/music:ro
     cap_drop:
       - net_bind_service
       - chown

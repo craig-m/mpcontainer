@@ -1,8 +1,8 @@
 # Readme.txt
 
-The MPD music folder - put your mp3 here!
+The MPD music folder - put your music files here!
 
-In the container the path is /var/lib/mpd/music/
+In the container the path is /music/
 
 For testing there are some good, free, and legal albums you can download:
 

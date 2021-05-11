@@ -62,14 +62,37 @@ spec:
             - -h
             - DJp455w0rd101@localhost
             - outputs
+          initialDelaySeconds: 20
+          periodSeconds: 10
           timeoutSeconds: 30
         tty: true
         volumeMounts:
-        - name: music
-          mountPath: /var/lib/mpd/music
+        - mountPath: /music
+          name: music
+        - mountPath: /var/lib/mpd/playlists/
+          name: config
+          subPath: playlists
+        - mountPath: /etc/mpd.conf
+          name: etc
+          subPath: mpd.conf
+      initContainers:
+      - name: install
+        image: busybox
+        command: [ 'sh', '-c', "mkdir -p /var/lib/mpd/playlists" ]
+        volumeMounts:
+        - mountPath: /var/lib/mpd/
+          name: config
       restartPolicy: Always
       serviceAccountName: ""
       volumes:
       - name: music
         persistentVolumeClaim:
           claimName: music-claim
+      - name: config
+        persistentVolumeClaim:
+          claimName: config-claim
+      - name: etc
+        configMap:
+          name: mpdconf
+      - name: empty
+        emptyDir: {}

@@ -21,7 +21,7 @@ metadata:
   name: mpcpyapp
   namespace: musicplayer
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       mp.service: mpcpyapp
