@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: config-pv
+  namespace: musicplayer
+  labels:
+    type: config
+spec:
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: slow
+  mountOptions:
+    - rw
+  capacity:
+    storage: 2G
+  nfs:
+    path: /some/path
+    server: nfs-server-name-or-ip
