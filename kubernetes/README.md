@@ -6,18 +6,16 @@ We need to have some config that will point to where the music is.
 
 Copy the yaml config files you need for your environment into the kubernetes dir, make sure the files are prefixed with `pv-` so they will be ignored by Git.
 
-```shell
-cp kubernetes/examples/pv-claim-nfs.yaml kubernetes/pv-claim-nfs.yaml
-cp kubernetes/examples/pv-store-nfs.yaml kubernetes/pv-store-nfs.yaml
-```
+This example uses NFS, for local storage use `-dev`. 
 
-You will then need to update the values in `pv-store-nfs.yaml`
-
-This example uses NFS, for local storage use `-dev`. If you are using NFS your Nodes will also need NFS tools to be able to mount the volume:
+If you are using NFS your Nodes will also need NFS tools to be able to mount the volume:
 
 ```shell
 apt install -y nfs-common
+cp kubernetes/examples/pv-*-nfs.yaml kubernetes/
 ```
+
+You will then need to update the values in `pv-store-nfs.yaml` and `pv-store-config-nfs.yaml`
 
 See [persistent volumes][docs-pv] documentation for more information.
 
@@ -43,8 +41,20 @@ See [ingress][docs-ingress] documentation for more information.
 
 After copying and editing what you need from `/kubernetes/examples/` to `/kubernetes/` for the configuration of your music volume you can apply the Kubernetes manifests to bring up MPContainer:
 
+### Namespace
+
 ```shell
 kubectl apply -f ./kubernetes/namespace.yaml
+```
+## Configure a configMap for MPD configuration
+
+```shell
+kubectl create configmap mpdconf --from-file=container-mpd/mpd.conf --namespace musicplayer
+```
+
+### Deploy services
+
+```shell
 kubectl apply -f ./kubernetes/
 ```
 
