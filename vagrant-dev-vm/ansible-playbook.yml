@@ -213,7 +213,7 @@
         - name: done
           debug:
             msg: "CentOS setup done"
-      when: 
+      when:
         (ansible_distribution == 'CentOS') or (ansible_distribution == 'Fedora')
 
 
