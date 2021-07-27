@@ -5,7 +5,7 @@ FROM python:3.9.6-slim-buster
 EXPOSE 8888/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="2.5"
+LABEL version="2.6"
 LABEL mpcontainer.service="mpc python3 flask app"
 
 ENV TZ=Etc/UTZ
