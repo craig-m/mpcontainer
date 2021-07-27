@@ -25,7 +25,7 @@ jobs:
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
-        docker build -t mpcontainer-frontend:latest -f container-haproxy/Dockerfile ./container-haproxy/
+        docker build -t mpcontainer-frontend:latest -f ./src/haproxy/Dockerfile ./haproxy/
         docker tag mpcontainer-frontend ghcr.io/$GIT_UN/mpcontainer-frontend
 
     - name: list_docker_images

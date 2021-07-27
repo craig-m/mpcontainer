@@ -25,7 +25,7 @@ jobs:
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
-        docker build -t mpcontainer-mpd:latest -f container-mpd/Dockerfile ./container-mpd/
+        docker build -t mpcontainer-mpd:latest -f ./src/mpd/Dockerfile ./mpd/
         docker tag mpcontainer-mpd ghcr.io/$GIT_UN/mpcontainer-mpd:latest
 
     - name: list_docker_images
