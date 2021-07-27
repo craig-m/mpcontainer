@@ -5,14 +5,14 @@ on:
   push:
     branches: [master]
     paths:
-      - 'container-pyapp/**'
-      - 'container-web/html/**'
+      - './src/pyapp/**'
+      - './src/web/html/**'
 
   pull_request:
     branches: [master]
     paths:
-      - 'container-pyapp/**'
-      - 'container-web/html/**'
+      - './src/pyapp/**'
+      - './src/web/html/**'
 
   # Runs at 14:00 UTC on Sat
   schedule:

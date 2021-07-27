@@ -5,7 +5,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'container-haproxy/**'
+      - './src/haproxy/**'
 
 jobs:
 
