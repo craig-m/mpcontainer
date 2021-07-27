@@ -1,11 +1,11 @@
 FROM debian:buster-slim
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="2.0"
+LABEL version="2.5"
 LABEL mpcontainer.service="MPC SysAdmin container"
 
 ARG DEBIAN_FRONTEND=noninteractive
-ENV TZ=UTC
+ENV TZ=Etc/UTC
 
 RUN apt-get update && \
   apt-get -y install \

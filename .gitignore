@@ -1,8 +1,10 @@
 # mpcontainer git ignore:
 #
-localdata/
+localdata/*
+!localdata/.gitkeep
 vagrant-dev-vm/.vagrant/
 music/db/*
+!music/db/.gitkeep
 linode/terraform/lke/.terraform
 linode/terraform/lke/terraform.tfstate*
 linode/terraform/lke/.terraform.tfstate.lock.info

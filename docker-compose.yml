@@ -3,13 +3,24 @@
 #
 version: '3.7'
 services:
-  # ------ mpcontainer-frontend ------
+
+  # ------ haproxy ------
   frontend:
     image: crgm/mpcontainer-frontend:latest
     container_name: haproxy
     restart: on-failure:5
     environment:
       - HAPX_US_PASS=leftthedefault2
+    security_opt:
+      - no-new-privileges
+    deploy:
+      mode: global
+      replicas: 1
+      resources:
+        limits:
+          memory: 100M
+        reservations:
+          memory: 20M
     cap_drop:
       - setfcap
       - net_bind_service
@@ -23,6 +34,7 @@ services:
     ports:
       - "3000:3000"
     networks:
+      - webpubnet
       - webfrontnet
       - webfrontmpd
     depends_on:
@@ -30,22 +42,48 @@ services:
       - mpcpyapp
     labels:
       kompose.service.type: LoadBalancer
-  # ------ mpcontainer-web ------
+
+  # ------ web ------
   backendweb:
     image: crgm/mpcontainer-web:latest
     container_name: backendweb
     restart: on-failure:5
+    security_opt:
+      - no-new-privileges
+    healthcheck:
+      test: ["CMD", "/usr/bin/wget", "-O", "/dev/null", "-q", "--", "http://localhost:8880/ping/stat"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 50M
+        reservations:
+          memory: 20M
     expose:
       - "8880"
     networks:
       - webfrontnet
-  # ------ mpcontainer-mpd ------
+
+  # ------ MPD ------
   backendmpd:
     image: crgm/mpcontainer-mpd:latest
     container_name: backendmpd
     restart: on-failure:5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 100M
+        reservations:
+            memory: 20M
+    security_opt:
+      - no-new-privileges
     volumes:
-        - ./music/db:/music:ro
+      - ./music/db:/music:ro
     cap_drop:
       - net_bind_service
       - chown
@@ -57,13 +95,16 @@ services:
     networks:
       - webfrontmpd
       - mpdadmin
-  # ------ mpcontainer-shell ------
+
+  # ------ shell ------
   adminmmpd:
     image: crgm/mpcontainer-shell:latest
     container_name: adminshell
     environment: 
-        - TZ=UTC
+        - TZ=Etc/UTC
     restart: on-failure:5
+    security_opt:
+      - no-new-privileges
     cap_drop:
       - fsetid
       - setgid
@@ -77,14 +118,24 @@ services:
       - mpdadmin
     depends_on:
       - backendmpd
-  # ------ mpcontainer-pyapp ------
+
+  # ------ pyapp ------
   mpcpyapp:
     image: crgm/mpcontainer-pyapp:latest
     container_name: mpcpyapp
     environment:
-      - TZ=UTC
+      - TZ=Etc/UTC
       - env_mpcpyapp_dev=false
       - env_mpypyapp_envtest=docker_compose
+    restart: on-failure:5
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/python", "/pyapp/healthcheck-http.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    security_opt:
+      - no-new-privileges
     cap_drop:
       - net_bind_service
       - chown
@@ -100,9 +151,15 @@ services:
       - backendmpd
 
 networks:
+  webpubnet:
+    internal: false
+    driver: bridge
   webfrontnet:
+    internal: true
     driver: bridge
   webfrontmpd:
+    internal: true
     driver: bridge
   mpdadmin:
+    internal: true
     driver: bridge

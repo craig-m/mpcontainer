@@ -1,8 +1,10 @@
 # MPContainer
 
-Music Player Container 🔊 - A streaming Jukebox setup.
+Music Player Container 🔊 - A streaming Jukebox setup built around MPD.
 
-Moving the programs I like, and refuse to give up, into the modern world of browsers and containers. For learning and fun, not profit.
+Moving the CLI programs I like, and refuse to give up, into the modern world of browsers and containers. For learning and fun, not profit.
+
+See screenshots of the [front](docs/screenshot_pub.png) and [admin](docs/screenshot_admin.png) web interfaces.
 
 ## build status
 
@@ -10,7 +12,15 @@ Moving the programs I like, and refuse to give up, into the modern world of brow
 
 Thanks to Github [Actions](https://github.com/actions) each time this repo changes the images in the registry are updated too.
 
-![build-container-mpd](https://github.com/craig-m/mpcontainer/workflows/build-container-mpd/badge.svg) ![build-container-hpx](https://github.com/craig-m/mpcontainer/workflows/build-container-hpx/badge.svg) ![build-container-web](https://github.com/craig-m/mpcontainer/workflows/build-container-web/badge.svg) ![build-container-shell](https://github.com/craig-m/mpcontainer/workflows/build-container-shell/badge.svg) ![build-containers-pyapp](https://github.com/craig-m/mpcontainer/workflows/build-containers-pyapp/badge.svg)
+ ![build-container-mpd](https://github.com/craig-m/mpcontainer/workflows/build-container-mpd/badge.svg)
+ 
+ ![build-container-hpx](https://github.com/craig-m/mpcontainer/workflows/build-container-hpx/badge.svg)
+ 
+ ![build-container-web](https://github.com/craig-m/mpcontainer/workflows/build-container-web/badge.svg)
+ 
+ ![build-container-shell](https://github.com/craig-m/mpcontainer/workflows/build-container-shell/badge.svg)
+ 
+ ![build-containers-pyapp](https://github.com/craig-m/mpcontainer/workflows/build-containers-pyapp/badge.svg)
 
 ## App Architecture
 
@@ -18,7 +28,7 @@ Thanks to Github [Actions](https://github.com/actions) each time this repo chang
 
 ### containers
 
-What runs in each of the 5 containers that MPContainer consists of.
+What runs in each of the 5 different container types.
 
 #### 📦 mpd
 
@@ -26,7 +36,7 @@ What runs in each of the 5 containers that MPContainer consists of.
 
 #### 📦 haproxy
 
-[haproxy](https://www.haproxy.org/) is the frontend proxy, do L7 redirects to backends.
+[haproxy](https://www.haproxy.org/) is the frontend proxy, handle L7 redirects to backend services.
 
 #### 📦 Nginx
 
@@ -36,9 +46,9 @@ A Multi-stage build is done, npm is not included in the final image.
 
 #### 📦 admin-shell
 
-[ttyd](https://tsl0922.github.io/ttyd/) lets you run a terminal in your browser. From [tmux](https://github.com/tmux/tmux) (a terminal multiplexer) you can use [ncmpcpp](https://rybczak.net/ncmpcpp/) (an ncurses MPC client) to control the MPD server.
+[ttyd](https://tsl0922.github.io/ttyd/) lets you run a terminal in your browser. From [tmux](https://github.com/tmux/tmux) (a terminal multiplexer) you can use [ncmpcpp](https://rybczak.net/ncmpcpp/) (an ncurses MPD client app) to control the MPD server.
 
-Access to this should be restricted on public deployments, this security is left to the user (don't just put this on the open internet). This web shell is for trusted users only.
+Access to this should be restricted on public deployments, don't put this on the open internet without changing the password variables. This web shell is for trusted users only so they can control the music.
 
 #### 📦 Python-App
 
@@ -46,11 +56,13 @@ A [python](https://www.python.org/) [flask](https://flask.palletsprojects.com/en
 
 Connects to the MPD api (with a read only user) to get stream and other dynamic information about MPD.
 
+---
+
 ## Use
 
 On MacOS or Windows [Docker Desktop](https://www.docker.com/products/docker-desktop) makes for a nice container experience, especially with [VSCode](https://code.visualstudio.com/) (get the [Docker](https://code.visualstudio.com/docs/containers/overview), yaml and kubernetes extensions).
 
-Put some music into `.\music\db\` so you can use the Jukebox.
+Put some music into `.\music\db\` so you can use the Jukebox, these files will be exluded from Git.
 
 ### docker-compose
 
@@ -69,8 +81,10 @@ docker-compose -f docker-compose.yml up -d
 If you're deving and want to mount config files from the repo and expose ports etc:
 
 ```shell
-docker-compose -f docker-compose.yml -f dev-compose.yaml up --build
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml up --build
 ```
+
+Or for a contained local Dev environment there is a VM managed by Vagrant [here](vagrant-dev-vm/README.md)
 
 ### check on it
 

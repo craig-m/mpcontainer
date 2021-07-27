@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>--[ MPC Radio ]--</title>
+  <!-- MPContainer https://github.com/craig-m/mpcontainer -->
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/mpcontainer.js"></script>
+  <link rel="stylesheet" type="text/css" href="mpcontainer.css">
+  <meta name="robots" content="noimageindex, nofollow, nosnippet">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+</head>
+<body>
+<main class="container">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">MPContainer</a>
+      </div>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/files/" target="_blank">FileServer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/hastats/" target="_blank">ProxyStat</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/shell" target="_blank">AdminShell</a>
+        </li>
+      </ul>
+    </nav>
+    <article>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h2 class="display-5">MPContainer</h2>
+        <p class="lead">Welcome to the MPC streaming service.</p>
+      </div>
+      <div class="container row marketing">
+        <div class="col-lg-6">
+          <h3>Stream</h3>
+          <p>
+            <audio controls preload="meta" id="mpcstream">
+            <source src="/mpd/stream.pls" type="audio/ogg">Your browser does not support the audio element.</audio>
+          </p>
+          <p>Stream <a href="/mpd/stream.pls">link</a></p>
+        </div>
+        <div class="col-lg-6">
+          <h3>Server stats</h3>
+          <p><div id="info-stats"></div></p>
+        </div>
+      </div>
+    </div>
+    </article>
+    <footer class="py-3 bg-dark">
+      <div class="container m-0 text-center text-white" id="mpcpyip"></div>
+    </footer>
+    <p></p>
+</main>
+</body>
+</html>

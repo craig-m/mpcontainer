@@ -1,15 +1,26 @@
 #
 # MPContainer makefile
+# https://www.gnu.org/software/make/manual/make.html
 #
 
 regurl=docker.pkg.github.com/${GIT_UN}/mpcontainer
+#regurl=localhost:5000
+
+dev:
+	docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
+
+logs:
+	docker-compose -f docker-compose.yml -f docker-compose-dev.yml logs --tail="all"
+
+reg:
+	docker run -d -p 5000:5000 --restart always --name registry registry:2
 
 build:
-	docker build -t ${regurl}/mpcontainer-mpd:latest -f container-mpd/Dockerfile ./container-mpd/
-	docker build -t ${regurl}/mpcontainer-shell:latest -f container-shell/Dockerfile ./container-shell/
-	docker build -t ${regurl}/mpcontainer-web:latest -f container-web/Dockerfile ./container-web/
-	docker build -t ${regurl}/mpcontainer-pyapp:latest -f container-pyapp/Dockerfile ./container-pyapp/
-	docker build -t ${regurl}/mpcontainer-frontend:latest -f container-haproxy/Dockerfile ./container-haproxy/
+	docker build -t ${regurl}/mpcontainer-mpd:latest -f src/mpd/Dockerfile ./src/mpd/
+	docker build -t ${regurl}/mpcontainer-shell:latest -f src/adminshell/Dockerfile ./src/adminshell/
+	docker build -t ${regurl}/mpcontainer-web:latest -f src/web/Dockerfile ./src/web/
+	docker build -t ${regurl}/mpcontainer-pyapp:latest -f src/pyapp/Dockerfile ./src/pyapp/
+	docker build -t ${regurl}/mpcontainer-frontend:latest -f src/haproxy/Dockerfile ./src/haproxy/
 
 publish:
 	docker push ${regurl}/mpcontainer-mpd:latest

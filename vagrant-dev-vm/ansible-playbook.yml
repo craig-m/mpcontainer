@@ -1,13 +1,7 @@
 ---
 #
 # Ansible Playbook for MPContainer development VM.
-#
-# Sectioned as followed:
-#
-# [*] common setup tasks
-# [.] install podman (CentOS Only)
-# [.] install docker (Ubuntu Only)
-# [*] common testing
+# https://www.vagrantup.com/docs/provisioning/ansible_local
 #
 - name: MPContainer Dev VM
   hosts: all
@@ -89,6 +83,8 @@
             dest: /home/vagrant/run-playbook.sh
             mode: 0755
             content: |
+              echo "running ansible-playbook.yml on localhost";
+              export ANSIBLE_PYTHON_INTERPRETER=/usr/bin/python3
               ansible-playbook --connection=local -i "127.0.0.1," -- /vagrant/vagrant-dev-vm/ansible-playbook.yml;
         - name: create common folders
           file:
@@ -123,7 +119,7 @@
 
 
     #----------------------------------
-    # Stack: CentOS + Podman
+    # CentOS/Fedora + Podman & Buildah
     #----------------------------------
     - name: CentOS system
       block:
@@ -132,7 +128,7 @@
             msg: "Set up on Cent OS linux"
         - name: install nfs utils
           dnf:
-            name: nfs-utils
+            name: ['nfs-utils']
             state: present
           become: true
         - name: Podman container runtime
@@ -147,18 +143,8 @@
                 state: present
             - name: install buildah
               dnf:
-                name: buildah
+                name: ['buildah']
                 state: present
-            - name: turn on io.podman.service
-              service:
-                name: io.podman.service
-                state: started
-                enabled: yes
-            - name: turn on io.podman.socket
-              service:
-                name: io.podman.socket
-                state: started
-                enabled: yes
             - name: remove nondocker warning
               copy:
                 dest: "/etc/containers/nodocker"
@@ -168,6 +154,24 @@
                 content: |
                   # no docker here.
                   # -- ansible managed file --
+            - name: podman registry setup
+              copy:
+                dest: "/etc/containers/registries.conf"
+                mode: 0644
+                owner:  "root"
+                group:  "root"
+                content: |
+                  # -- ansible managed file --
+                  [registries.search]
+                  registries = ['docker.io']
+                  #
+                  [registries.insecure]
+                  registries = []
+                  #
+                  [registries.block]
+                  registries = []
+                  # default:
+                  unqualified-search-registries = ["docker.io"]
           become: true
         - name: Podman python tools
           block:
@@ -180,6 +184,7 @@
                 content: |
                   # -- ansible managed file --
                   docker
+                  pyyaml
                   podman-compose
                   pytest
                   dnspython
@@ -203,16 +208,17 @@
                   # Set SELinux context
                   chcon -R -t svirt_sandbox_file_t /vagrant/music
                   cd /vagrant/
-                  podman-compose build
-                  podman-compose -f /vagrant/docker-compose.yml -f /vagrant/dev-compose.yaml up
+                  podman-compose up -d
+                  docker ps
         - name: done
           debug:
             msg: "CentOS setup done"
-      when: ansible_distribution == 'CentOS'
+      when: 
+        (ansible_distribution == 'CentOS') or (ansible_distribution == 'Fedora')
 
 
     #----------------------------------
-    # Stack: Ubuntu + Docker
+    # Ubuntu + Docker
     #----------------------------------
     - name: Ubuntu system
       block:
@@ -221,7 +227,7 @@
             msg: "Set up on Ubuntu linux"
         - name: install tools
           apt:
-            name: ['apt-transport-https', 'software-properties-common', 'gnupg2', 'ca-certificates', 'nfs-common']
+            name: ['apt-transport-https', 'software-properties-common', 'gnupg2', 'apparmor-utils', 'ca-certificates', 'nfs-common']
             state: present
           become: true
         - name: Docker setup
@@ -256,7 +262,7 @@
                   register: compinst
                 - name: get compose
                   get_url:
-                    url: https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64
+                    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
                     dest: /usr/local/bin/docker-compose
                     mode: 0755
                   become: true
@@ -273,7 +279,7 @@
                     mode: 0644
                     content: |
                       deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main
-                - name: install Docker and K8
+                - name: install K8 tools
                   apt:
                     name: ['kubelet', 'kubeadm', 'kubectl']
                     update_cache: yes
@@ -281,15 +287,15 @@
           become: true
         - name: scripts
           block:
-            - name: copy start-mpc-docker-compose script
+            - name: copy start-compose-dev script
               copy:
-                dest: "/home/vagrant/start-mpc-docker-compose.sh"
+                dest: "/home/vagrant/start-compose-dev.sh"
                 mode: 0755
                 content: |
                   #!/usr/bin/env bash
-                  echo "starting mpcontainer with Docker Compose";
-                  cd /vagrant/
-                  /usr/local/bin/docker-compose -f docker-compose.yml -f dev-compose.yaml up --build
+                  echo "starting MPContainer with Docker Compose dev";
+                  cd /vagrant/ || exit 1
+                  /usr/local/bin/docker-compose -f docker-compose.yml -f docker-compose-dev.yml up --build
             - name: copy limit-containers.sh
               copy:
                 dest: "/home/vagrant/limit-containers.sh"
@@ -307,7 +313,8 @@
                 mode: 0755
                 content: |
                   #!/usr/bin/env bash
-                  # https://github.com/docker/docker-bench-security
+                  echo "Running Docker bench security";
+                  echo "source:  https://github.com/docker/docker-bench-security";
                   docker run -it --net host --pid host --userns host --cap-add audit_control \
                     -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST \
                     -v /etc:/etc:ro \
@@ -333,20 +340,6 @@
           package:
             name: cockpit
             state: present
-        - name: stack specific addons for CockPit
-          block:
-            # CentOS:
-            - name: podman cockpit addon
-              package:
-                name: ['cockpit-podman']
-                state: present
-              when: ansible_distribution == 'CentOS'
-            # Debian:
-            - name: podman docker addon
-              package:
-                name: ['cockpit-docker']
-                state: present
-              when: ansible_distribution == 'Ubuntu'
         - name: turn on socket
           service:
             name: cockpit.socket
@@ -375,15 +368,19 @@
       assert:
         that:
           - "dockerver.rc == 0"
+    - name: refresh ansible facts
+      setup: ~
     - name: readme
       copy:
         dest: "/home/vagrant/readme.txt"
         mode: 0644
         content: |
           #
-          # MPContainer vagrant-dev-vm
+          # MPContainer Dev VM
           #
-          # Distro: {{ ansible_distribution }}
+          # Distro: {{ ansible_distribution }} {{ ansible_distribution_version }}
+          # ansible: {{ ansible_version }}
+          # python: {{ ansible_playbook_python }}
           #
     - name: ansible-playbook.yml finished
       debug:

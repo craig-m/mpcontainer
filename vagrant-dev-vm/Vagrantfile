@@ -1,6 +1,4 @@
-# MPContainer Dev VM
-
-Vagrant.require_version ">= 2.2.14"
+Vagrant.require_version ">= 2.2.16"
 
 $inlinescript_post = <<-SCRIPT
 echo '-----------------------';
@@ -11,19 +9,19 @@ echo '-----------------------';
 SCRIPT
 
 Vagrant.configure("2") do |config|
-
-    # --- Ubuntu ---
-    config.vm.box = "generic/ubuntu1804"
-    config.vm.box_version = "3.2.16"
-    # --- CentOS ---
+    #config.vm.box = "generic/ubuntu2004"
     #config.vm.box = "generic/centos8"
-    #config.vm.box_version = "3.2.16"
+    #config.vm.box_version = "3.2.24"
+
+    config.vm.box = "generic/fedora34"
+    config.vm.box_version = "3.3.0"
 
     config.vm.box_check_update = false
     config.vm.synced_folder "../", "/vagrant", type: "rsync"
 
     config.vm.provision "ansible_local" do |ansible|
         ansible.playbook = "vagrant-dev-vm/ansible-playbook.yml"
+        ansible.extra_vars = { ansible_python_interpreter: "/usr/bin/python3" }
     end
 
     config.vm.network :forwarded_port, guest: 9090, host_ip: '127.0.0.1', host: 33339, protocol: "tcp"
