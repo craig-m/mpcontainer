@@ -25,7 +25,7 @@ jobs:
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
-        docker build -t mpcontainer-shell:latest -f ./src/adminshell/Dockerfile ./adminshell/
+        docker build -t mpcontainer-shell:latest -f ./src/adminshell/Dockerfile ./src/adminshell/
         docker tag mpcontainer-shell ghcr.io/$GIT_UN/mpcontainer-shell:latest
 
     - name: list_docker_images

@@ -25,7 +25,7 @@ jobs:
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
-        docker build -t mpcontainer-web:latest -f ./src/web/Dockerfile ./web/
+        docker build -t mpcontainer-web:latest -f ./src/web/Dockerfile ./src/web/
         docker tag mpcontainer-web ghcr.io/$GIT_UN/mpcontainer-web:latest
 
     - name: list_docker_images
