@@ -5,7 +5,7 @@ FROM debian:bullseye-20210621-slim
 EXPOSE 6600/tcp 3123/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="2.6"
+LABEL mpcontainer.version="2.6"
 LABEL mpcontainer.service="MPD stream server"
 
 ARG DEBIAN_FRONTEND=noninteractive

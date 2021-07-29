@@ -7,6 +7,7 @@
 
 thedate=$(date)
 thehost=$(hostname)
+gmpco_start_opt=""
 
 #
 # checks before starting

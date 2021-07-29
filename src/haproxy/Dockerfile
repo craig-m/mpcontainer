@@ -5,7 +5,7 @@ FROM haproxy:2.4.2-alpine
 EXPOSE 3000/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL version="2.6"
+LABEL mpcontainer.version="2.6"
 LABEL mpcontainer.service="haproxy frontend gateway"
 
 ENV TZ=Etc/UTC

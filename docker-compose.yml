@@ -103,6 +103,7 @@ services:
     environment: 
         - TZ=Etc/UTC
     restart: on-failure:5
+    deploy:
     security_opt:
       - no-new-privileges
     cap_drop:
@@ -128,6 +129,7 @@ services:
       - env_mpcpyapp_dev=false
       - env_mpypyapp_envtest=docker_compose
     restart: on-failure:5
+    deploy:
     healthcheck:
       test: ["CMD", "/usr/local/bin/python", "/pyapp/healthcheck-http.py"]
       interval: 30s
