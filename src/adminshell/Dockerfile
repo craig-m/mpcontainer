@@ -16,7 +16,8 @@ RUN apt update && \
     apt-get install -y tmux vim ncmpcpp mpc \
     mc curl socat lynx mtr-tiny \
     toilet toilet-fonts && \
-    apt-get clean
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # create a non-root user
 RUN groupadd -r dj && \

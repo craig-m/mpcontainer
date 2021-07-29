@@ -19,7 +19,6 @@ RUN apt-get update && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
-
 COPY --chown=root:root mpd.conf /etc/mpd.conf
 COPY --chown=root:root healthcheck.sh /opt/healthcheck.sh
 

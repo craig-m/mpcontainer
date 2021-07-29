@@ -46,7 +46,6 @@ RUN apt-get update && \
 # libnfs-dev libsmbclient-dev libupnp-dev libavahi-client-dev
 # libjack-jackd2-dev
 
-
 RUN groupadd --system builder && \
     useradd --system --gid builder --home-dir /code --shell /bin/bash \
     --comment "mpcontainer compile env" builder
