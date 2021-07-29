@@ -1,11 +1,11 @@
-name: build-container-pyapp
+name: build-container-adminshell
 
 on:
 
   push:
     branches: [ master ]
     paths:
-      - './src/pyapp/**'
+      - './src/adminshell/**'
 
 jobs:
 
@@ -21,12 +21,12 @@ jobs:
       run: |
         echo $GIT_TOKE | docker login https://ghcr.io/ -u $GIT_UN --password-stdin
 
-    - name: build_mpcontainer-pyapp
+    - name: build_mpcontainer-shell
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
-        docker build -t mpcontainer-pyapp:latest -f ./src/pyapp/Dockerfile ./src/pyapp/
-        docker tag mpcontainer-pyapp ghcr.io/$GIT_UN/mpcontainer-pyapp
+        docker build -t mpcontainer-shell:latest -f ./src/adminshell/Dockerfile ./src/adminshell/
+        docker tag mpcontainer-shell ghcr.io/$GIT_UN/mpcontainer-shell:latest
 
     - name: list_docker_images
       run: |
@@ -36,4 +36,4 @@ jobs:
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
-        docker push ghcr.io/$GIT_UN/mpcontainer-pyapp:latest
+        docker push ghcr.io/$GIT_UN/mpcontainer-shell:latest
