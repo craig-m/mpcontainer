@@ -4,7 +4,7 @@ FROM debian:testing
 EXPOSE 6600/tcp 3123/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL mpcontainer.version="2.6"
+LABEL mpcontainer.version="2.6.2"
 LABEL mpcontainer.service="MPD Build env"
 
 ARG DEBIAN_FRONTEND=noninteractive

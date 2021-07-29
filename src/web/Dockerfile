@@ -19,7 +19,7 @@ FROM nginx:1.21.1-alpine
 EXPOSE 8880/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL mpcontainer.version="2.6"
+LABEL mpcontainer.version="2.6.2"
 LABEL mpcontainer.service="Web files"
 
 HEALTHCHECK CMD wget -O /dev/null -q -- http://localhost:8880/ping/stat
