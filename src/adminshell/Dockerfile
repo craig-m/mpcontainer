@@ -5,7 +5,7 @@ FROM tsl0922/ttyd
 EXPOSE 7681/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL mpcontainer.version="2.6.2"
+LABEL mpcontainer.version="2.6.3"
 LABEL mpcontainer.service="ttyd DJ web shell"
 
 ARG TERM=xterm-256color
