@@ -25,7 +25,7 @@ jobs:
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |
-        docker build -t mpcontainer-pyapp:latest -f ./src/pyapp/Dockerfile ./src/pyapp/
+        docker build -t mpcontainer-pyapp:latest --build-arg env_mpypyapp_envtest=defaultprod2 -f ./src/pyapp/Dockerfile ./src/pyapp/
         docker tag mpcontainer-pyapp ghcr.io/$GIT_UN/mpcontainer-pyapp
 
     - name: list_docker_images
