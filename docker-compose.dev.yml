@@ -1,0 +1,65 @@
+#
+# MPContainer compose DEV setup
+#
+version: '3.7'
+services:
+
+  # ------ haproxy ------
+  frontend:
+    build:
+      context: ./src/haproxy/
+    environment:
+      - HAPX_US_PASS=pass
+    volumes:
+      - ./src/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./src/haproxy/checkhap.sh:/usr/local/bin/checkhap.sh:ro
+      - ./src/haproxy/lua/:/usr/local/bin/lua/:ro
+
+  # ------ web ------
+  backendweb:
+    build:
+      context: ./src/web/
+      args:
+        - builddate=today
+    healthcheck:
+      test: ["CMD", "/usr/bin/wget", "-O", "/dev/null", "-q", "--", "http://localhost:8880/ping/stat"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - ./src/web/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./src/web/html/:/usr/share/nginx/html:ro
+
+  # ------ MPD ------
+  backendmpd:
+    build:
+      context: ./src/mpd/
+
+
+  # ------ shell ------
+  adminmmpd:
+    build:
+      context: ./src/adminshell/
+    volumes:
+      - webshelldata:/home/dj/data-vol/
+
+  # ------ pyapp ------
+  mpcpyapp:
+    build:
+      context: ./src/pyapp/
+      args:
+        - mpypyapp_envtest=default_1
+    environment:
+      - env_mpcpyapp_dev=true
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/python", "/pyapp/healthcheck-pid.py"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - ./src/pyapp/:/pyapp:ro
+
+volumes:
+  webshelldata:

@@ -1,7 +1,4 @@
 # MPContainer Pyapp
-#
-# desc: Flask is a micro web framework written in Python
-# docs: https://flask.palletsprojects.com/en/1.1.x/
 
 import flask
 import logging
@@ -10,7 +7,6 @@ import platform
 import socket
 from datetime import datetime
 from flask import Flask, request, render_template
-from flask_caching import Cache
 from mpd import (MPDClient, CommandError)
 from socket import error as SocketError
 
@@ -18,7 +14,6 @@ from socket import error as SocketError
 from confmpd import *
 
 app = Flask(__name__)
-cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 # Dev or prod mode?
 DEBUG = os.getenv('mpypyapp_debug')
@@ -96,14 +91,12 @@ def hello(name=None):
 
 # pages
 @app.route("/pages/about.html")
-@cache.cached(timeout=60)
 def pageabout():
     return render_template('about.html')
 
 # MPD
 
 @app.route("/mpd/stat.json")
-@cache.cached(timeout=300)
 def mpdstat():
     client = MPDClient()
     if mpdConnect(client, MPDCON_ID):
@@ -121,7 +114,6 @@ def mpdstat():
         return html.format()
 
 @app.route("/mpd/current.json")
-@cache.cached(timeout=60)
 def mpdnowplay():
     client = MPDClient()
     mpdConnect(client, MPDCON_ID)

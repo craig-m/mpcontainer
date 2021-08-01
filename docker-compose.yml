@@ -1,18 +1,13 @@
 #
-# MPContainer compose
+# MPContainer compose - main options
 #
 version: '3.7'
 services:
 
   # ------ haproxy ------
   frontend:
-    image: crgm/mpcontainer-frontend:latest
     container_name: haproxy
     restart: on-failure:5
-    environment:
-      - HAPX_US_PASS=leftthedefault2
-    security_opt:
-      - no-new-privileges
     deploy:
       mode: global
       replicas: 1
@@ -21,6 +16,8 @@ services:
           memory: 100M
         reservations:
           memory: 20M
+    security_opt:
+      - no-new-privileges
     cap_drop:
       - setfcap
       - net_bind_service
@@ -45,11 +42,8 @@ services:
 
   # ------ web ------
   backendweb:
-    image: crgm/mpcontainer-web:latest
     container_name: backendweb
     restart: on-failure:5
-    security_opt:
-      - no-new-privileges
     healthcheck:
       test: ["CMD", "/usr/bin/wget", "-O", "/dev/null", "-q", "--", "http://localhost:8880/ping/stat"]
       interval: 30s
@@ -63,6 +57,8 @@ services:
           memory: 50M
         reservations:
           memory: 20M
+    security_opt:
+      - no-new-privileges
     expose:
       - "8880"
     networks:
@@ -70,7 +66,6 @@ services:
 
   # ------ MPD ------
   backendmpd:
-    image: crgm/mpcontainer-mpd:latest
     container_name: backendmpd
     restart: on-failure:5
     deploy:
@@ -80,10 +75,10 @@ services:
           memory: 100M
         reservations:
             memory: 20M
-    security_opt:
-      - no-new-privileges
     volumes:
       - ./music/db:/music:ro
+    security_opt:
+      - no-new-privileges
     cap_drop:
       - net_bind_service
       - chown
@@ -98,12 +93,8 @@ services:
 
   # ------ shell ------
   adminmmpd:
-    image: crgm/mpcontainer-shell:latest
     container_name: adminshell
-    environment: 
-        - TZ=Etc/UTC
     restart: on-failure:5
-    deploy:
     security_opt:
       - no-new-privileges
     cap_drop:
@@ -122,20 +113,8 @@ services:
 
   # ------ pyapp ------
   mpcpyapp:
-    image: crgm/mpcontainer-pyapp:latest
     container_name: mpcpyapp
-    environment:
-      - TZ=Etc/UTC
-      - env_mpcpyapp_dev=false
-      - env_mpypyapp_envtest=docker_compose
     restart: on-failure:5
-    deploy:
-    healthcheck:
-      test: ["CMD", "/usr/local/bin/python", "/pyapp/healthcheck-http.py"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
     security_opt:
       - no-new-privileges
     cap_drop:

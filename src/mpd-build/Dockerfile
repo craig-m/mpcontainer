@@ -1,13 +1,14 @@
 # MusicPlayerDaemon (MPD) build container
 
+# https://hub.docker.com/_/debian
 FROM debian:testing
 EXPOSE 6600/tcp 3123/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL mpcontainer.version="2.6.3"
-LABEL mpcontainer.service="MPD Build env"
+LABEL mpcontainer.description="MPD Build env"
+LABEL mpcontainer.version="2.6.4"
 
-ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
 RUN apt-get update && \

@@ -295,7 +295,7 @@
                   #!/usr/bin/env bash
                   echo "starting MPContainer with Docker Compose dev";
                   cd /vagrant/ || exit 1
-                  /usr/local/bin/docker-compose -f docker-compose.yml -f docker-compose-dev.yml up --build
+                  /usr/local/bin/docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
             - name: copy limit-containers.sh
               copy:
                 dest: "/home/vagrant/limit-containers.sh"

@@ -1,12 +1,13 @@
 # HAProxy L7 frontend
-# https://hub.docker.com/_/haproxy
 
+# https://hub.docker.com/_/haproxy
 FROM haproxy:2.4.2-alpine
+
 EXPOSE 3000/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL mpcontainer.version="2.6.3"
-LABEL mpcontainer.service="haproxy frontend gateway"
+LABEL mpcontainer.description="haproxy frontend gateway"
+LABEL mpcontainer.version="2.6.4"
 
 ENV TZ=Etc/UTC
 

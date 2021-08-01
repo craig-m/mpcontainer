@@ -1,9 +1,14 @@
-# MPContainer web server
+# MPContainer static backend web server
 
 #----------------------------------------
 # Build container
+
 # https://hub.docker.com/_/node/
 FROM node:14.17.3-alpine3.13
+
+ARG builddate
+LABEL mpcontainer.builddate=$builddate
+
 WORKDIR /home/node/app
 COPY ./package.json* /home/node/app/
 RUN chown -R node:node /home/node/
@@ -16,11 +21,15 @@ RUN npm install
 
 # https://hub.docker.com/_/nginx
 FROM nginx:1.21.1-alpine
+
+ARG builddate
+LABEL mpcontainer.builddate=$builddate
+
 EXPOSE 8880/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL mpcontainer.version="2.6.3"
-LABEL mpcontainer.service="Web files"
+LABEL mpcontainer.description="Static web server"
+LABEL mpcontainer.version="2.6.4"
 
 HEALTHCHECK CMD wget -O /dev/null -q -- http://localhost:8880/ping/stat
 
@@ -47,4 +56,5 @@ RUN find /usr/share/nginx/ -type f -exec chmod 644 {} \;
 RUN chown root:root /usr/share/nginx/*
 
 WORKDIR /usr/share/nginx/
+
 USER nginx

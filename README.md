@@ -56,8 +56,6 @@ A [python](https://www.python.org/) [flask](https://flask.palletsprojects.com/en
 
 Connects to the MPD api (with a read only user) to get stream and other dynamic information about MPD.
 
----
-
 ## Use
 
 On MacOS or Windows [Docker Desktop](https://www.docker.com/products/docker-desktop) makes for a nice container experience, especially with [VSCode](https://code.visualstudio.com/) (get the [Docker](https://code.visualstudio.com/docs/containers/overview), yaml and kubernetes extensions).
@@ -120,8 +118,6 @@ Build and push Images:
 make build
 make publish
 ```
-
----
 
 ## Kubernetes
 

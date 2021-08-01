@@ -54,10 +54,13 @@ apt install -y -q \
     ca-certificates \
     gnupg-agent \
     software-properties-common \
+    nfs-common \
     tmux \
     vim \
     git \
     curl \
+    jq \
+    dos2unix \
     rsync \
     unzip \
     make \
@@ -191,7 +194,7 @@ fi
 
 # start MPContainer
 cd /opt/linode_vm/mpcontainer/
-docker-compose -f docker-compose.yml up -d
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 
 #

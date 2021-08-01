@@ -1,8 +1,8 @@
 FROM debian:buster-slim
 
 LABEL mpcontainer.vendor="MPContainer"
-LABEL mpcontainer.version="2.6.3"
-LABEL mpcontainer.service="MPC SysAdmin container"
+LABEL mpcontainer.version="2.6.4"
+LABEL mpcontainer.description="MPC SysAdmin container"
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC

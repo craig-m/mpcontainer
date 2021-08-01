@@ -1,0 +1,53 @@
+#
+# MPContainer compose production settings
+# use images from Dockerhub
+#
+version: '3.7'
+services:
+
+  # ------ haproxy ------
+  frontend:
+    image: crgm/mpcontainer-frontend:latest
+    environment:
+      - HAPX_US_PASS=leftthedefault2
+
+  # ------ web ------
+  backendweb:
+    image: crgm/mpcontainer-web:latest
+
+  # ------ MPD ------
+  backendmpd:
+    image: crgm/mpcontainer-mpd:latest
+
+  # ------ shell ------
+  adminmmpd:
+    image: crgm/mpcontainer-shell:latest
+
+  # ------ pyapp ------
+  mpcpyapp:
+    image: crgm/mpcontainer-pyapp:latest
+    args: 
+      - env_mpypyapp_envtest=prod
+    environment:
+      - env_mpcpyapp_dev=false
+      - env_mpypyapp_envtest=docker_compose.prod
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/python", "/pyapp/healthcheck-http.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  webpubnet:
+    internal: false
+    driver: bridge
+  webfrontnet:
+    internal: true
+    driver: bridge
+  webfrontmpd:
+    internal: true
+    driver: bridge
+  mpdadmin:
+    internal: true
+    driver: bridge

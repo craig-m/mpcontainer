@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# start the MPContainer pyapp (mpcpyapp.py) under Gunicorn 
-#
-# desc: "Green Unicorn" is a Python WSGI HTTP Server for UNIX
-# doc: https://docs.gunicorn.org/en/latest/index.html
-
 thedate=$(date)
 thehost=$(hostname)
 gmpco_start_opt=""
@@ -25,17 +20,16 @@ fi
 # run gunicorn
 #
 
-# Start with Dev or Prod options?
-# note: container default is Prod
+# Start with Dev or Prod options? container default is Prod
 if [[ $env_mpcpyapp_dev == "true" ]]; then
-  echo "--- env_mpcpyapp_dev ${env_mpcpyapp_dev} (Dev mode ON) ---";
+  echo "--- dev mode ON!! ---";
 
   gmpco_start_opt="--log-level info --reload --reload-engine auto"
   export mpypyapp_debug="True"
   export FLASK_ENV=development
 
 else
-  echo "--- production gunicorn settings ---"
+  echo "--- production settings ---"
 
   gmpco_start_opt="--log-level warning --preload"
   export mpypyapp_debug="False" 
@@ -48,9 +42,7 @@ else
   fi
 fi
 
-#export env_mpypyapp_envtest=start_script
 
-# start
 gunicorn mpcpyapp:app \
   --pid /tmp/pyapi-gunicorn.pid \
   --bind unix:/tmp/pyapp.socket \

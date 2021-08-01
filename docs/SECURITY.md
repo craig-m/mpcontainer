@@ -27,3 +27,4 @@ What needs to routinly be updated/patched in this project. Try to document where
 * Linode terraform
   * In LKE `k8s_version = "1.18"`
   * In VM the Image, eg `["linode/ubuntu18.04"]`
+  * In VM, assets, `stackscript.sh` has docker-compose.
