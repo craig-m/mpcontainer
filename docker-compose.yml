@@ -44,12 +44,6 @@ services:
   backendweb:
     container_name: backendweb
     restart: on-failure:5
-    healthcheck:
-      test: ["CMD", "/usr/bin/wget", "-O", "/dev/null", "-q", "--", "http://localhost:8880/ping/stat"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
     deploy:
       resources:
         limits:

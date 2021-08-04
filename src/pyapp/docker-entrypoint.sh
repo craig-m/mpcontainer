@@ -9,7 +9,7 @@ gmpco_start_opt=""
 #
 
 if [[ pyapp = "$(whoami)" ]]; then
-  echo "--- starting mpcpyapp on: ${thehost} ${thedate} ---";
+  echo "starting mpcpyapp at ${thehost} on ${thedate}";
 else
   echo "ERROR: not running as pyapp";
   exit 1;
@@ -22,15 +22,16 @@ fi
 
 # Start with Dev or Prod options? container default is Prod
 if [[ $env_mpcpyapp_dev == "true" ]]; then
-  echo "--- dev mode ON!! ---";
 
+  echo "dev mode ON!!";
   gmpco_start_opt="--log-level info --reload --reload-engine auto"
   export mpypyapp_debug="True"
   export FLASK_ENV=development
+  #printenv
 
 else
-  echo "--- production settings ---"
 
+  echo "production settings";
   gmpco_start_opt="--log-level warning --preload"
   export mpypyapp_debug="False" 
   export FLASK_ENV=production

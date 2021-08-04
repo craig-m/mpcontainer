@@ -13,7 +13,7 @@ LABEL mpcontainer.version="2.6.4"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
-HEALTHCHECK CMD bash /opt/healthcheck.sh
+HEALTHCHECK CMD /bin/sh /opt/healthcheck.sh
 
 # https://packages.debian.org/bullseye/sound/mpd
 # https://packages.debian.org/bullseye/sound/mpc

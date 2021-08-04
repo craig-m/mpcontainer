@@ -18,9 +18,12 @@ RUN groupadd --system pyapp && \
     --comment "mpcontainer pyapp" pyapp
 
 ENV HOME=/pyapp
-COPY --chown=root:root . /pyapp
+COPY --chown=root:pyapp src/* /pyapp
+COPY --chown=root:root docker-entrypoint.sh /docker-entrypoint.sh
+
 WORKDIR /pyapp
 
+RUN chmod +x /docker-entrypoint.sh && chmod 770 /pyapp;
 RUN find /pyapp -type d -exec chmod 775 {} \;
 RUN find /pyapp -type f -exec chmod 644 {} \;
 
@@ -37,5 +40,4 @@ ENV env_mpcpyapp_dev=$mpcpyapp_dev
 ARG mpypyapp_envtest=default_0
 ENV env_mpypyapp_envtest=$mpypyapp_envtest
 
-ENTRYPOINT ["/bin/bash"]
-CMD ["/pyapp/start.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -15,6 +15,7 @@ pidstatefile = os.path.exists("/proc/" + gpid + "/status")
 # check socket created
 sockfile = os.path.exists('/tmp/pyapp.socket')
 
+
 if sockfile and pidstatefile:
     #print('all good')
     exit(0)
