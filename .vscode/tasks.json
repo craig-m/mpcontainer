@@ -6,7 +6,7 @@
         {
             "label": "docker-build",
             "type": "shell",
-            "command": "docker-compose -f 'docker-compose.yml' -f 'docker-compose-dev.yml' up -d --build",
+            "command": "docker compose -f 'docker-compose.yml' -f 'docker-compose.dev.yml' up -d --build",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
@@ -16,7 +16,7 @@
         {
             "label": "docker-logs",
             "type": "shell",
-            "command": "docker-compose logs --tail='all' -f",
+            "command": "docker compose -f 'docker-compose.yml' -f 'docker-compose.dev.yml' logs -f",
             "problemMatcher": []
         },
         {

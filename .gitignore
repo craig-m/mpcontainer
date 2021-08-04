@@ -1,5 +1,7 @@
 # mpcontainer git ignore:
 #
+.env
+*.log
 localdata/*
 !localdata/.gitkeep
 vagrant-dev-vm/.vagrant/
