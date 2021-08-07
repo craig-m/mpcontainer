@@ -64,25 +64,25 @@ Put some music into `.\music\db\` so you can use the Jukebox, these files will b
 
 ### docker-compose
 
-Deploy MPContainer in prod, or work in dev.
-
-#### production
-
-Start the system with images on docker hub:
-
-```shell
-docker-compose -f docker-compose.yml up -d
-```
+Starting MPContainer in prod/dev.
 
 #### development
 
 If you're deving and want to mount config files from the repo and expose ports etc:
 
 ```shell
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml up --build
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 ```
 
 Or for a contained local Dev environment there is a VM managed by Vagrant [here](vagrant-dev-vm/README.md)
+
+#### production
+
+Start the MPContainer with images on docker hub:
+
+```shell
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
 
 ### check on it
 

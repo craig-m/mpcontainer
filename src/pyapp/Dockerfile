@@ -15,10 +15,11 @@ HEALTHCHECK CMD /usr/local/bin/python /pyapp/healthcheck-pid.py
 
 RUN groupadd --system pyapp && \
     useradd --system --gid pyapp --home-dir /app --shell /sbin/nologin \
-    --comment "mpcontainer pyapp" pyapp
+    --comment "mpcontainer pyapp" pyapp && \
+    mkdir /pyapp
 
 ENV HOME=/pyapp
-COPY --chown=root:pyapp src/* /pyapp
+COPY --chown=root:pyapp src/* /pyapp/
 COPY --chown=root:root docker-entrypoint.sh /docker-entrypoint.sh
 
 WORKDIR /pyapp

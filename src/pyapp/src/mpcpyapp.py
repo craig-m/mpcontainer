@@ -22,6 +22,9 @@ DEBUG = os.getenv('mpypyapp_debug')
 # functions
 #
 
+# note from MPD man page: passwords are sent in clear-text over the connection, 
+# and the client cannot verify the server’s identity.
+
 def mpdConnect(client, con_id):
     client.timeout = 10
     client.idletimeoout = None

@@ -18,7 +18,7 @@ The ansible role also installs [Cockpit](https://cockpit-project.org/) for easy 
 
 ## use
 
-1) Edit the `Vagrantfile` to set the desired OS.
+1) Edit the `Vagrantfile` to set the desired OS, or leave.
 
 2) In a shell, start the VM and login to it. The port forwards do not always work for me so I set them.
 
@@ -26,7 +26,7 @@ The ansible role also installs [Cockpit](https://cockpit-project.org/) for easy 
 
    B) `vagrant ssh -- -L 9191:127.0.0.1:9090 -L 3131:127.0.0.1:3000`
 
-3) Run one of the `/home/vagrant/start-mpc-*.sh` scripts, or you can `cd /vagrant/ && make dev`
+3) Run one of the `/home/vagrant/start-mpc-*.sh` scripts, or you can `cd /vagrant/ && make dev-up`
 
 4) On your desktop open the [app](http://localhost:3131/)
 

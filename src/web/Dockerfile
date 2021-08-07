@@ -31,7 +31,7 @@ LABEL mpcontainer.vendor="MPContainer"
 LABEL mpcontainer.description="Static web server"
 LABEL mpcontainer.version="2.6.4"
 
-HEALTHCHECK --timeout=10s CMD /usr/bin/curl --silent http://localhost:8880/ping/stat > /dev/null
+HEALTHCHECK --timeout=10s CMD /usr/bin/curl --silent --show-error --fail http://localhost:8880/ping/stat > /dev/null
 
 COPY --chown=root:root nginx.conf /etc/nginx/nginx.conf
 

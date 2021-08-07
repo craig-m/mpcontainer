@@ -23,16 +23,18 @@ fi
 # Start with Dev or Prod options? container default is Prod
 if [[ $env_mpcpyapp_dev == "true" ]]; then
 
-  echo "dev mode ON!!";
+  echo "------- dev mode ON!! -------";
   gmpco_start_opt="--log-level info --reload --reload-engine auto"
+  echo "gmpco_start_opt: ${gmpco_start_opt}";
   export mpypyapp_debug="True"
   export FLASK_ENV=development
-  #printenv
+  echo "----------------------------";
 
 else
 
   echo "production settings";
   gmpco_start_opt="--log-level warning --preload"
+  echo "gmpco_start_opt: ${gmpco_start_opt}";
   export mpypyapp_debug="False" 
   export FLASK_ENV=production
 
