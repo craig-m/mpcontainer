@@ -82,9 +82,9 @@ _or_
 kubectl -n musicplayer delete all --all
 ```
 
-[docs-pv]: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
-[docs-ingress-controller]: https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
-[docs-ingress]: https://kubernetes.io/docs/concepts/services-networking/ingress/
-[nginx-ingress]: https://kubernetes.github.io/ingress-nginx/
+## Docs
 
-
+* docs-pv: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+* docs-ingress-controller: https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
+* docs-ingress: https://kubernetes.io/docs/concepts/services-networking/ingress/
+* nginx-ingress: https://kubernetes.github.io/ingress-nginx/

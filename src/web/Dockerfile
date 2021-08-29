@@ -28,6 +28,7 @@ LABEL mpcontainer.builddate=$builddate
 EXPOSE 8880/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
+LABEL mpcontainer.name="mpcontainer-web"
 LABEL mpcontainer.description="Static web server"
 LABEL mpcontainer.version="2.6.4"
 

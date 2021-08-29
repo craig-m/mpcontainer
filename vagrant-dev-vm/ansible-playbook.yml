@@ -18,7 +18,6 @@
       { add_item: 'vim' },
       { add_item: 'git' },
       { add_item: 'make' },
-      { add_item: 'nmap' },
       { add_item: 'tcpdump' },
       { add_item: 'socat' },
       { add_item: 'expect' },
@@ -50,7 +49,7 @@
             value: "128000"
           become: true
         - name: file limits
-          copy:
+          ansible.builtin.copy:
             dest: "/etc/security/limits.conf"
             mode: 0644
             owner:  "root"
@@ -65,13 +64,13 @@
         - name: packages
           block:
             - name: install packages
-              package:
+              ansible.builtin.package:
                 name: "{{ item.add_item }}"
                 state: present
               retries: 3
               with_items: "{{ package_install }}"
             - name: remove packages
-              package:
+              ansible.builtin.package:
                 name: "{{ item.del_item }}"
                 state: absent
               with_items: "{{ package_remove }}"
@@ -79,15 +78,19 @@
     - name: files and folders
       block:
         - name: run ansible script
-          copy:
+          ansible.builtin.copy:
             dest: /home/vagrant/run-playbook.sh
             mode: 0755
             content: |
               echo "running ansible-playbook.yml on localhost";
+              if [[ root = "$(whoami)" ]]; then
+                echo "Error: do not run as root";
+                exit 1;
+              fi
               export ANSIBLE_PYTHON_INTERPRETER=/usr/bin/python3
-              ansible-playbook --connection=local -i "127.0.0.1," -- /vagrant/vagrant-dev-vm/ansible-playbook.yml;
+              ansible-playbook -v --connection=local -i "127.0.0.1," -- /vagrant/vagrant-dev-vm/ansible-playbook.yml;
         - name: create common folders
-          file:
+          ansible.builtin.file:
             path: "{{ item.dir }}"
             state: directory
             mode: "{{ item.mode }}"
@@ -98,7 +101,7 @@
     - name: custom ansible facts
       block:
         - name: create fact script
-          copy:
+          ansible.builtin.copy:
             dest: "/etc/ansible/facts.d/mpconline.fact"
             mode: 0755
             owner: root
@@ -139,14 +142,14 @@
                 state: present
             - name: install podman tools
               dnf:
-                name: ['podman', 'podman-docker', 'podman-manpages']
+                name: ['podman', 'podman-docker', 'podman-manpages', 'podman-compose']
                 state: present
             - name: install buildah
               dnf:
                 name: ['buildah']
                 state: present
             - name: remove nondocker warning
-              copy:
+              ansible.builtin.copy:
                 dest: "/etc/containers/nodocker"
                 mode: 0644
                 owner:  "root"
@@ -155,7 +158,7 @@
                   # no docker here.
                   # -- ansible managed file --
             - name: podman registry setup
-              copy:
+              ansible.builtin.copy:
                 dest: "/etc/containers/registries.conf"
                 mode: 0644
                 owner:  "root"
@@ -176,7 +179,7 @@
         - name: Podman python tools
           block:
             - name: requirements file
-              copy:
+              ansible.builtin.copy:
                 dest: "/home/vagrant/requirements.txt"
                 mode: 0644
                 owner: vagrant
@@ -197,7 +200,7 @@
         - name: scripts
           block:
             - name: start script
-              copy:
+              ansible.builtin.copy:
                 dest: "/home/vagrant/start-mpc-podman-compose.sh"
                 mode: 0755
                 content: |
@@ -208,13 +211,15 @@
                   # Set SELinux context
                   chcon -R -t svirt_sandbox_file_t /vagrant/music
                   cd /vagrant/
-                  podman-compose up -d
+                  podman-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
                   docker ps
         - name: done
           debug:
             msg: "CentOS setup done"
       when:
-        (ansible_distribution == 'CentOS') or (ansible_distribution == 'Fedora')
+        (ansible_distribution == 'CentOS') or 
+        (ansible_distribution == 'Fedora') or
+        (ansible_distribution == 'Rocky')
 
 
     #----------------------------------
@@ -239,7 +244,7 @@
                     url: https://download.docker.com/linux/ubuntu/gpg
                     state: present
                 - name: apt repo docker
-                  copy:
+                  ansible.builtin.copy:
                     dest: /etc/apt/sources.list.d/docker.list
                     mode: 0644
                     content: |
@@ -274,7 +279,7 @@
                     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
                     state: present
                 - name: apt repo kubernetes
-                  copy:
+                  ansible.builtin.copy:
                     dest: /etc/apt/sources.list.d/kubernetes.list
                     mode: 0644
                     content: |
@@ -288,16 +293,20 @@
         - name: scripts
           block:
             - name: copy start-compose-dev script
-              copy:
+              ansible.builtin.copy:
                 dest: "/home/vagrant/start-compose-dev.sh"
                 mode: 0755
                 content: |
                   #!/usr/bin/env bash
                   echo "starting MPContainer with Docker Compose dev";
+                  if [[ root = "$(whoami)" ]]; then
+                    echo "Error: do not run as root";
+                    exit 1;
+                  fi
                   cd /vagrant/ || exit 1
                   /usr/local/bin/docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
             - name: copy limit-containers.sh
-              copy:
+              ansible.builtin.copy:
                 dest: "/home/vagrant/limit-containers.sh"
                 mode: 0755
                 content: |
@@ -308,7 +317,7 @@
                   docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 adminshell;
                   docker container update --pids-limit=200 --memory-reservation="10m" --memory="20m" --memory-swap="20m" --cpus=2 --restart=on-failure:3 mpcpyapp;
             - name: copy docker-bench-security script
-              copy:
+              ansible.builtin.copy:
                 dest: "/home/vagrant/docker-bench-security.sh"
                 mode: 0755
                 content: |
@@ -337,7 +346,7 @@
     - name: Cockpit Web UI setup
       block:
         - name: install
-          package:
+          ansible.builtin.package:
             name: cockpit
             state: present
         - name: turn on socket
@@ -360,18 +369,28 @@
     #
     # Finish up and test
     #
-    - name: test
-      command: "docker --version"
-      register: dockerver
-      changed_when: false
-    - name: check docker works
-      assert:
-        that:
-          - "dockerver.rc == 0"
+    - name: test user
+      block:
+        - name: add mpcon user
+          user:
+            name: mpcon
+            shell: /bin/bash
+            append: yes
+          become: true
+    - name: testing
+      block:
+        - name: check docker ver
+          command: docker --version
+          register: dockerver
+          changed_when: false
+        - name: check docker works
+          assert:
+            that:
+              - "dockerver.rc == 0"
     - name: refresh ansible facts
       setup: ~
     - name: readme
-      copy:
+      ansible.builtin.copy:
         dest: "/home/vagrant/readme.txt"
         mode: 0644
         content: |

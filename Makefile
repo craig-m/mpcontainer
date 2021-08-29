@@ -3,6 +3,10 @@
 # https://www.gnu.org/software/make/manual/make.html
 #
 
+#
+# vars
+#
+
 #regurl=docker.pkg.github.com/${GIT_UN}/mpcontainer
 regurl=localhost:5000
 
@@ -10,25 +14,46 @@ regurl=localhost:5000
 # tasks
 #
 
+.PHONY: help build publish prune stop-all dev-reg dev-logs dev-down dev-up dev-vm
+
+help:
+	@echo ""
+	@echo "--== MPContainer Makefile help ==--"
+	@echo ""
+	@echo "make dev-vm \t\t- starts vagrant vm"
+	@echo "make comp-up \t\t- start compose"
+	@echo "make comp-down \t\t- stop compose"
+	@echo "make comp-logs \t\t- show compose logs"
+	@echo "make stop-all \t\t- stop all containers by MPContainer tag"
+	@echo "make dev-reg \t\t- start registry container"
+	@echo ""
+
+.DEFAULT_GOAL := help
+
+
 dev-vm:
 	cd ./vagrant-dev-vm/ && vagrant up
 
-dev-up:
-	docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build --detach
+comp-up:
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --detach
+	docker ps
 
-dev-down:
-	docker compose -f docker-compose.yml -f docker-compose.dev.yml down
+comp-down:
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml down
 
-dev-logs:
-	docker compose -f docker-compose.yml -f docker-compose.dev.yml logs
+comp-logs:
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml logs
 
-stop:
+stop-all:
 	docker container stop $(docker ps --filter "label=mpcontainer.vendor=MPContainer" -aq)
 
 # The Docker Registry 2.0 implementation for storing and distributing Docker images
 # https://hub.docker.com/_/registry
-registry:
+dev-reg:
 	docker run -d -p 5000:5000 --restart always --name registry registry:2
+
+prune:
+	docker system prune -af
 
 build:
 	docker build -t ${regurl}/mpcontainer-mpd:latest -f src/mpd/Dockerfile ./src/mpd/
@@ -43,10 +68,3 @@ publish:
 	docker push ${regurl}/mpcontainer-web:latest
 	docker push ${regurl}/mpcontainer-pyapp:latest
 	docker push ${regurl}/mpcontainer-frontend:latest
-
-saveimg:
-	docker save mpcontainer-mpd > mpcontainer-mpd.tar
-	docker save mpcontainer-shell > mpcontainer-shell.tar
-	docker save mpcontainer-web > mpcontainer-web.tar
-	docker save mpcontainer-frontend > mpcontainer-frontend.tar
-	docker save mpcontainer-pyapp > mpcontainer-pyapp.tar

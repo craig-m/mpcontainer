@@ -6,6 +6,7 @@ FROM tsl0922/ttyd
 EXPOSE 7681/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
+LABEL mpcontainer.name="mpcontainer-shell"
 LABEL mpcontainer.description="ttyd DJ web shell"
 LABEL mpcontainer.version="2.6.4"
 

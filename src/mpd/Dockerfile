@@ -1,12 +1,13 @@
 # MusicPlayerDaemon MPD container
 
 # https://hub.docker.com/_/debian
-FROM debian:bullseye-20210621-slim
+FROM debian:bullseye-20210816-slim
 
 EXPOSE 6600/tcp 
 EXPOSE 3123/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
+LABEL mpcontainer.name="mpcontainer-mpd"
 LABEL mpcontainer.description="MPD stream server"
 LABEL mpcontainer.version="2.6.4"
 

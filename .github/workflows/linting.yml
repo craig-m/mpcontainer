@@ -1,5 +1,7 @@
 name: linting
-
+#
+# check the ansible playbooks we use for linting errors
+#
 on:
 
   push:

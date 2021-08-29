@@ -1,5 +1,5 @@
 name: build-container-web
-
+# build this container and push to Github registry
 on:
 
   push:
@@ -21,7 +21,7 @@ jobs:
       run: |
         echo $GIT_TOKE | docker login https://ghcr.io/ -u $GIT_UN --password-stdin
 
-    - name: build_mpcontainer-web
+    - name: build_container
       env:
         GIT_UN: ${{ secrets.GIT_UN }}
       run: |

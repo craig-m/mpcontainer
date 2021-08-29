@@ -1,5 +1,5 @@
 name: docker-hub-release
-
+# build all containers and push to Docker Hub registry
 on:
 
   release:

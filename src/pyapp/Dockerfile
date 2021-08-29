@@ -6,6 +6,7 @@ FROM python:3.9.6-slim-buster
 EXPOSE 8888/tcp
 
 LABEL mpcontainer.vendor="MPContainer"
+LABEL mpcontainer.name="mpcontainer-pyapp"
 LABEL mpcontainer.description="mpc python3 flask app"
 LABEL mpcontainer.version="2.6.4"
 

@@ -43,6 +43,9 @@ This will let us add/remove hosts on backend servers.
 
 notes:
 
+* https://www.haproxy.com/blog/announcing-haproxy-data-plane-api-2-3/
+* https://www.haproxy.com/blog/new-haproxy-data-plane-api/
 * https://www.haproxy.com/blog/dynamic-scaling-for-microservices-with-runtime-api/
+* https://www.haproxy.com/documentation/hapee/2-2r1/api/
 
-TODO: have Kubernetes to interact with haproxy api.
+todo: use Consul with haproxy for fully dynamic configs.
