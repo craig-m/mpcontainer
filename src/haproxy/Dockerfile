@@ -1,7 +1,7 @@
 # HAProxy L7 frontend
 
 # https://hub.docker.com/_/haproxy
-FROM haproxy:2.4.3-alpine
+FROM haproxy:2.4.4-alpine
 
 EXPOSE 3000/tcp
 

@@ -20,7 +20,7 @@ RUN npm install
 #----------------------------------------
 
 # https://hub.docker.com/_/nginx
-FROM nginx:1.21.1-alpine
+FROM nginx:1.21.3-alpine
 
 ARG builddate
 LABEL mpcontainer.builddate=$builddate

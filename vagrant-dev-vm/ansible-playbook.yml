@@ -1,11 +1,12 @@
 ---
-#
+
 # Ansible Playbook for MPContainer development VM.
 # https://www.vagrantup.com/docs/provisioning/ansible_local
-#
+
 - name: MPContainer Dev VM
   hosts: all
   gather_facts: yes
+
   vars:
     package_install: [
       { add_item: 'curl' },
@@ -35,6 +36,7 @@
       { dir: '/root/tmp/', mode: '0700', owner: 'root', group: 'root' },
       { dir: '/mnt/sshfs/', mode: '0775', owner: 'root', group: 'root' }
     ]
+
   tasks:
     #
     # Common setup tasks
@@ -217,7 +219,7 @@
           debug:
             msg: "CentOS setup done"
       when:
-        (ansible_distribution == 'CentOS') or 
+        (ansible_distribution == 'CentOS') or
         (ansible_distribution == 'Fedora') or
         (ansible_distribution == 'Rocky')
 
@@ -375,8 +377,8 @@
           user:
             name: mpcon
             shell: /bin/bash
-            append: yes
           become: true
+
     - name: testing
       block:
         - name: check docker ver
@@ -387,20 +389,26 @@
           assert:
             that:
               - "dockerver.rc == 0"
+
     - name: refresh ansible facts
-      setup: ~
+      ansible.builtin.setup:
+        gather_subset:
+          - all
+        gather_timeout: 15
+
     - name: readme
       ansible.builtin.copy:
-        dest: "/home/vagrant/readme.txt"
+        dest: /home/vagrant/readme.txt
         mode: 0644
         content: |
           #
           # MPContainer Dev VM
           #
-          # Distro: {{ ansible_distribution }} {{ ansible_distribution_version }}
-          # ansible: {{ ansible_version }}
-          # python: {{ ansible_playbook_python }}
+          # Distro:   {{ ansible_distribution }}  {{ ansible_distribution_version }}
+          # ansible:  {{ ansible_version }}
+          # python:   {{ ansible_playbook_python }}
           #
+
     - name: ansible-playbook.yml finished
       debug:
         msg: "ansible-playbook.yml finished"

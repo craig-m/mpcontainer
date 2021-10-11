@@ -1,7 +1,7 @@
 # MusicPlayerDaemon MPD container
 
 # https://hub.docker.com/_/debian
-FROM debian:bullseye-20210816-slim
+FROM debian:bullseye-20210927-slim
 
 EXPOSE 6600/tcp 
 EXPOSE 3123/tcp
