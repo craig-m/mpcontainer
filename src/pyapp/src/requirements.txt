@@ -9,6 +9,6 @@ itsdangerous==2.0.1
 Jinja2==3.0.1
 MarkupSafe==2.0.1
 python-mpd2==3.0.4
-Werkzeug==2.0.1
+Werkzeug==2.2.3
 zope.event==4.5.0
 zope.interface==5.4.0
